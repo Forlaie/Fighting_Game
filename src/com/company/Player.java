@@ -1,4 +1,6 @@
 package com.company;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 // make it multiplayer for level 4?
 // add spells and potions and stuff
@@ -126,7 +128,7 @@ public class Player {
         inventory.remove(item);
     }
 
-    public void battle(Floor floor){
+    public void battle(Floor floor) throws FileNotFoundException {
         System.out.println();
         System.out.println(bold + "Enemy turn" + reset);
         ArrayList<Enemy> enemies = floor.getEnemies();
@@ -135,7 +137,7 @@ public class Player {
             System.out.println(enemy.getName() + " has dealt " + enemy.getAttack() + " damage");
         }
         if (health <= 0){
-            died();
+            died(this, floor);
         }
         else{
             System.out.println(bold + "Your turn" + reset);
@@ -146,10 +148,48 @@ public class Player {
         }
     }
 
-    public void died(){
+    public void died(Player player, Floor floor) throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
-        System.out.println(bold + "You have died! Restart? (Y/N)" + reset);
+        System.out.println(bold + "You have died! Restart from previous floor? (Y/N)" + reset);
         String choice = input.nextLine();
+        if (choice.equals("Y")) {
+            try {
+                Scanner fileInput = new Scanner(new File("C:\\Users\\jessi\\Desktop\\CS Project Base\\src\\PlayerInfo"));
+                //BufferedReader bf=new BufferedReader(new FileReader("C:\\Users\\jessi\\Desktop\\CS Project Base\\src\\PlayerInfo"));
+                if (fileInput.hasNextLine()) {
+                    while (fileInput.hasNextLine()) {
+                        String name = fileInput.nextLine();
+                        int health = Integer.parseInt(fileInput.nextLine());
+                        int defence = Integer.parseInt(fileInput.nextLine());
+                        int attack = Integer.parseInt(fileInput.nextLine());
+                        int level = Integer.parseInt(fileInput.nextLine());
+                        int xp = Integer.parseInt(fileInput.nextLine());
+                        int coins = Integer.parseInt(fileInput.nextLine());
+                        // figure out how to get the items back...
+                        // ArrayList<Item> inventory = new ArrayList<Item>();
+                        // ArrayList<Item> equipped = new ArrayList<Item>();
+
+                        player = new Player(name, health, defence, attack, level, xp, coins);
+                    }
+                }
+
+                try {
+                    fileInput = new Scanner(new File("C:\\Users\\jessi\\Desktop\\CS Project Base\\src\\FloorInfo"));
+                    if (fileInput.hasNextLine()) {
+                        int floorLevel = Integer.parseInt(fileInput.nextLine());
+                        // figure out how to get enemies back...
+                        // Enemy[] enemies =
+                        Floor.floorLevel = floorLevel - 1;
+                        floor = new Floor(player);
+                    }
+                } catch (FileNotFoundException e) {
+                    System.out.println("Couldn't open floor file");
+                }
+
+            } catch (FileNotFoundException e) {
+                System.out.println("Couldn't open player file");
+            }
+        }
     }
 
     public void profile(){

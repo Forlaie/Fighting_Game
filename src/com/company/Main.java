@@ -57,6 +57,9 @@ public class Main {
         System.out.println("=============== ©MM");
     }
 
+    public static void loadPlayerSaveFile(){
+
+    }
     public static void main(String[] args) {
         Scanner userInput = new Scanner(System.in);
         Player player = null;

@@ -9,24 +9,24 @@ public class Enemy {
     public static final String italic = "\033[3m";
     public static final String reset = "\u001B[0m";
     private static Enemy[] possibleEnemies = {
-            new Enemy("Enemy", 10, 1, """
+            new Enemy("Enemy", 10+Floor.floorLevel, 1+Floor.floorLevel, """
             Enemies are people who have been corrupted by the pollution
             """),
-            new Vampire("Vampire", 15, 3, """
+            new Vampire("Vampire", 15+Floor.floorLevel, 3+Floor.floorLevel, """
                     Vampires are creatures that suck your blood
                     They steal your hp and heal themselves
                     (scaled according to how much hp you have)
                     """),
-            new Golem("Golem", 20, 2, 5, """
+            new Golem("Golem", 20+Floor.floorLevel, 2+Floor.floorLevel, 5+Floor.floorLevel, """
                     Golems are creatures made of rock and stone that have become sentient due to the pollution
                     They have strong defence, so attacks will deal less damage than usual
                     (scaled according to how much defence the golem has)
                     """),
-            new Troll("Troll", 5, 2, """
+            new Troll("Troll", 5+Floor.floorLevel, 2+Floor.floorLevel, """
                     Trolls are mischevious mythical creatures that love to play tricks
                     Trolls will steal an item from your inventory when they die, so equip any items you want to keep safe
                     """),
-            new Dragon("Dragon", 50, 10, 10, """
+            new Dragon("Dragon", 50+Floor.floorLevel, 10+Floor.floorLevel, 10+Floor.floorLevel, """
                     Dragons are extremely powerful creatures
                     Dragons have lots of health, attack, and defence, so they're difficult to defeat
                     However, once defeated, they drop special dragon armour that can't be found anywhere else

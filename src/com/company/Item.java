@@ -15,19 +15,19 @@ public class Item {
     private int cost;
     private String description;
     public static Item[] drops = {
-            new Item("Sword", 0, 0, 10, 10, """
+            new Item("Sword", Floor.floorLevel, Floor.floorLevel, 10+Floor.floorLevel, 10+Floor.floorLevel, """
                     The sword is a sturdy and reliable weapon for any warrior
                     +10 atk
                     """),
-            new Item("Shield", 0, 10, 0, 10, """
+            new Item("Shield", Floor.floorLevel, 10+Floor.floorLevel, Floor.floorLevel, 10+Floor.floorLevel, """
                     The shield is an essential for any warrior to keep themselves safe and protect what they need to protect
                     +10 def
                     """),
-            new Item("Shoes", 0, 3, 3, 5, """
+            new Item("Shoes", Floor.floorLevel, 3+Floor.floorLevel, 3+Floor.floorLevel, 5+Floor.floorLevel, """
                     Proper footwear can help you dodge and attack faster
                     +10 def, +3 atk
                     """),
-            new Item("Gloves", 0, 3, 3, 5, """
+            new Item("Gloves", Floor.floorLevel, 3+Floor.floorLevel, 3+Floor.floorLevel, 5+Floor.floorLevel, """
                     Having a good grip on your weapon can be the deciding factor between life and death
                     +3 def, +3 atk
                     """),
