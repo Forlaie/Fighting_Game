@@ -1,10 +1,9 @@
 package com.company;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
 import java.util.*;
-// make it multiplayer for level 4?
-// add spells and potions and stuff
-// ADD GACHA SYSTEM HAHAHAHA
+
 public class Player {
     public static final String reset = "\u001B[0m";
     public static final String black = "\u001B[30m";
@@ -71,6 +70,10 @@ public class Player {
         return inventory;
     }
 
+    public void printInventory(){
+        System.out.println("Inventory: " + inventory);
+    }
+
     public void levelUp(){
         System.out.println("Level up!");
         level += 1;
@@ -109,17 +112,17 @@ public class Player {
 
     public void purchaseItem(Item item){
         if (coins < item.getCost()){
-            System.out.println("You don't have enough coins");
+            System.out.println("Unfortunately, you don't have enough coins");
         }
         else{
-            System.out.println("Successfully purchased " + item.getName());
+            System.out.println("Successfully purchased " + item.getName() + "!");
             coins -= item.getCost();
             inventory.add(item);
         }
     }
 
     public void sellItem(Item item){
-        System.out.println("Successfully sold " + item.getName());
+        System.out.println("Successfully sold " + item.getName() + "!");
         coins += item.getCost();
         inventory.remove(item);
     }
@@ -237,5 +240,9 @@ public class Player {
                 unequipItem(equipped.get(index-1));
             }
         }
+    }
+
+    public String getName() {
+        return name;
     }
 }

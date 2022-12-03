@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.util.*;
 
 // check whether items actually affect my stats
-// make a shop
 // do save file stuff
 
 public class Main {
@@ -25,41 +24,39 @@ public class Main {
 
     public static void mainMenu(){
         System.out.println();
-        System.out.println("What would you like to do?");
+        System.out.println(bold + "What would you like to do?" + reset);
         System.out.println("========================= ©MM");
-        System.out.println(italic + "1: open info menu");
-        System.out.println("2: check profile");
-        System.out.println("3: change username");
-        System.out.println("4: access shop");
-        System.out.println("5: equip/unequip items");
-        System.out.println("6: enter floor " + (Floor.floorLevel+1));
-        System.out.println("7: save and exit" + reset);
+        System.out.println(italic + cyan + "1:" + reset + italic + " open info menu");
+        System.out.println(cyan + "2:" + reset + italic + " check profile");
+        System.out.println(cyan + "3:" + reset + italic + " change username");
+        System.out.println(cyan + "4:" + reset + italic + " access shop");
+        System.out.println(cyan + "5:" + reset + italic + " equip/unequip items");
+        System.out.println(cyan + "6:" + reset + italic + " enter floor " + (Floor.floorLevel+1));
+        System.out.println(cyan + "7:" + reset + italic + " save and exit" + reset);
         System.out.println("========================= ©MM");
     }
 
     public static void fightMenu(){
         System.out.println();
-        System.out.println("What would you like to do?");
+        System.out.println(bold + "What would you like to do?" + reset);
         System.out.println("========================= ©MM");
-        System.out.println(italic + "1: open info menu");
-        System.out.println("2: check stats");
-        System.out.println("3: equip/unequip items");
-        System.out.println("4: fight");
-        System.out.println("5: save and exit" + reset);
+        System.out.println(italic + cyan + "1:" + reset + italic + " open info menu");
+        System.out.println(cyan + "2:" + reset + italic + " check stats");
+        System.out.println(cyan + "3:" + reset + italic + " equip/unequip items");
+        System.out.println(cyan + "4:" + reset + italic + " fight");
+        System.out.println(cyan + "5:" + reset + italic + " save and exit" + reset);
         System.out.println("========================= ©MM");
     }
 
     public static void infoMenu(){
         System.out.println();
+        System.out.println(bold + "Info Menu" + reset);
         System.out.println("=============== ©MM");
-        System.out.println(italic + "1: enemy info");
-        System.out.println("2: item info" + reset);
+        System.out.println(italic + cyan + "1:" + reset + italic + " enemy info");
+        System.out.println(cyan + "2:" + reset + italic + " item info" + reset);
         System.out.println("=============== ©MM");
     }
 
-    public static void loadPlayerSaveFile(){
-
-    }
     public static void main(String[] args) {
         Scanner userInput = new Scanner(System.in);
         Player player = null;
@@ -80,7 +77,9 @@ public class Main {
                     // ArrayList<Item> equipped = new ArrayList<Item>();
 
                     player = new Player(name, health, defence, attack, level, xp, coins);
+                    System.out.println(bold + "Welcome back " + green + player.getName() + reset + bold + "!" + reset);
                 }
+                fileInput.close();
             }
             else{
                 System.out.println("Welcome to Wen Ymar Elad! What is your name?");
@@ -94,9 +93,12 @@ public class Main {
                     int floor = Integer.parseInt(fileInput.nextLine());
                     Floor.floorLevel = floor-1;
                 }
+                fileInput.close();
+
                 assert player != null;
                 mainMenu();
                 int choice = Integer.parseInt(userInput.nextLine());
+
                 while (choice != 7){
                     switch (choice) {
                         case 1 -> {
@@ -128,7 +130,7 @@ public class Main {
                         }
                         case 4 -> {
                             // access shop
-                            System.out.println("Would you like to buy or sell an item? (B/S)");
+                            System.out.println(bold + "Would you like to buy or sell? " + cyan + "(B/S)" + reset);
                             String action = userInput.nextLine();
                             if (action.equals("B")) {
                                 Shop.shopMenu();
@@ -137,6 +139,7 @@ public class Main {
                                 mainMenu();
                                 choice = Integer.parseInt(userInput.nextLine());
                             } else {
+                                player.printInventory();
                                 if (player.getInventory().size() == 0) {
                                     System.out.println("You don't have anything you can sell");
                                 } else {
