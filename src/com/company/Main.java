@@ -8,6 +8,13 @@ import java.util.*;
 // check whether items actually affect my stats
 // do save file stuff
 
+// GAMEPLAY
+// make dungeons with only one type of enemy and 3 difficulties
+// each enemy drop their own things and # of coins
+// instead of dropping weapons, drop items
+// buy weapons, and use items to level up weapons
+//
+
 public class Main {
 
     public static final String reset = "\u001B[0m";
@@ -32,7 +39,8 @@ public class Main {
         System.out.println(cyan + "4:" + reset + italic + " access shop");
         System.out.println(cyan + "5:" + reset + italic + " equip/unequip items");
         System.out.println(cyan + "6:" + reset + italic + " enter floor " + (Floor.floorLevel+1));
-        System.out.println(cyan + "7:" + reset + italic + " save and exit" + reset);
+        System.out.println(cyan + "7:" + reset + italic + " enter a dungeon" + reset);
+        System.out.println(cyan + "8:" + reset + italic + " save and exit" + reset);
         System.out.println("========================= ©MM");
     }
 
@@ -98,8 +106,9 @@ public class Main {
                 assert player != null;
                 mainMenu();
                 int choice = Integer.parseInt(userInput.nextLine());
+                Floor currentFloor = null;
 
-                while (choice != 7){
+                while (choice != 8){
                     switch (choice) {
                         case 1 -> {
                             // info about enemies and items
@@ -158,7 +167,7 @@ public class Main {
                         }
                         case 6 -> {
                             // fight stuff
-                            Floor currentFloor = new Floor(player);
+                            currentFloor = new Floor(player);
                             while (!currentFloor.getAllEnemiesDead()) {
                                 fightMenu();
                                 choice = Integer.parseInt(userInput.nextLine());
@@ -183,6 +192,43 @@ public class Main {
                             }
                             currentFloor.floorCleared(player);
                             fightMenu();
+                            choice = Integer.parseInt(userInput.nextLine());
+                        }
+                        case 7 -> {
+                            //Floor currentFloor = new Floor(player);
+                            System.out.println("What dungeon do you want to enter?");
+                            System.out.println("1: Enemy dungeon");
+                            System.out.println("2: Vampire dungeon");
+                            System.out.println("3: Golem dungeon");
+                            int enemyType = Integer.parseInt(userInput.nextLine());
+                            System.out.println("What difficulty do you want to enter?");
+                            System.out.println("1, 2, 3");
+                            int difficulty = Integer.parseInt(userInput.nextLine());
+                            Dungeon dungeon = new Dungeon(player, enemyType, difficulty);
+                            while (!dungeon.getAllEnemiesDead()){
+                                fightMenu();
+                                choice = Integer.parseInt(userInput.nextLine());
+                                switch (choice) {
+                                    case 1 ->
+                                        // info about enemies and items
+                                            infoMenu();
+                                    case 2 ->
+                                        // check stats
+                                            player.stats();
+                                    case 3 ->
+                                        // item stuff
+                                            player.inventoryMenu();
+                                    case 4 -> {
+                                        //fight stuff
+                                        player.battle(dungeon, currentFloor);
+                                        dungeon.fightUpdate(player);
+                                    }
+                                    default ->
+                                            System.out.println("Sorry, that is not a recognized command. Please try again");
+                                }
+                            }
+                            dungeon.dungeonCleared(player);
+                            mainMenu();
                             choice = Integer.parseInt(userInput.nextLine());
                         }
                         default ->

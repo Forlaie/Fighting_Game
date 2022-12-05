@@ -16,4 +16,24 @@ public class Vampire extends Enemy{
             died(player, floor);
         }
     }
+
+    public void battle(Player player, Dungeon dungeon){
+        health -= player.getAttack();
+        System.out.println("You have dealt " + player.getAttack() + " damage");
+        int suckedBlood = (int) (player.getHealth()*0.05);
+        health += suckedBlood;
+        System.out.println("Vampire sucked " + suckedBlood + " hp from you");
+        player.setHealth(player.getHealth() - suckedBlood);
+        if (health <= 0){
+            died(player, dungeon);
+        }
+    }
+
+    public void died(Player player, Dungeon dungeon){
+        System.out.println(name + " has died");
+        Item item = new Item("Vampire material", "vampires drop this");
+        player.defeatedMonster(item);
+        System.out.println(name + " dropped " + item.getName());
+        dungeon.addDeadEnemy(this);
+    }
 }

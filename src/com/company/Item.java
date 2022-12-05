@@ -31,9 +31,9 @@ public class Item {
                     Having a good grip on your weapon can be the deciding factor between life and death
                     +3 def, +3 atk
                     """),
-            // new Item("health potion", 5, 0, 0)
-            // get rid of from inventory when used
-            // other buff potions last for one floor
+            new Item("Enemy material", "enemies drop this"),
+            new Item("Vampire material", "vampires drop this"),
+            new Item("Golem material", "golems drop this"),
             new Item("Dragon Sword", 10, 10, 30, 50, """
                     A sword that holds the power of a dragon, it gives off an oppressive aura that affects all other enemies below it
                     +10 hp, +10 def, +30 atk
@@ -61,7 +61,14 @@ public class Item {
     }
 
     public static Item generateRandomDrop(){
-        int index = (int) (Math.random()*(drops.length-4));
+        int getRandomDrop = (int) (Math.random()*101)+1;
+        int index;
+        if (getRandomDrop >= 90){
+            index = (int) (Math.random() * 4);
+        }
+        else{
+            index = (int) (Math.random() * (4)) + 4;
+        }
         return drops[index];
     }
 
@@ -71,6 +78,11 @@ public class Item {
         this.defence = defence;
         this.attack = attack;
         this.cost = cost;
+        this.description = description;
+    }
+
+    public Item(String name, String description){
+        this.name = name;
         this.description = description;
     }
 

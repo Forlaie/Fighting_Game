@@ -1,7 +1,6 @@
 package com.company;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Player {
@@ -85,13 +84,13 @@ public class Player {
     }
 
     public void defeatedMonster(Item item){
-        System.out.println("Gained 10 xp!");
-        xp += 10;
+        System.out.println("Gained " + (10+Floor.floorLevel) + " xp!");
+        xp += 10+Floor.floorLevel;
         if (xp >= level*10){
             levelUp();
         }
         inventory.add(item);
-        coins += 10;
+        coins += 10+Floor.floorLevel;
     }
 
     public void equipItem(Item item){
@@ -151,6 +150,27 @@ public class Player {
         }
     }
 
+    public void battle(Dungeon dungeon, Floor floor) throws FileNotFoundException {
+        System.out.println();
+        System.out.println(bold + "Enemy turn" + reset);
+        ArrayList<Enemy> enemies = dungeon.getEnemies();
+        for (Enemy enemy : enemies){
+            health -= enemy.getAttack();
+            System.out.println(enemy.getName() + " has dealt " + enemy.getAttack() + " damage");
+        }
+        if (health <= 0){
+            died(this, floor);
+        }
+        else{
+            System.out.println(bold + "Your turn" + reset);
+            for (Enemy enemy : enemies){
+                enemy.battle(this, dungeon);
+            }
+            dungeon.updateEnemies();
+        }
+    }
+
+    // fix this checkpoint thing
     public void died(Player player, Floor floor) throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
         System.out.println(bold + "You have died! Restart from previous floor? (Y/N)" + reset);
