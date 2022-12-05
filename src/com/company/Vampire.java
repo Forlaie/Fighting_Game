@@ -31,7 +31,7 @@ public class Vampire extends Enemy{
 
     public void died(Player player, Dungeon dungeon){
         System.out.println(name + " has died");
-        Item item = new Item("Vampire material", "vampires drop this");
+        Item item = new Item("Vampire material", 1, "vampires drop this");
         player.defeatedMonster(item);
         System.out.println(name + " dropped " + item.getName());
         dungeon.addDeadEnemy(this);

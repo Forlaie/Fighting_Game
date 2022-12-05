@@ -95,7 +95,7 @@ public class Enemy {
 
     public void died(Player player, Dungeon dungeon){
         System.out.println(name + " has died");
-        Item item = new Item("Enemy material", "enemies drop this");
+        Item item = new Item("Enemy material", 1, "enemies drop this");
         player.defeatedMonster(item);
         System.out.println(name + " dropped " + item.getName());
         dungeon.addDeadEnemy(this);

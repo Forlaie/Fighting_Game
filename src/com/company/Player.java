@@ -2,6 +2,7 @@ package com.company;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+import java.util.HashMap;
 
 public class Player {
     public static final String reset = "\u001B[0m";
@@ -36,7 +37,8 @@ public class Player {
                     +10 hp, +20 def, +5 atk
                     """)
     };
-    private ArrayList<Item> inventory = new ArrayList<Item>();
+    HashMap<String, Integer> materials = new HashMap<String, Integer>();
+
     private boolean isFighting;
 
     public Player(String name){
@@ -48,6 +50,9 @@ public class Player {
         xp = 0;
         isFighting = false;
         coins = 0;
+        materials.put("Enemy material", 0);
+        materials.put("Vampire material", 0);
+        materials.put("Golem material", 0);
     }
 
     public Player(String name, int health, int defence, int attack, int level, int xp, int coins){
@@ -59,6 +64,11 @@ public class Player {
         this.xp = xp;
         this.isFighting = false;
         this.coins = coins;
+
+        //temp
+        materials.put("Enemy material", 0);
+        materials.put("Vampire material", 0);
+        materials.put("Golem material", 0);
     }
 
     public void changeName(String name){
@@ -78,12 +88,12 @@ public class Player {
     public int getHealth(){
         return health;
     }
-    public ArrayList<Item> getInventory(){
-        return inventory;
+    public HashMap<String, Integer> getInventory(){
+        return materials;
     }
 
     public void printInventory(){
-        System.out.println("Inventory: " + inventory);
+        System.out.println("Inventory: " + materials);
     }
 
     public void levelUp(){
@@ -102,7 +112,7 @@ public class Player {
         if (xp >= level*10){
             levelUp();
         }
-        inventory.add(item);
+        materials.put(item.getName(), materials.get(item.getName())+1);
         coins += 10+Floor.floorLevel;
     }
 
@@ -111,7 +121,7 @@ public class Player {
 //        health += item.getHealth();
 //        defence += item.getDefence();
 //        attack += item.getAttack();
-//        inventory.remove(item);
+//        materials.remove(item);
 //    }
 
 //    public void unequipItem(Item item){
@@ -119,7 +129,7 @@ public class Player {
 //        health -= item.getHealth();
 //        defence -= item.getDefence();
 //        attack -= item.getAttack();
-//        inventory.add(item);
+//        materials.add(item);
 //    }
 
     public void purchaseItem(Item item){
@@ -129,18 +139,18 @@ public class Player {
         else{
             System.out.println("Successfully purchased " + item.getName() + "!");
             coins -= item.getCost();
-            inventory.add(item);
+            materials.put(item.getName(), materials.get(item.getName())+1);
         }
     }
 
     public void sellItem(Item item){
         System.out.println("Successfully sold " + item.getName() + "!");
         coins += item.getCost();
-        inventory.remove(item);
+        materials.remove(item);
     }
 
     public void removeItem(Item item){
-        inventory.remove(item);
+        materials.remove(item);
     }
 
     public void battle(Floor floor) throws FileNotFoundException {
@@ -202,7 +212,7 @@ public class Player {
                         int xp = Integer.parseInt(fileInput.nextLine());
                         int coins = Integer.parseInt(fileInput.nextLine());
                         // figure out how to get the items back...
-                        // ArrayList<Item> inventory = new ArrayList<Item>();
+                        // ArrayList<Item> materials = new ArrayList<Item>();
                         // ArrayList<Item> equipped = new ArrayList<Item>();
 
                         player = new Player(name, health, defence, attack, level, xp, coins);
@@ -253,27 +263,29 @@ public class Player {
             System.out.println(item);
         }
         System.out.println();
-        System.out.println(bold + "Inventory" + reset);
-        for (Item item : inventory){
-            System.out.println(item);
+        System.out.println(bold + "Materials" + reset);
+        for (Map.Entry<String, Integer> entry : materials.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            System.out.println(key + ": " + value);
         }
     }
 
 //    public void inventoryMenu(){
 //        System.out.println();
 //        System.out.println("Equipped: " + equipped);
-//        System.out.println("Inventory: " + inventory);
+//        System.out.println("Inventory: " + materials);
 //        Scanner input = new Scanner(System.in);
 //        System.out.println("Do you want to equip or unequip? (E/U)");
 //        String choice = input.nextLine();
 //        if (choice.equals("E")){
-//            if (inventory.size() == 0){
+//            if (materials.size() == 0){
 //                System.out.println("You don't have any items to equip");
 //            }
 //            else{
-//                System.out.println("Input the index of the item you want to equip (1-" + inventory.size() + ")");
+//                System.out.println("Input the index of the item you want to equip (1-" + materials.size() + ")");
 //                int index = Integer.parseInt(input.nextLine());
-//                equipItem(inventory.get(index-1));
+//                equipItem(materials.get(index-1));
 //            }
 //        }
 //        else{
@@ -312,9 +324,9 @@ public class Player {
         System.out.println("3: armour");
         int itemChoice = Integer.parseInt(input.nextLine());
         switch (itemChoice){
-            case 1 -> inventory.get(0).upgradeItem(this);
-            case 2 -> inventory.get(1).upgradeItem(this);
-            case 3 -> inventory.get(2).upgradeItem(this);
+            case 1 -> equipped[0].upgradeItem(this);
+            case 2 -> equipped[1].upgradeItem(this);
+            case 3 -> equipped[2].upgradeItem(this);
         }
     }
 }

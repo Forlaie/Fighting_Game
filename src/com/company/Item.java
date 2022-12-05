@@ -29,9 +29,15 @@ public class Item {
                     Proper armour keeps your vitals safe
                     +10 hp, +20 def, +5 atk
                     """),
-            new Item("Enemy material", "enemies drop this"),
-            new Item("Vampire material", "vampires drop this"),
-            new Item("Golem material", "golems drop this"),
+            new Item("Enemy material", 1, """
+                    Enemies drop this
+                    """),
+            new Item("Vampire material", 1, """
+                    Vampires drop this
+                    """),
+            new Item("Golem material", 1, """
+                    Golems drop this
+                    """),
             new Item("Dragon Sword", 10, 10, 30, 50, """
                     A sword that holds the power of a dragon, it gives off an oppressive aura that affects all other enemies below it
                     +10 hp, +10 def, +30 atk
@@ -53,7 +59,7 @@ public class Item {
     public static void itemInfo(){
         System.out.println();
         for (Item item : drops){
-            System.out.println(item.name);
+            System.out.println(bold + item.name + reset);
             System.out.println(italic + item.description + reset);
         }
     }
@@ -79,8 +85,9 @@ public class Item {
         this.description = description;
     }
 
-    public Item(String name, String description){
+    public Item(String name, int cost, String description){
         this.name = name;
+        this.cost = cost;
         this.description = description;
     }
 

@@ -13,7 +13,6 @@ import java.util.*;
 // each enemy drop their own things and # of coins
 // instead of dropping weapons, drop items
 // buy weapons, and use items to level up weapons
-//
 
 public class Main {
 
@@ -141,25 +140,26 @@ public class Main {
                         }
                         case 4 -> {
                             // access shop
-                            System.out.println(bold + "Would you like to buy or sell? " + cyan + "(B/S)" + reset);
-                            String action = userInput.nextLine();
-                            if (action.equals("B")) {
-                                Shop.shopMenu();
-                                int index = Integer.parseInt(userInput.nextLine());
-                                player.purchaseItem(Item.drops[index - 1]);
-                                mainMenu();
-                                choice = Integer.parseInt(userInput.nextLine());
-                            } else {
-                                player.printInventory();
-                                if (player.getInventory().size() == 0) {
-                                    System.out.println("You don't have anything you can sell");
-                                } else {
-                                    int index = Integer.parseInt(userInput.nextLine());
-                                    player.sellItem(player.getInventory().get(index));
-                                    mainMenu();
-                                    choice = Integer.parseInt(userInput.nextLine());
-                                }
-                            }
+//                            System.out.println(bold + "Would you like to buy or sell? " + cyan + "(B/S)" + reset);
+//                            String action = userInput.nextLine();
+//                            if (action.equals("B")) {
+//                                Shop.shopMenu();
+//                                int index = Integer.parseInt(userInput.nextLine());
+//                                player.purchaseItem(Item.drops[index - 1]);
+//                                mainMenu();
+//                                choice = Integer.parseInt(userInput.nextLine());
+//                            }
+//                            else {
+//                                player.printInventory();
+//                                if (player.getInventory().size() == 0) {
+//                                    System.out.println("You don't have anything you can sell");
+//                                } else {
+//                                    int index = Integer.parseInt(userInput.nextLine());
+//                                    player.sellItem(player.getInventory().get(index));
+//                                    mainMenu();
+//                                    choice = Integer.parseInt(userInput.nextLine());
+//                                }
+//                            }
                         }
                         case 5 ->{
                             // check inventory stuff

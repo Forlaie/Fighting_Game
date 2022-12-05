@@ -28,7 +28,7 @@ public class Golem extends Enemy{
 
     public void died(Player player, Dungeon dungeon){
         System.out.println(name + " has died");
-        Item item = new Item("Golem material", "golems drop this");
+        Item item = new Item("Golem material", 1, "golems drop this");
         player.defeatedMonster(item);
         System.out.println(name + " dropped " + item.getName());
         dungeon.addDeadEnemy(this);
