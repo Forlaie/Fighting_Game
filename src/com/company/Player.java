@@ -22,8 +22,21 @@ public class Player {
     private int level;
     private int xp;
     private int coins;
+    public Item[] equipped = {
+            new Item("Sword", 0, 0, 10, 10, """
+                    The sword is a sturdy and reliable weapon for any warrior
+                    +10 atk
+                    """),
+            new Item("Shield", 5, 10, 0, 10, """
+                    The shield is an essential for any warrior to keep themselves safe and protect what they need to protect
+                    +5 hp, +10 def
+                    """),
+            new Item("Armour", 20, 5, 0, 30, """
+                    Proper armour keeps your vitals safe
+                    +10 hp, +20 def, +5 atk
+                    """)
+    };
     private ArrayList<Item> inventory = new ArrayList<Item>();
-    private ArrayList<Item> equipped = new ArrayList<Item>();
     private boolean isFighting;
 
     public Player(String name){
@@ -93,21 +106,21 @@ public class Player {
         coins += 10+Floor.floorLevel;
     }
 
-    public void equipItem(Item item){
-        equipped.add(item);
-        health += item.getHealth();
-        defence += item.getDefence();
-        attack += item.getAttack();
-        inventory.remove(item);
-    }
+//    public void equipItem(Item item){
+//        equipped.add(item);
+//        health += item.getHealth();
+//        defence += item.getDefence();
+//        attack += item.getAttack();
+//        inventory.remove(item);
+//    }
 
-    public void unequipItem(Item item){
-        equipped.remove(item);
-        health -= item.getHealth();
-        defence -= item.getDefence();
-        attack -= item.getAttack();
-        inventory.add(item);
-    }
+//    public void unequipItem(Item item){
+//        equipped.remove(item);
+//        health -= item.getHealth();
+//        defence -= item.getDefence();
+//        attack -= item.getAttack();
+//        inventory.add(item);
+//    }
 
     public void purchaseItem(Item item){
         if (coins < item.getCost()){
@@ -235,34 +248,73 @@ public class Player {
 
     public void inventoryMenu(){
         System.out.println();
-        System.out.println("Equipped: " + equipped);
-        System.out.println("Inventory: " + inventory);
-        Scanner input = new Scanner(System.in);
-        System.out.println("Do you want to equip or unequip? (E/U)");
-        String choice = input.nextLine();
-        if (choice.equals("E")){
-            if (inventory.size() == 0){
-                System.out.println("You don't have any items to equip");
-            }
-            else{
-                System.out.println("Input the index of the item you want to equip (1-" + inventory.size() + ")");
-                int index = Integer.parseInt(input.nextLine());
-                equipItem(inventory.get(index-1));
-            }
+        System.out.println(bold + "Equipped" + reset);
+        for (Item item : equipped){
+            System.out.println(item);
         }
-        else{
-            if (equipped.size() == 0){
-                System.out.println("You don't have any items to unequip");
-            }
-            else{
-                System.out.println("Input the index of the item you want to unequip (1-" + equipped.size() + ")");
-                int index = Integer.parseInt(input.nextLine());
-                unequipItem(equipped.get(index-1));
-            }
+        System.out.println();
+        System.out.println(bold + "Inventory" + reset);
+        for (Item item : inventory){
+            System.out.println(item);
         }
     }
 
+//    public void inventoryMenu(){
+//        System.out.println();
+//        System.out.println("Equipped: " + equipped);
+//        System.out.println("Inventory: " + inventory);
+//        Scanner input = new Scanner(System.in);
+//        System.out.println("Do you want to equip or unequip? (E/U)");
+//        String choice = input.nextLine();
+//        if (choice.equals("E")){
+//            if (inventory.size() == 0){
+//                System.out.println("You don't have any items to equip");
+//            }
+//            else{
+//                System.out.println("Input the index of the item you want to equip (1-" + inventory.size() + ")");
+//                int index = Integer.parseInt(input.nextLine());
+//                equipItem(inventory.get(index-1));
+//            }
+//        }
+//        else{
+//            if (equipped.size() == 0){
+//                System.out.println("You don't have any items to unequip");
+//            }
+//            else{
+//                System.out.println("Input the index of the item you want to unequip (1-" + equipped.size() + ")");
+//                int index = Integer.parseInt(input.nextLine());
+//                unequipItem(equipped.get(index-1));
+//            }
+//        }
+//    }
+
     public String getName() {
         return name;
+    }
+
+    public int getDefence() {
+        return defence;
+    }
+
+    public void setDefence(int defence){
+        this.defence = defence;
+    }
+
+    public void setAttack(int attack){
+        this.attack = attack;
+    }
+
+    public void upgradeItem(){
+        Scanner input = new Scanner(System.in);
+        System.out.println("What do you want to level up?");
+        System.out.println("1: sword");
+        System.out.println("2: shield");
+        System.out.println("3: armour");
+        int itemChoice = Integer.parseInt(input.nextLine());
+        switch (itemChoice){
+            case 1 -> inventory.get(0).upgradeItem(this);
+            case 2 -> inventory.get(1).upgradeItem(this);
+            case 3 -> inventory.get(2).upgradeItem(this);
+        }
     }
 }

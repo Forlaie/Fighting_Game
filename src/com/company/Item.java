@@ -4,6 +4,8 @@ package com.company;
 // can merge armours to make them stronger/better
 // MAKE POTIONS
 
+import java.util.Scanner;
+
 public class Item {
     public static final String reset = "\u001B[0m";
     public static final String italic = "\033[3m";
@@ -15,21 +17,17 @@ public class Item {
     private int cost;
     private String description;
     public static Item[] drops = {
-            new Item("Sword", Floor.floorLevel, Floor.floorLevel, 10+Floor.floorLevel, 10+Floor.floorLevel, """
+            new Item("Sword", 0, 0, 10, 10, """
                     The sword is a sturdy and reliable weapon for any warrior
                     +10 atk
                     """),
-            new Item("Shield", Floor.floorLevel, 10+Floor.floorLevel, Floor.floorLevel, 10+Floor.floorLevel, """
+            new Item("Shield", 5, 10, 0, 10, """
                     The shield is an essential for any warrior to keep themselves safe and protect what they need to protect
-                    +10 def
+                    +5 hp, +10 def
                     """),
-            new Item("Shoes", Floor.floorLevel, 3+Floor.floorLevel, 3+Floor.floorLevel, 5+Floor.floorLevel, """
-                    Proper footwear can help you dodge and attack faster
-                    +10 def, +3 atk
-                    """),
-            new Item("Gloves", Floor.floorLevel, 3+Floor.floorLevel, 3+Floor.floorLevel, 5+Floor.floorLevel, """
-                    Having a good grip on your weapon can be the deciding factor between life and death
-                    +3 def, +3 atk
+            new Item("Armour", 20, 5, 0, 30, """
+                    Proper armour keeps your vitals safe
+                    +10 hp, +20 def, +5 atk
                     """),
             new Item("Enemy material", "enemies drop this"),
             new Item("Vampire material", "vampires drop this"),
@@ -55,7 +53,7 @@ public class Item {
     public static void itemInfo(){
         System.out.println();
         for (Item item : drops){
-            System.out.println(bold + item.name + reset);
+            System.out.println(item.name);
             System.out.println(italic + item.description + reset);
         }
     }
@@ -64,10 +62,10 @@ public class Item {
         int getRandomDrop = (int) (Math.random()*101)+1;
         int index;
         if (getRandomDrop >= 90){
-            index = (int) (Math.random() * 4);
+            index = (int) (Math.random() * 3);
         }
         else{
-            index = (int) (Math.random() * (4)) + 4;
+            index = (int) (Math.random() * (3)) + 3;
         }
         return drops[index];
     }
@@ -94,6 +92,66 @@ public class Item {
 //        return description;
 //    }
 
+    public void upgradeItem(Player player){
+        Scanner input = new Scanner(System.in);
+        switch (this.name){
+            case "Sword" -> {
+                System.out.println("Do you want to use vampire materials or other swords? (V/S)");
+                String choice = input.nextLine();
+                switch (choice){
+                    case "V" -> {
+                        System.out.println("How many vampire materials will you use? (Avaliable: #)");
+                        int use = Integer.parseInt(input.nextLine());
+                        upgradeAttack(use, player);
+                    }
+                    case "S" -> {
+                        System.out.println("How many swords will you use? (Avaliable: #)");
+                        int use = Integer.parseInt(input.nextLine());
+                        upgradeAttack(10*use, player);
+                        upgradeDefence(use, player);
+                        upgradeHealth(use, player);
+                    }
+                }
+            }
+            case "Shield" -> {
+                System.out.println("Do you want to use golem materials or other shields? (G/S)");
+                String choice = input.nextLine();
+                switch (choice){
+                    case "G" -> {
+                        System.out.println("How many golem materials will you use? (Avaliable: #)");
+                        int use = Integer.parseInt(input.nextLine());
+                        upgradeDefence(use, player);
+                    }
+                    case "S" -> {
+                        System.out.println("How many shields will you use? (Avaliable: #)");
+                        int use = Integer.parseInt(input.nextLine());
+                        upgradeAttack(use, player);
+                        upgradeDefence(10*use, player);
+                        upgradeHealth(5*use, player);
+                    }
+                }
+            }
+            case "Armour" -> {
+                System.out.println("Do you want to use enemy materials or other armours? (E/A)");
+                String choice = input.nextLine();
+                switch (choice) {
+                    case "E" -> {
+                        System.out.println("How many enemy materials will you use? (Avaliable: #)");
+                        int use = Integer.parseInt(input.nextLine());
+                        upgradeHealth(use, player);
+                    }
+                    case "A" -> {
+                        System.out.println("How many armours will you use? (Avaliable: #)");
+                        int use = Integer.parseInt(input.nextLine());
+                        upgradeAttack(use, player);
+                        upgradeDefence(5*use, player);
+                        upgradeHealth(20*use, player);
+                    }
+                }
+            }
+        }
+    }
+
     public int getHealth(){
         return health;
     }
@@ -109,7 +167,22 @@ public class Item {
         return cost;
     }
 
+    public void upgradeHealth(int increase, Player player){
+        health += increase;
+        player.setHealth(player.getHealth() + increase);
+    }
+
+    public void upgradeDefence(int increase, Player player){
+        defence += increase;
+        player.setDefence(player.getDefence() + increase);
+    }
+
+    public void upgradeAttack(int increase, Player player){
+        attack += increase;
+        player.setAttack(player.getAttack() + increase);
+    }
+
     public String toString(){
-        return bold + name + ":" + reset + " +" + health + " hp, +" + defence + " def, +" + attack + " atk, " + cost + " coins";
+        return name + ":" + " +" + health + " hp, +" + defence + " def, +" + attack + " atk, " + cost + " coins";
     }
 }

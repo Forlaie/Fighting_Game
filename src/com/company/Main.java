@@ -37,10 +37,11 @@ public class Main {
         System.out.println(cyan + "2:" + reset + italic + " check profile");
         System.out.println(cyan + "3:" + reset + italic + " change username");
         System.out.println(cyan + "4:" + reset + italic + " access shop");
-        System.out.println(cyan + "5:" + reset + italic + " equip/unequip items");
+        System.out.println(cyan + "5:" + reset + italic + " check inventory");
         System.out.println(cyan + "6:" + reset + italic + " enter floor " + (Floor.floorLevel+1));
         System.out.println(cyan + "7:" + reset + italic + " enter a dungeon" + reset);
-        System.out.println(cyan + "8:" + reset + italic + " save and exit" + reset);
+        System.out.println(cyan + "8:" + reset + italic + " level up items" + reset);
+        System.out.println(cyan + "9:" + reset + italic + " save and exit" + reset);
         System.out.println("========================= ©MM");
     }
 
@@ -50,9 +51,10 @@ public class Main {
         System.out.println("========================= ©MM");
         System.out.println(italic + cyan + "1:" + reset + italic + " open info menu");
         System.out.println(cyan + "2:" + reset + italic + " check stats");
-        System.out.println(cyan + "3:" + reset + italic + " equip/unequip items");
+        System.out.println(cyan + "3:" + reset + italic + " check inventory");
         System.out.println(cyan + "4:" + reset + italic + " fight");
-        System.out.println(cyan + "5:" + reset + italic + " save and exit" + reset);
+        System.out.println(cyan + "5:" + reset + italic + " level up items" + reset);
+        System.out.println(cyan + "6:" + reset + italic + " save and exit" + reset);
         System.out.println("========================= ©MM");
     }
 
@@ -108,7 +110,7 @@ public class Main {
                 int choice = Integer.parseInt(userInput.nextLine());
                 Floor currentFloor = null;
 
-                while (choice != 8){
+                while (choice != 9){
                     switch (choice) {
                         case 1 -> {
                             // info about enemies and items
@@ -159,8 +161,8 @@ public class Main {
                                 }
                             }
                         }
-                        case 5 -> {
-                            // inventory stuff
+                        case 5 ->{
+                            // check inventory stuff
                             player.inventoryMenu();
                             mainMenu();
                             choice = Integer.parseInt(userInput.nextLine());
@@ -179,8 +181,9 @@ public class Main {
                                         // check stats
                                             player.stats();
                                     case 3 ->
-                                        // item stuff
-                                            player.inventoryMenu();
+                                        player.inventoryMenu();
+                                        // check inventory
+                                            //player.inventoryMenu();
                                     case 4 -> {
                                         //fight stuff
                                         player.battle(currentFloor);
@@ -228,6 +231,16 @@ public class Main {
                                 }
                             }
                             dungeon.dungeonCleared(player);
+                            mainMenu();
+                            choice = Integer.parseInt(userInput.nextLine());
+                        }
+                        case 8 -> {
+                            // do leveling up stuff
+                            player.upgradeItem();
+                            // sword
+
+                            // shield
+                            // armour
                             mainMenu();
                             choice = Integer.parseInt(userInput.nextLine());
                         }
