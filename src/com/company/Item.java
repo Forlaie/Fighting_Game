@@ -10,19 +10,19 @@ public class Item {
     public static final String reset = "\u001B[0m";
     public static final String italic = "\033[3m";
     public static final String bold = "\u001B[1m";
-    private String name;
-    private int health;
-    private int defence;
-    private int attack;
-    private int cost;
-    private String description;
+    protected String name;
+    protected int health;
+    protected int defence;
+    protected int attack;
+    protected int cost;
+    protected String description;
     public static Item[] weaponDrops = {
             new Item("Sword", 0, 0, 10, 10, """
                     The sword is a sturdy and reliable weapon for any warrior
                     +10 atk
                     """),
             new Item("Shield", 5, 10, 0, 10, """
-                    The shield is an essential for any warrior to keep themselves safe and protect what they need to protect
+                    The shield is an essential for any warrior to protect themselves and others
                     +5 hp, +10 def
                     """),
             new Item("Armour", 20, 5, 0, 30, """
@@ -41,24 +41,24 @@ public class Item {
                     Golems drop this
                     """)
     };
-    public static Item[] dragonDrops = {
-            new Item("Dragon Sword", 10, 10, 30, 50, """
-                    A sword that holds the power of a dragon, it gives off an oppressive aura that affects all other enemies below it
-                    +10 hp, +10 def, +30 atk
-                    """),
-            new Item("Dragon Shield", 20, 30, 10, 50, """
-                    A shield made from the indestructible scales of a dragon, it stays strong in the face of any attack
-                    +20 hp, +30 def, +10 atk
-                    """),
-            new Item("Dragon Shoes", 10, 15, 10, 40, """
-                    Shoes infused with the swiftness of a dragon's flight, it makes those who wear it feel as light and nimble as a feather
-                    +10 hp, +15 def, +10 atk
-                    """),
-            new Item("Dragon Gloves", 10, 15, 10, 45, """
-                    Gloves made from the claws of a dragon, it gives those who wear it a grip strength that rivals a dragon
-                    +10 hp, +15 def, +10 atk
-                    """)
-    };
+//    public static Item[] dragonDrops = {
+//            new Item("Dragon Sword", 10, 10, 30, 50, """
+//                    A sword that holds the power of a dragon, it gives off an oppressive aura that affects all other enemies below it
+//                    +10 hp, +10 def, +30 atk
+//                    """),
+//            new Item("Dragon Shield", 20, 30, 10, 50, """
+//                    A shield made from the indestructible scales of a dragon, it stays strong in the face of any attack
+//                    +20 hp, +30 def, +10 atk
+//                    """),
+//            new Item("Dragon Shoes", 10, 15, 10, 40, """
+//                    Shoes infused with the swiftness of a dragon's flight, it makes those who wear it feel as light and nimble as a feather
+//                    +10 hp, +15 def, +10 atk
+//                    """),
+//            new Item("Dragon Gloves", 10, 15, 10, 45, """
+//                    Gloves made from the claws of a dragon, it gives those who wear it a grip strength that rivals a dragon
+//                    +10 hp, +15 def, +10 atk
+//                    """)
+//    };
 
     public static void itemInfo(){
         System.out.println();
@@ -70,28 +70,18 @@ public class Item {
             System.out.println(bold + item.name + reset);
             System.out.println(italic + item.description + reset);
         }
-        for (Item item : dragonDrops){
-            System.out.println(bold + item.name + reset);
-            System.out.println(italic + item.description + reset);
-        }
     }
 
-    public static Item generateRandomDrop(boolean isDragon){
+    public static Item generateRandomDrop(){
         int index;
-        if (isDragon){
-            index = (int) (Math.random() * 4);
-            return dragonDrops[index];
+        int getRandomDrop = (int) (Math.random()*101)+1;
+        if (getRandomDrop >= 90){
+            index = (int) (Math.random() * 3);
+            return weaponDrops[index];
         }
         else{
-            int getRandomDrop = (int) (Math.random()*101)+1;
-            if (getRandomDrop >= 90){
-                index = (int) (Math.random() * 3);
-                return weaponDrops[index];
-            }
-            else{
-                index = (int) (Math.random() * 3);
-                return materialDrops[index];
-            }
+            index = (int) (Math.random() * 3);
+            return materialDrops[index];
         }
     }
 

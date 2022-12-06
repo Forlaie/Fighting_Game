@@ -18,9 +18,22 @@ public class Dragon extends Enemy{
 
     public void died(Player player, Floor floor){
         System.out.println(name + " has died");
-        Item item = Item.generateRandomDrop(true);
-        player.defeatedMonster(item);
-        System.out.println(name + " dropped " + item.getName());
+        int stat = (int) (Math.random()*3);
+        int value = (int) (Math.random()*10)+1;
+        switch (stat){
+            case 0 -> {
+                System.out.println("Health stat increased by " + value + "!");
+                player.setHealth(player.getHealth()+value);
+            }
+            case 1 -> {
+                System.out.println("Defence stat increased by " + value + "!");
+                player.setDefence(player.getDefence()+value);
+            }
+            case 2 -> {
+                System.out.println("Attack stat increased by " + value + "!");
+                player.setAttack(player.getAttack()+value);
+            }
+        }
         floor.addDeadEnemy(this);
     }
 }

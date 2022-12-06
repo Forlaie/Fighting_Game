@@ -28,17 +28,18 @@ public class Player {
                     The sword is a sturdy and reliable weapon for any warrior
                     +10 atk
                     """),
-            new Item("Shield", 5, 10, 0, 10, """
+            new Item("Shield", 5, 0, 0, 10, """
                     The shield is an essential for any warrior to keep themselves safe and protect what they need to protect
                     +5 hp, +10 def
                     """),
-            new Item("Armour", 20, 5, 0, 30, """
+            new Item("Armour", 0, 20, 0, 30, """
                     Proper armour keeps your vitals safe
                     +10 hp, +20 def, +5 atk
                     """)
     };
     HashMap<String, Integer> materials = new HashMap<String, Integer>();
-    HashMap<String, Integer> potions = new HashMap<String, Integer>();
+    HashMap<String, Integer> inventory = new HashMap<String, Integer>();
+    ArrayList<Potion> potionsInUse = new ArrayList<Potion>();
 
     private boolean isFighting;
 
@@ -70,12 +71,16 @@ public class Player {
         this.coins = coins;
 
         //temp
-        materials.put("Enemy material", 0);
-        materials.put("Vampire material", 0);
-        materials.put("Golem material", 0);
-        materials.put("Sword", 0);
-        materials.put("Shield", 0);
-        materials.put("Armour", 0);
+//        materials.put("Enemy material", 0);
+//        materials.put("Vampire material", 0);
+//        materials.put("Golem material", 0);
+//        materials.put("Sword", 0);
+//        materials.put("Shield", 0);
+//        materials.put("Armour", 0);
+    }
+
+    public HashMap<String, Integer> getInventory(){
+        return inventory;
     }
 
     public int getEnemyMaterials(){
@@ -143,6 +148,35 @@ public class Player {
         coins += 10+Floor.floorLevel;
     }
 
+    public void usePotion(Potion potion){
+        switch (potion.getName()){
+            case "Health potion" -> {
+                health += potion.getHealth();
+                inventory.put("Health potion", inventory.get("Health potion")-1);
+            }
+            case "Defence potion" -> {
+                defence *= potion.getDefence();
+                potion.setInEffect(true);
+                potionsInUse.add(potion);
+                inventory.put("Defence potion", inventory.get("Defence potion")-1);
+            }
+            case "Attack potion" -> {
+                attack *= potion.getAttack();
+                potion.setInEffect(true);
+                potionsInUse.add(potion);
+                inventory.put("Attack potion", inventory.get("Attack potion")-1);
+            }
+        }
+    }
+
+    public ArrayList<Potion> getPotionsInUse(){
+        return potionsInUse;
+    }
+
+    public void clearPotionsInUse(){
+        potionsInUse.clear();
+    }
+
 //    public void equipItem(Item item){
 //        equipped.add(item);
 //        health += item.getHealth();
@@ -176,8 +210,11 @@ public class Player {
         materials.remove(item);
     }
 
-    public void removeItem(Item item){
-        materials.remove(item);
+    public void removeItem(String itemName){
+        materials.put(itemName, materials.get(itemName)-1);
+        if (materials.get(itemName) == 0){
+            materials.remove(itemName);
+        }
     }
 
     public void battle(Floor floor) throws FileNotFoundException {
@@ -291,17 +328,15 @@ public class Player {
         }
         System.out.println();
         System.out.println(bold + "Materials" + reset);
-        boolean hasSomething = false;
-        for (Map.Entry<String, Integer> entry : materials.entrySet()) {
-            String key = entry.getKey();
-            Integer value = entry.getValue();
-            if (value != 0){
-                System.out.println(key + ": " + value);
-                hasSomething = true;
-            }
-        }
-        if (!hasSomething){
+        if (materials.size() == 0){
             System.out.println(italic + "You have nothing yet..." + reset);
+        }
+        else{
+            for (Map.Entry<String, Integer> entry : materials.entrySet()) {
+                String key = entry.getKey();
+                Integer value = entry.getValue();
+                System.out.println(key + ": " + value);
+            }
         }
     }
 

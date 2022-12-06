@@ -11,7 +11,7 @@ public class Reaper extends Enemy{
 
     public void died(Player player, Floor floor){
         System.out.println(name + " has died");
-        Item item = Item.generateRandomDrop(false);
+        Item item = Item.generateRandomDrop();
         player.defeatedMonster(item);
         System.out.println(name + " dropped " + item.getName());
         floor.addDeadEnemy(this);

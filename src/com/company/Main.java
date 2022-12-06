@@ -9,13 +9,7 @@ import java.util.Scanner;
 // have final floor (10?) with only reaper? (give lore)
 
 // do this during the week
-// make shop sell potions (buff ones only last certain floor/dungeon or certain # of turns?)
-// shop has random items being sold?
-// can have other items and equip/unequip (but no upgrade cause thats hella work)
-// can't unequip the og 3 items? (what to do about dragon, maybe killing dragon give permanent stat buffs?)
-// can only have 5 items equipped or something (so only 2 extra)
-// trolls steal those or potions (that's the inventory)
-// trolls can't steal equipped items
+// killing dragon give permanent stat buffs?
 
 public class Main {
 

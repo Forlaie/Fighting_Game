@@ -51,6 +51,10 @@ public class Floor {
         System.out.println(bold + "Floor " + floorLevel + " cleared!" + reset);
         player.profile();
         player.setIsFighting(false);
+        for (Potion potion : player.getPotionsInUse()){
+            potion.setInEffect(false);
+        }
+        player.clearPotionsInUse();
     }
 
     public void fightUpdate(Player player){
