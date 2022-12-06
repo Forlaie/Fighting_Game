@@ -133,6 +133,9 @@ public class Item {
                         if (player.getCoins() < cost){
                             System.out.println("Sorry, you don't have enough coins.");
                         }
+                        else if (player.getVampireMaterials() < use){
+                            System.out.println("Sorry, you don't have that many vampire materials");
+                        }
                         else{
                             player.useVampireMaterial(use);
                             player.useCoins(cost);
@@ -147,6 +150,9 @@ public class Item {
                         int cost = use * 5;
                         if (player.getCoins() < cost){
                             System.out.println("Sorry, you don't have enough coins.");
+                        }
+                        else if (player.getSwords() < use){
+                            System.out.println("Sorry, you don't have that many swords");
                         }
                         else{
                             player.useSword(use);
@@ -171,6 +177,9 @@ public class Item {
                         if (player.getCoins() < cost){
                             System.out.println("Sorry, you don't have enough coins.");
                         }
+                        else if (player.getGolemMaterials() < use){
+                            System.out.println("Sorry, you don't have that many golem materials");
+                        }
                         else{
                             player.useGolemMaterial(use);
                             player.useCoins(cost);
@@ -185,6 +194,9 @@ public class Item {
                         int cost = use * 5;
                         if (player.getCoins() < cost){
                             System.out.println("Sorry, you don't have enough coins.");
+                        }
+                        else if (player.getShields() < use){
+                            System.out.println("Sorry, you don't have that many shields");
                         }
                         else{
                             player.useShield(use);
@@ -209,6 +221,9 @@ public class Item {
                         if (player.getCoins() < cost){
                             System.out.println("Sorry, you don't have enough coins.");
                         }
+                        else if (player.getEnemyMaterials() < use){
+                            System.out.println("Sorry, you don't have that many enemy materials");
+                        }
                         else{
                             player.useEnemyMaterial(use);
                             player.useCoins(cost);
@@ -223,6 +238,9 @@ public class Item {
                         int cost = use * 5;
                         if (player.getCoins() < cost){
                             System.out.println("Sorry, you don't have enough coins.");
+                        }
+                        else if (player.getArmours() < use){
+                            System.out.println("Sorry, you don't have that many armours");
                         }
                         else{
                             player.useArmour(use);

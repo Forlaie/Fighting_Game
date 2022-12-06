@@ -1,18 +1,21 @@
 package com.company;
-import java.io.BufferedReader;
+
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.*;
+import java.util.Scanner;
 
-// check whether items actually affect my stats
-// do save file stuff
+// do this over the weekend
+// do save file stuff (especially after you die + save and exit)
+// have final floor (10?) with only reaper? (give lore)
 
-// GAMEPLAY
-// make dungeons with only one type of enemy and 3 difficulties
-// each enemy drop their own things and # of coins
-// instead of dropping weapons, drop items
-// buy weapons, and use items to level up weapons
+// do this during the week
+// make shop sell potions (buff ones only last certain floor/dungeon or certain # of turns?)
+// shop has random items being sold?
+// can have other items and equip/unequip (but no upgrade cause thats hella work)
+// can't unequip the og 3 items? (what to do about dragon, maybe killing dragon give permanent stat buffs?)
+// can only have 5 items equipped or something (so only 2 extra)
+// trolls steal those or potions (that's the inventory)
+// trolls can't steal equipped items
 
 public class Main {
 
@@ -52,8 +55,7 @@ public class Main {
         System.out.println(cyan + "2:" + reset + italic + " check stats");
         System.out.println(cyan + "3:" + reset + italic + " check inventory");
         System.out.println(cyan + "4:" + reset + italic + " fight");
-        System.out.println(cyan + "5:" + reset + italic + " level up items" + reset);
-        System.out.println(cyan + "6:" + reset + italic + " save and exit" + reset);
+        System.out.println(cyan + "5:" + reset + italic + " save and exit" + reset);
         System.out.println("========================= ©MM");
     }
 
@@ -188,10 +190,6 @@ public class Main {
                                         player.battle(currentFloor);
                                         currentFloor.fightUpdate(player);
                                     }
-                                    case 5 -> {
-                                        // do leveling up stuff
-                                        player.upgradeItem();
-                                    }
                                     default ->
                                             System.out.println("Sorry, that is not a recognized command. Please try again");
                                 }
@@ -215,9 +213,17 @@ public class Main {
                                 fightMenu();
                                 choice = Integer.parseInt(userInput.nextLine());
                                 switch (choice) {
-                                    case 1 ->
+                                    case 1 -> {
                                         // info about enemies and items
-                                            infoMenu();
+                                        infoMenu();
+                                        int action = Integer.parseInt(userInput.nextLine());
+                                        switch (action){
+                                            case 1 ->
+                                                    Enemy.enemyInfo();
+                                            case 2 ->
+                                                    Item.itemInfo();
+                                        }
+                                    }
                                     case 2 ->
                                         // check stats
                                             player.stats();
@@ -228,10 +234,6 @@ public class Main {
                                         //fight stuff
                                         player.battle(dungeon, currentFloor);
                                         dungeon.fightUpdate(player);
-                                    }
-                                    case 5 -> {
-                                        // do leveling up stuff
-                                        player.upgradeItem();
                                     }
                                     default ->
                                             System.out.println("Sorry, that is not a recognized command. Please try again");

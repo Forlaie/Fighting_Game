@@ -361,9 +361,9 @@ public class Player {
     public void upgradeItem(){
         Scanner input = new Scanner(System.in);
         System.out.println("What do you want to level up?");
-        System.out.println("1: sword");
-        System.out.println("2: shield");
-        System.out.println("3: armour");
+        System.out.println("1: sword (uses vampire materials)");
+        System.out.println("2: shield (uses golem materials)");
+        System.out.println("3: armour (uses enemy materials)");
         int itemChoice = Integer.parseInt(input.nextLine());
         switch (itemChoice){
             case 1 -> equipped[0].upgradeItem(this);
