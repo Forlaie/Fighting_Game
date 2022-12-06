@@ -181,13 +181,16 @@ public class Main {
                                         // check stats
                                             player.stats();
                                     case 3 ->
+                                            // check inventory
                                         player.inventoryMenu();
-                                        // check inventory
-                                            //player.inventoryMenu();
                                     case 4 -> {
                                         //fight stuff
                                         player.battle(currentFloor);
                                         currentFloor.fightUpdate(player);
+                                    }
+                                    case 5 -> {
+                                        // do leveling up stuff
+                                        player.upgradeItem();
                                     }
                                     default ->
                                             System.out.println("Sorry, that is not a recognized command. Please try again");
@@ -226,6 +229,10 @@ public class Main {
                                         player.battle(dungeon, currentFloor);
                                         dungeon.fightUpdate(player);
                                     }
+                                    case 5 -> {
+                                        // do leveling up stuff
+                                        player.upgradeItem();
+                                    }
                                     default ->
                                             System.out.println("Sorry, that is not a recognized command. Please try again");
                                 }
@@ -237,10 +244,6 @@ public class Main {
                         case 8 -> {
                             // do leveling up stuff
                             player.upgradeItem();
-                            // sword
-
-                            // shield
-                            // armour
                             mainMenu();
                             choice = Integer.parseInt(userInput.nextLine());
                         }

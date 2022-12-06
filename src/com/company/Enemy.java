@@ -10,7 +10,7 @@ public class Enemy {
     public static final String reset = "\u001B[0m";
     private static Enemy[] possibleEnemies = {
             new Enemy("Enemy", 10+Floor.floorLevel, 1+Floor.floorLevel, """
-                    Enemies are people who have been corrupted by the pollution
+            Enemies are people who have been corrupted by the pollution
             """),
             new Vampire("Vampire", 15+Floor.floorLevel, 3+Floor.floorLevel, """
                     Vampires are creatures that suck your blood
@@ -35,7 +35,13 @@ public class Enemy {
     };
 
     public static Enemy generateRandomEnemy(){
-        int index = (int) (Math.random()*possibleEnemies.length);
+        int index;
+        if (Floor.floorLevel <= 5){
+            index = (int) (Math.random() * possibleEnemies.length - 1);
+        }
+        else{
+            index = (int) (Math.random() * possibleEnemies.length);
+        }
         return possibleEnemies[index];
     }
 
@@ -71,7 +77,7 @@ public class Enemy {
 
     public void battle(Player player, Floor floor){
         health -= player.getAttack();
-        System.out.println("You have dealt " + player.getAttack() + " damage");
+        System.out.println("You have dealt " + player.getAttack() + " damage to " + name);
         if (health <= 0){
             died(player, floor);
         }
@@ -79,7 +85,7 @@ public class Enemy {
 
     public void died(Player player, Floor floor){
         System.out.println(name + " has died");
-        Item item = Item.generateRandomDrop();
+        Item item = Item.generateRandomDrop(false);
         player.defeatedMonster(item);
         System.out.println(name + " dropped " + item.getName());
         floor.addDeadEnemy(this);
@@ -87,7 +93,7 @@ public class Enemy {
 
     public void battle(Player player, Dungeon dungeon){
         health -= player.getAttack();
-        System.out.println("You have dealt " + player.getAttack() + " damage");
+        System.out.println("You have dealt " + player.getAttack() + " damage to " + name);
         if (health <= 0){
             died(player, dungeon);
         }

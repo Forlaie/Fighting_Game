@@ -13,7 +13,7 @@ public class Troll extends Enemy{
 //        return item.getName();
 //    }
     public void died(Player player, Floor floor){
-        if (player.getInventory().size() != 0){
+        if (player.getMaterials().size() != 0){
             //String itemName = steal(player);
             //System.out.println(name + " steals " + itemName + " before dying");
         }

@@ -1,6 +1,4 @@
 package com.company;
-// super strong
-// drop dragon armour that you can't get anywhere else
 public class Dragon extends Enemy{
     private int defence;
 
@@ -9,14 +7,9 @@ public class Dragon extends Enemy{
         this.defence = defence;
     }
 
-    public static Item generateRandomDrop(){
-        int index = (int) (Math.random()*Item.drops.length) + 4;
-        return Item.drops[index];
-    }
-
     public void battle(Player player, Floor floor){
         int playerDamage = (int) (player.getAttack() - player.getAttack()*(defence/100.0));
-        System.out.println("You have dealt " + playerDamage + " damage");
+        System.out.println("You have dealt " + playerDamage + " damage to " + name);
         health -= playerDamage;
         if (health <= 0){
             died(player, floor);
@@ -25,7 +18,7 @@ public class Dragon extends Enemy{
 
     public void died(Player player, Floor floor){
         System.out.println(name + " has died");
-        Item item = generateRandomDrop();
+        Item item = Item.generateRandomDrop(true);
         player.defeatedMonster(item);
         System.out.println(name + " dropped " + item.getName());
         floor.addDeadEnemy(this);

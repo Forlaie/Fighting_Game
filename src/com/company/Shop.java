@@ -45,11 +45,11 @@ public class Shop {
                     +10 hp, +15 def, +10 atk
                     """)
     };
-    public static void shopMenu(){
-        System.out.println();
-        System.out.println(bold + "What would you like to purchase?" + reset);
-        for (int i = 0; i < Item.drops.length-4; i++){
-            System.out.println(bold + cyan + (i+1) + ": " + reset + inventory[i]);
-        }
-    }
+//    public static void shopMenu(){
+//        System.out.println();
+//        System.out.println(bold + "What would you like to purchase?" + reset);
+//        for (int i = 0; i < Item.drops.length-4; i++){
+//            System.out.println(bold + cyan + (i+1) + ": " + reset + inventory[i]);
+//        }
+//    }
 }

@@ -7,7 +7,7 @@ public class Vampire extends Enemy{
 
     public void battle(Player player, Floor floor){
         health -= player.getAttack();
-        System.out.println("You have dealt " + player.getAttack() + " damage");
+        System.out.println("You have dealt " + player.getAttack() + " damage to " + name);
         int suckedBlood = (int) (player.getHealth()*0.05);
         health += suckedBlood;
         System.out.println("Vampire sucked " + suckedBlood + " hp from you");
@@ -19,7 +19,7 @@ public class Vampire extends Enemy{
 
     public void battle(Player player, Dungeon dungeon){
         health -= player.getAttack();
-        System.out.println("You have dealt " + player.getAttack() + " damage");
+        System.out.println("You have dealt " + player.getAttack() + " damage to " + name);
         int suckedBlood = (int) (player.getHealth()*0.05);
         health += suckedBlood;
         System.out.println("Vampire sucked " + suckedBlood + " hp from you");

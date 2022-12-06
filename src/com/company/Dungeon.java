@@ -20,8 +20,8 @@ public class Dungeon {
     }
 
     public void enemyDungeon(Player player){
-        for (int i = 0; i < 5*difficulty; i++){
-            Enemy enemy = new Enemy("Enemy", 10, 1, """
+        for (int i = 0; i < 5+difficulty; i++){
+            Enemy enemy = new Enemy("Enemy", 10*difficulty, difficulty, """
                     Enemies are people who have been corrupted by the pollution
             """);
             enemies.add(enemy);
@@ -38,8 +38,8 @@ public class Dungeon {
     }
 
     public void vampireDungeon(Player player){
-        for (int i = 0; i < 5*difficulty; i++){
-            Vampire vampire = new Vampire("Vampire", 15, 3, """
+        for (int i = 0; i < 5+difficulty; i++){
+            Vampire vampire = new Vampire("Vampire", 15*difficulty, 3*difficulty, """
                     Vampires are creatures that suck your blood
                     They steal your hp and heal themselves
                     (scaled according to how much hp you have)
@@ -60,8 +60,8 @@ public class Dungeon {
     }
 
     public void golemDungeon(Player player){
-        for (int i = 0; i < 5*difficulty; i++){
-            Golem golem = new Golem("Golem", 20, 2, 5, """
+        for (int i = 0; i < 5+difficulty; i++){
+            Golem golem = new Golem("Golem", 20*difficulty, 2*difficulty, 5*difficulty, """
                     Golems are creatures made of rock and stone that have become sentient due to the pollution
                     They have strong defence, so attacks will deal less damage than usual
                     (scaled according to how much defence the golem has)

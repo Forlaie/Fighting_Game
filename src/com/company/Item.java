@@ -16,7 +16,7 @@ public class Item {
     private int attack;
     private int cost;
     private String description;
-    public static Item[] drops = {
+    public static Item[] weaponDrops = {
             new Item("Sword", 0, 0, 10, 10, """
                     The sword is a sturdy and reliable weapon for any warrior
                     +10 atk
@@ -28,7 +28,9 @@ public class Item {
             new Item("Armour", 20, 5, 0, 30, """
                     Proper armour keeps your vitals safe
                     +10 hp, +20 def, +5 atk
-                    """),
+                    """)
+    };
+    public static Item[] materialDrops = {
             new Item("Enemy material", 1, """
                     Enemies drop this
                     """),
@@ -37,7 +39,9 @@ public class Item {
                     """),
             new Item("Golem material", 1, """
                     Golems drop this
-                    """),
+                    """)
+    };
+    public static Item[] dragonDrops = {
             new Item("Dragon Sword", 10, 10, 30, 50, """
                     A sword that holds the power of a dragon, it gives off an oppressive aura that affects all other enemies below it
                     +10 hp, +10 def, +30 atk
@@ -58,22 +62,37 @@ public class Item {
 
     public static void itemInfo(){
         System.out.println();
-        for (Item item : drops){
+        for (Item item : materialDrops){
+            System.out.println(bold + item.name + reset);
+            System.out.println(italic + item.description + reset);
+        }
+        for (Item item : weaponDrops){
+            System.out.println(bold + item.name + reset);
+            System.out.println(italic + item.description + reset);
+        }
+        for (Item item : dragonDrops){
             System.out.println(bold + item.name + reset);
             System.out.println(italic + item.description + reset);
         }
     }
 
-    public static Item generateRandomDrop(){
-        int getRandomDrop = (int) (Math.random()*101)+1;
+    public static Item generateRandomDrop(boolean isDragon){
         int index;
-        if (getRandomDrop >= 90){
-            index = (int) (Math.random() * 3);
+        if (isDragon){
+            index = (int) (Math.random() * 4);
+            return dragonDrops[index];
         }
         else{
-            index = (int) (Math.random() * (3)) + 3;
+            int getRandomDrop = (int) (Math.random()*101)+1;
+            if (getRandomDrop >= 90){
+                index = (int) (Math.random() * 3);
+                return weaponDrops[index];
+            }
+            else{
+                index = (int) (Math.random() * 3);
+                return materialDrops[index];
+            }
         }
-        return drops[index];
     }
 
     public Item(String name, int health, int defence, int attack, int cost, String description){
@@ -107,16 +126,36 @@ public class Item {
                 String choice = input.nextLine();
                 switch (choice){
                     case "V" -> {
-                        System.out.println("How many vampire materials will you use? (Avaliable: #)");
+                        System.out.println("How many vampire materials will you use? (Vampire materials: " + player.getVampireMaterials() + ") (Coins: " + player.getCoins() + ")");
+                        System.out.println("Note: Using one vampire material costs 5 coins");
                         int use = Integer.parseInt(input.nextLine());
-                        upgradeAttack(use, player);
+                        int cost = use * 5;
+                        if (player.getCoins() < cost){
+                            System.out.println("Sorry, you don't have enough coins.");
+                        }
+                        else{
+                            player.useVampireMaterial(use);
+                            player.useCoins(cost);
+                            upgradeAttack(use, player);
+                            System.out.println("Successfully upgraded sword!");
+                        }
                     }
                     case "S" -> {
-                        System.out.println("How many swords will you use? (Avaliable: #)");
+                        System.out.println("How many swords will you use? (Swords: " + player.getSwords() + ") (Coins: " + player.getCoins() + ")");
+                        System.out.println("Note: Using one sword costs 20 coins");
                         int use = Integer.parseInt(input.nextLine());
-                        upgradeAttack(10*use, player);
-                        upgradeDefence(use, player);
-                        upgradeHealth(use, player);
+                        int cost = use * 5;
+                        if (player.getCoins() < cost){
+                            System.out.println("Sorry, you don't have enough coins.");
+                        }
+                        else{
+                            player.useSword(use);
+                            player.useCoins(cost);
+                            upgradeAttack(10*use, player);
+                            upgradeDefence(use, player);
+                            upgradeHealth(use, player);
+                            System.out.println("Successfully upgraded sword!");
+                        }
                     }
                 }
             }
@@ -125,16 +164,36 @@ public class Item {
                 String choice = input.nextLine();
                 switch (choice){
                     case "G" -> {
-                        System.out.println("How many golem materials will you use? (Avaliable: #)");
+                        System.out.println("How many golem materials will you use? (Golem materials: " + player.getGolemMaterials() + ") (Coins: " + player.getCoins() + ")");
+                        System.out.println("Note: Using one golem material costs 5 coins");
                         int use = Integer.parseInt(input.nextLine());
-                        upgradeDefence(use, player);
+                        int cost = use * 5;
+                        if (player.getCoins() < cost){
+                            System.out.println("Sorry, you don't have enough coins.");
+                        }
+                        else{
+                            player.useGolemMaterial(use);
+                            player.useCoins(cost);
+                            upgradeDefence(use, player);
+                            System.out.println("Successfully upgraded shield!");
+                        }
                     }
                     case "S" -> {
-                        System.out.println("How many shields will you use? (Avaliable: #)");
+                        System.out.println("How many shields will you use? (Shields: " + player.getShields() + ") (Coins: " + player.getCoins() + ")");
+                        System.out.println("Note: Using one shield costs 20 coins");
                         int use = Integer.parseInt(input.nextLine());
-                        upgradeAttack(use, player);
-                        upgradeDefence(10*use, player);
-                        upgradeHealth(5*use, player);
+                        int cost = use * 5;
+                        if (player.getCoins() < cost){
+                            System.out.println("Sorry, you don't have enough coins.");
+                        }
+                        else{
+                            player.useShield(use);
+                            player.useCoins(cost);
+                            upgradeAttack(use, player);
+                            upgradeDefence(10*use, player);
+                            upgradeHealth(5*use, player);
+                            System.out.println("Successfully upgraded shield");
+                        }
                     }
                 }
             }
@@ -143,16 +202,36 @@ public class Item {
                 String choice = input.nextLine();
                 switch (choice) {
                     case "E" -> {
-                        System.out.println("How many enemy materials will you use? (Avaliable: #)");
+                        System.out.println("How many enemy materials will you use? (Enemy materials: " + player.getEnemyMaterials() + ") (Coins: " + player.getCoins() + ")");
+                        System.out.println("Note: Using one enemy material costs 5 coins");
                         int use = Integer.parseInt(input.nextLine());
-                        upgradeHealth(use, player);
+                        int cost = use * 5;
+                        if (player.getCoins() < cost){
+                            System.out.println("Sorry, you don't have enough coins.");
+                        }
+                        else{
+                            player.useEnemyMaterial(use);
+                            player.useCoins(cost);
+                            upgradeHealth(use, player);
+                            System.out.println("Successfully upgraded armour!");
+                        }
                     }
                     case "A" -> {
-                        System.out.println("How many armours will you use? (Avaliable: #)");
+                        System.out.println("How many armours will you use? (Armours: " + player.getArmours() + ") (Coins: " + player.getCoins() + ")");
+                        System.out.println("Note: Using one armour costs 50 coins");
                         int use = Integer.parseInt(input.nextLine());
-                        upgradeAttack(use, player);
-                        upgradeDefence(5*use, player);
-                        upgradeHealth(20*use, player);
+                        int cost = use * 5;
+                        if (player.getCoins() < cost){
+                            System.out.println("Sorry, you don't have enough coins.");
+                        }
+                        else{
+                            player.useArmour(use);
+                            player.useCoins(cost);
+                            upgradeAttack(use, player);
+                            upgradeDefence(5*use, player);
+                            upgradeHealth(20*use, player);
+                            System.out.println("Successfully upgraded armour!");
+                        }
                     }
                 }
             }

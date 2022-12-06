@@ -38,6 +38,7 @@ public class Player {
                     """)
     };
     HashMap<String, Integer> materials = new HashMap<String, Integer>();
+    HashMap<String, Integer> potions = new HashMap<String, Integer>();
 
     private boolean isFighting;
 
@@ -53,6 +54,9 @@ public class Player {
         materials.put("Enemy material", 0);
         materials.put("Vampire material", 0);
         materials.put("Golem material", 0);
+        materials.put("Sword", 0);
+        materials.put("Shield", 0);
+        materials.put("Armour", 0);
     }
 
     public Player(String name, int health, int defence, int attack, int level, int xp, int coins){
@@ -69,6 +73,33 @@ public class Player {
         materials.put("Enemy material", 0);
         materials.put("Vampire material", 0);
         materials.put("Golem material", 0);
+        materials.put("Sword", 0);
+        materials.put("Shield", 0);
+        materials.put("Armour", 0);
+    }
+
+    public int getEnemyMaterials(){
+        return materials.get("Enemy material");
+    }
+
+    public int getVampireMaterials(){
+        return materials.get("Vampire material");
+    }
+
+    public int getGolemMaterials(){
+        return materials.get("Golem material");
+    }
+
+    public int getSwords(){
+        return materials.get("Sword");
+    }
+
+    public int getShields(){
+        return materials.get("Shield");
+    }
+
+    public int getArmours(){
+        return materials.get("Armour");
     }
 
     public void changeName(String name){
@@ -88,12 +119,8 @@ public class Player {
     public int getHealth(){
         return health;
     }
-    public HashMap<String, Integer> getInventory(){
+    public HashMap<String, Integer> getMaterials(){
         return materials;
-    }
-
-    public void printInventory(){
-        System.out.println("Inventory: " + materials);
     }
 
     public void levelUp(){
@@ -264,10 +291,17 @@ public class Player {
         }
         System.out.println();
         System.out.println(bold + "Materials" + reset);
+        boolean hasSomething = false;
         for (Map.Entry<String, Integer> entry : materials.entrySet()) {
             String key = entry.getKey();
-            Object value = entry.getValue();
-            System.out.println(key + ": " + value);
+            Integer value = entry.getValue();
+            if (value != 0){
+                System.out.println(key + ": " + value);
+                hasSomething = true;
+            }
+        }
+        if (!hasSomething){
+            System.out.println(italic + "You have nothing yet..." + reset);
         }
     }
 
@@ -316,6 +350,14 @@ public class Player {
         this.attack = attack;
     }
 
+    public int getCoins(){
+        return coins;
+    }
+
+    public void useCoins(int used){
+        coins -= used;
+    }
+
     public void upgradeItem(){
         Scanner input = new Scanner(System.in);
         System.out.println("What do you want to level up?");
@@ -328,5 +370,29 @@ public class Player {
             case 2 -> equipped[1].upgradeItem(this);
             case 3 -> equipped[2].upgradeItem(this);
         }
+    }
+
+    public void useVampireMaterial(int used) {
+        materials.put("Vampire material", materials.get("Vampire material")-used);
+    }
+
+    public void useSword(int used) {
+        materials.put("Sword", materials.get("Sword")-used);
+    }
+
+    public void useGolemMaterial(int used) {
+        materials.put("Golem material", materials.get("Vampire material")-used);
+    }
+
+    public void useShield(int used) {
+        materials.put("Shield", materials.get("Shield")-used);
+    }
+
+    public void useEnemyMaterial(int used) {
+        materials.put("Enemy material", materials.get("Enemy material")-used);
+    }
+
+    public void useArmour(int used) {
+        materials.put("Armour", materials.get("Armour")-used);
     }
 }
