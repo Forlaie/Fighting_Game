@@ -19,27 +19,34 @@ public class Item {
     public static Item[] weaponDrops = {
             new Item("Sword", 0, 0, 10, 10, """
                     The sword is a sturdy and reliable weapon for any warrior
-                    +10 atk
-                    """),
+                    +10 atk"""),
             new Item("Shield", 5, 10, 0, 10, """
                     The shield is an essential for any warrior to protect themselves and others
-                    +5 hp, +10 def
-                    """),
+                    +5 hp, +10 def"""),
             new Item("Armour", 20, 5, 0, 30, """
                     Proper armour keeps your vitals safe
-                    +10 hp, +20 def, +5 atk
-                    """)
+                    +10 hp, +20 def, +5 atk""")
     };
     public static Item[] materialDrops = {
             new Item("Enemy material", 1, """
-                    Enemies drop this
-                    """),
+                    Enemies drop this"""),
             new Item("Vampire material", 1, """
-                    Vampires drop this
-                    """),
+                    Vampires drop this"""),
             new Item("Golem material", 1, """
-                    Golems drop this
-                    """)
+                    Golems drop this""")
+    };
+    public static Potion[] potions = {
+            new Potion("Health potion", 50, 0, 0, 50, """
+                    Health potion heals you by 50hp points
+                    Costs 50 coins"""),
+            new Potion("Attack potion", 0, 0, 2, 50, """
+                    Attack potion doubles your attack
+                    Lasts for one floor/dungeon
+                    Costs 50 coins"""),
+            new Potion("Defence potion", 0, 2, 0, 50, """
+                    Defence potion doubles your defence
+                    Lasts for one floor/dungeon
+                    Costs 50 coins""")
     };
 //    public static Item[] dragonDrops = {
 //            new Item("Dragon Sword", 10, 10, 30, 50, """
@@ -61,12 +68,13 @@ public class Item {
 //    };
 
     public static void itemInfo(){
-        System.out.println();
         for (Item item : materialDrops){
+            System.out.println();
             System.out.println(bold + item.name + reset);
             System.out.println(italic + item.description + reset);
         }
         for (Item item : weaponDrops){
+            System.out.println();
             System.out.println(bold + item.name + reset);
             System.out.println(italic + item.description + reset);
         }
@@ -75,12 +83,11 @@ public class Item {
     public static Item generateRandomDrop(){
         int index;
         int getRandomDrop = (int) (Math.random()*101)+1;
+        index = (int) (Math.random() * 3);
         if (getRandomDrop >= 90){
-            index = (int) (Math.random() * 3);
             return weaponDrops[index];
         }
         else{
-            index = (int) (Math.random() * 3);
             return materialDrops[index];
         }
     }
@@ -103,10 +110,6 @@ public class Item {
     public String getName(){
         return name;
     }
-
-//    public String getDescription(){
-//        return description;
-//    }
 
     public void upgradeItem(Player player){
         Scanner input = new Scanner(System.in);

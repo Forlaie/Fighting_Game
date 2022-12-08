@@ -2,7 +2,6 @@ package com.company;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
-import java.util.HashMap;
 
 public class Player {
     public static final String reset = "\u001B[0m";
@@ -26,22 +25,17 @@ public class Player {
     public Item[] equipped = {
             new Item("Sword", 0, 0, 10, 10, """
                     The sword is a sturdy and reliable weapon for any warrior
-                    +10 atk
-                    """),
+                    +10 atk"""),
             new Item("Shield", 5, 0, 0, 10, """
                     The shield is an essential for any warrior to keep themselves safe and protect what they need to protect
-                    +5 hp, +10 def
-                    """),
+                    +5 hp, +10 def"""),
             new Item("Armour", 0, 20, 0, 30, """
                     Proper armour keeps your vitals safe
-                    +10 hp, +20 def, +5 atk
-                    """)
+                    +10 hp, +20 def, +5 atk""")
     };
-    HashMap<String, Integer> materials = new HashMap<String, Integer>();
-    HashMap<String, Integer> inventory = new HashMap<String, Integer>();
+    LinkedHashMap<Item, Integer> materials = new LinkedHashMap<Item, Integer>();
+    LinkedHashMap<Potion, Integer> inventory = new LinkedHashMap<Potion, Integer>();
     ArrayList<Potion> potionsInUse = new ArrayList<Potion>();
-
-    private boolean isFighting;
 
     public Player(String name){
         this.name = name;
@@ -50,14 +44,22 @@ public class Player {
         attack = 10;
         level = 1;
         xp = 0;
-        isFighting = false;
         coins = 0;
-        materials.put("Enemy material", 0);
-        materials.put("Vampire material", 0);
-        materials.put("Golem material", 0);
-        materials.put("Sword", 0);
-        materials.put("Shield", 0);
-        materials.put("Armour", 0);
+        materials.put(new Item("Enemy material", 1, """
+                    Enemies drop this"""), 0);
+        materials.put(new Item("Vampire material", 1, """
+                    Vampires drop this"""), 0);
+        materials.put(new Item("Golem material", 1, """
+                    Golems drop this"""), 0);
+        materials.put(new Item("Sword", 0, 0, 10, 10, """
+                    The sword is a sturdy and reliable weapon for any warrior
+                    +10 atk"""), 0);
+        materials.put(new Item("Shield", 5, 10, 0, 10, """
+                    The shield is an essential for any warrior to protect themselves and others
+                    +5 hp, +10 def"""), 0);
+        materials.put(new Item("Armour", 20, 5, 0, 30, """
+                    Proper armour keeps your vitals safe
+                    +10 hp, +20 def, +5 atk"""), 0);
     }
 
     public Player(String name, int health, int defence, int attack, int level, int xp, int coins){
@@ -67,7 +69,6 @@ public class Player {
         this.attack = attack;
         this.level = level;
         this.xp = xp;
-        this.isFighting = false;
         this.coins = coins;
 
         //temp
@@ -79,32 +80,80 @@ public class Player {
 //        materials.put("Armour", 0);
     }
 
-    public HashMap<String, Integer> getInventory(){
+    public LinkedHashMap<Potion, Integer> getInventory(){
         return inventory;
     }
 
     public int getEnemyMaterials(){
-        return materials.get("Enemy material");
+        if (materials.get(new Item("Enemy material", 1, """
+                    Enemies drop this""")) != null){
+            return materials.get(new Item("Enemy material", 1, """
+                    Enemies drop this"""));
+        }
+        else{
+            return 0;
+        }
     }
 
     public int getVampireMaterials(){
-        return materials.get("Vampire material");
+        if (materials.get(new Item("Vampire material", 1, """
+                    Vampires drop this""")) != null){
+            return materials.get(new Item("Vampire material", 1, """
+                    Vampires drop this"""));
+        }
+        else{
+            return 0;
+        }
     }
 
     public int getGolemMaterials(){
-        return materials.get("Golem material");
+        if (materials.get(new Item("Golem material", 1, """
+                    Golems drop this""")) != null){
+            return materials.get(new Item("Golem material", 1, """
+                    Golems drop this"""));
+        }
+        else{
+            return 0;
+        }
     }
 
     public int getSwords(){
-        return materials.get("Sword");
+        if (materials.get(new Item("Sword", 0, 0, 10, 10, """
+                    The sword is a sturdy and reliable weapon for any warrior
+                    +10 atk""")) != null){
+            return materials.get(new Item("Sword", 0, 0, 10, 10, """
+                    The sword is a sturdy and reliable weapon for any warrior
+                    +10 atk"""));
+        }
+        else{
+            return 0;
+        }
     }
 
     public int getShields(){
-        return materials.get("Shield");
+        if (materials.get(new Item("Shield", 5, 10, 0, 10, """
+                    The shield is an essential for any warrior to protect themselves and others
+                    +5 hp, +10 def""")) != null){
+            return materials.get(new Item("Shield", 5, 10, 0, 10, """
+                    The shield is an essential for any warrior to protect themselves and others
+                    +5 hp, +10 def"""));
+        }
+        else{
+            return 0;
+        }
     }
 
     public int getArmours(){
-        return materials.get("Armour");
+        if (materials.get(new Item("Armour", 20, 5, 0, 30, """
+                    Proper armour keeps your vitals safe
+                    +10 hp, +20 def, +5 atk""")) != null){
+            return materials.get(new Item("Armour", 20, 5, 0, 30, """
+                    Proper armour keeps your vitals safe
+                    +10 hp, +20 def, +5 atk"""));
+        }
+        else{
+            return 0;
+        }
     }
 
     public void changeName(String name){
@@ -112,9 +161,6 @@ public class Player {
     }
     public int getAttack(){
         return attack;
-    }
-    public void setIsFighting(boolean isFighting){
-        this.isFighting = isFighting;
     }
 
     public void setHealth(int health){
@@ -124,8 +170,65 @@ public class Player {
     public int getHealth(){
         return health;
     }
-    public HashMap<String, Integer> getMaterials(){
+    public LinkedHashMap<Item, Integer> getMaterials(){
         return materials;
+    }
+    public void sellMaterial(){
+        Scanner input = new Scanner(System.in);
+        int i = 1;
+        System.out.println("What would you like to sell?");
+        for (Item key : materials.keySet()) {
+            System.out.println(i + ": " + key.getName() + ": " + materials.get(key) + ", +" + key.getCost() + " coins");
+            i++;
+        }
+
+        Set<Item> keySet = materials.keySet();
+        Item[] keyArray = keySet.toArray(new Item[keySet.size()]);
+        int index = Integer.parseInt(input.nextLine());
+        Item item = keyArray[index-1];
+        System.out.println("How many " + item.getName() + " would you like to sell?");
+        int amount = Integer.parseInt(input.nextLine());
+        int profit = (int) (item.getCost()*0.8);
+        if (amount > materials.get(item)){
+            System.out.println("Sorry, you don't have that many " + item.getName());
+        }
+        else{
+            System.out.println("Successfully sold " + amount + " " + item.getName());
+            materials.put(item, materials.get(item)-amount);
+            if (materials.get(item) == 0){
+                materials.remove(item);
+            }
+            coins += profit;
+        }
+    }
+
+    public void sellPotion(){
+        Scanner input = new Scanner(System.in);
+        int i = 1;
+        System.out.println("What would you like to sell?");
+        for (Potion key : inventory.keySet()) {
+            System.out.println(i + ": " + key.getName() + ": " + inventory.get(key) + ", +" + key.getCost() + " coins");
+            i++;
+        }
+
+        Set<Potion> keySet = inventory.keySet();
+        Potion[] keyArray = keySet.toArray(new Potion[keySet.size()]);
+        int index = Integer.parseInt(input.nextLine());
+        Potion potion = keyArray[index-1];
+        System.out.println("How many " + potion.getName() + " would you like to sell?");
+        int amount = Integer.parseInt(input.nextLine());
+        int profit = (int) (potion.getCost()*0.8);
+        if (amount > inventory.get(potion)){
+            System.out.println("Sorry, you don't have that many " + potion.getName());
+        }
+        else{
+            System.out.println("Successfully sold " + amount + " " + potion.getName());
+            inventory.put(potion, inventory.get(potion)-amount);
+            if (inventory.get(potion) == 0){
+                inventory.remove(potion);
+            }
+            coins += profit;
+        }
     }
 
     public void levelUp(){
@@ -144,27 +247,52 @@ public class Player {
         if (xp >= level*10){
             levelUp();
         }
-        materials.put(item.getName(), materials.get(item.getName())+1);
+        materials.merge(item, 1, Integer::sum);
         coins += 10+Floor.floorLevel;
     }
 
-    public void usePotion(Potion potion){
+    public void usePotion(){
+        Scanner input = new Scanner(System.in);
+        System.out.println("What potion would you like to use?");
+        int i = 1;
+        for (Potion key : inventory.keySet()) {
+            System.out.println(i + ": " + key.getName() + ": " + inventory.get(key));
+            i++;
+        }
+        Set<Potion> keySet = inventory.keySet();
+        Potion[] keyArray = keySet.toArray(new Potion[keySet.size()]);
+        int index = Integer.parseInt(input.nextLine());
+        Potion potion = keyArray[index-1];
         switch (potion.getName()){
             case "Health potion" -> {
                 health += potion.getHealth();
-                inventory.put("Health potion", inventory.get("Health potion")-1);
+                inventory.put(new Potion("Health potion", 50, 0, 0, 50, """
+                    Health potion heals you by 50hp points
+                    Costs 50 coins"""), inventory.get(new Potion("Health potion", 50, 0, 0, 50, """
+                    Health potion heals you by 50hp points
+                    Costs 50 coins"""))-1);
             }
             case "Defence potion" -> {
                 defence *= potion.getDefence();
-                potion.setInEffect(true);
                 potionsInUse.add(potion);
-                inventory.put("Defence potion", inventory.get("Defence potion")-1);
+                inventory.put(new Potion("Defence potion", 0, 2, 0, 50, """
+                    Defence potion doubles your defence
+                    Lasts for one floor/dungeon
+                    Costs 50 coins"""), inventory.get(new Potion("Defence potion", 0, 2, 0, 50, """
+                    Defence potion doubles your defence
+                    Lasts for one floor/dungeon
+                    Costs 50 coins"""))-1);
             }
             case "Attack potion" -> {
                 attack *= potion.getAttack();
-                potion.setInEffect(true);
                 potionsInUse.add(potion);
-                inventory.put("Attack potion", inventory.get("Attack potion")-1);
+                inventory.put(new Potion("Attack potion", 0, 0, 2, 50, """
+                    Attack potion doubles your attack
+                    Lasts for one floor/dungeon
+                    Costs 50 coins"""), inventory.get(new Potion("Attack potion", 0, 0, 2, 50, """
+                    Attack potion doubles your attack
+                    Lasts for one floor/dungeon
+                    Costs 50 coins"""))-1);
             }
         }
     }
@@ -193,27 +321,27 @@ public class Player {
 //        materials.add(item);
 //    }
 
-    public void purchaseItem(Item item){
-        if (coins < item.getCost()){
+    public void purchaseItem(Potion potion){
+        if (coins < potion.getCost()){
             System.out.println("Unfortunately, you don't have enough coins");
         }
         else{
-            System.out.println("Successfully purchased " + item.getName() + "!");
-            coins -= item.getCost();
-            materials.put(item.getName(), materials.get(item.getName())+1);
+            System.out.println("Successfully purchased " + potion.getName() + "!");
+            coins -= potion.getCost();
+            inventory.merge(potion, 1, Integer::sum);
         }
     }
 
-    public void sellItem(Item item){
-        System.out.println("Successfully sold " + item.getName() + "!");
-        coins += item.getCost();
-        materials.remove(item);
-    }
+//    public void sellItem(Item item){
+//        System.out.println("Successfully sold " + item.getName() + "!");
+//        coins += item.getCost();
+//        materials.remove(item);
+//    }
 
-    public void removeItem(String itemName){
-        materials.put(itemName, materials.get(itemName)-1);
-        if (materials.get(itemName) == 0){
-            materials.remove(itemName);
+    public void removeItem(Potion potion){
+        materials.put(potion, materials.get(potion)-1);
+        if (materials.get(potion) == 0){
+            materials.remove(potion);
         }
     }
 
@@ -332,10 +460,22 @@ public class Player {
             System.out.println(italic + "You have nothing yet..." + reset);
         }
         else{
-            for (Map.Entry<String, Integer> entry : materials.entrySet()) {
-                String key = entry.getKey();
+            for (Map.Entry<Item, Integer> entry : materials.entrySet()) {
+                Item key = entry.getKey();
                 Integer value = entry.getValue();
-                System.out.println(key + ": " + value);
+                System.out.println(key.getName() + ": " + value);
+            }
+        }
+        System.out.println();
+        System.out.println(bold + "Inventory" + reset);
+        if (inventory.size() == 0){
+            System.out.println(italic + "You have nothing yet..." + reset);
+        }
+        else{
+            for (Map.Entry<Potion, Integer> entry : inventory.entrySet()) {
+                Potion key = entry.getKey();
+                Integer value = entry.getValue();
+                System.out.println(key.getName() + ": " + value);
             }
         }
     }
@@ -408,26 +548,44 @@ public class Player {
     }
 
     public void useVampireMaterial(int used) {
-        materials.put("Vampire material", materials.get("Vampire material")-used);
+        materials.put(new Item("Vampire material", 1, """
+                    Vampires drop this"""), materials.get(new Item("Vampire material", 1, """
+                    Vampires drop this"""))-used);
     }
 
     public void useSword(int used) {
-        materials.put("Sword", materials.get("Sword")-used);
+        materials.put(new Item("Sword", 0, 0, 10, 10, """
+                    The sword is a sturdy and reliable weapon for any warrior
+                    +10 atk"""), materials.get(new Item("Sword", 0, 0, 10, 10, """
+                    The sword is a sturdy and reliable weapon for any warrior
+                    +10 atk"""))-used);
     }
 
     public void useGolemMaterial(int used) {
-        materials.put("Golem material", materials.get("Vampire material")-used);
+        materials.put(new Item("Golem material", 1, """
+                    Golems drop this"""), materials.get(new Item("Golem material", 1, """
+                    Golems drop this"""))-used);
     }
 
     public void useShield(int used) {
-        materials.put("Shield", materials.get("Shield")-used);
+        materials.put(new Item("Shield", 5, 10, 0, 10, """
+                    The shield is an essential for any warrior to protect themselves and others
+                    +5 hp, +10 def"""), materials.get(new Item("Shield", 5, 10, 0, 10, """
+                    The shield is an essential for any warrior to protect themselves and others
+                    +5 hp, +10 def"""))-used);
     }
 
     public void useEnemyMaterial(int used) {
-        materials.put("Enemy material", materials.get("Enemy material")-used);
+        materials.put(new Item("Enemy material", 1, """
+                    Enemies drop this"""), materials.get(new Item("Enemy material", 1, """
+                    Enemies drop this"""))-used);
     }
 
     public void useArmour(int used) {
-        materials.put("Armour", materials.get("Armour")-used);
+        materials.put(new Item("Armour", 20, 5, 0, 30, """
+                    Proper armour keeps your vitals safe
+                    +10 hp, +20 def, +5 atk"""), materials.get(new Item("Armour", 20, 5, 0, 30, """
+                    Proper armour keeps your vitals safe
+                    +10 hp, +20 def, +5 atk"""))-used);
     }
 }

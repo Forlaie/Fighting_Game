@@ -8,9 +8,6 @@ import java.util.Scanner;
 // do save file stuff (especially after you die + save and exit)
 // have final floor (10?) with only reaper? (give lore)
 
-// do this during the week
-// killing dragon give permanent stat buffs?
-
 public class Main {
 
     public static final String reset = "\u001B[0m";
@@ -49,7 +46,8 @@ public class Main {
         System.out.println(cyan + "2:" + reset + italic + " check stats");
         System.out.println(cyan + "3:" + reset + italic + " check inventory");
         System.out.println(cyan + "4:" + reset + italic + " fight");
-        System.out.println(cyan + "5:" + reset + italic + " save and exit" + reset);
+        System.out.println(cyan + "5:" + reset + italic + " use potion");
+        System.out.println(cyan + "6:" + reset + italic + " save and exit" + reset);
         System.out.println("========================= ©MM");
     }
 
@@ -136,26 +134,25 @@ public class Main {
                         }
                         case 4 -> {
                             // access shop
-//                            System.out.println(bold + "Would you like to buy or sell? " + cyan + "(B/S)" + reset);
-//                            String action = userInput.nextLine();
-//                            if (action.equals("B")) {
-//                                Shop.shopMenu();
-//                                int index = Integer.parseInt(userInput.nextLine());
-//                                player.purchaseItem(Item.drops[index - 1]);
-//                                mainMenu();
-//                                choice = Integer.parseInt(userInput.nextLine());
-//                            }
-//                            else {
-//                                player.printInventory();
-//                                if (player.getInventory().size() == 0) {
-//                                    System.out.println("You don't have anything you can sell");
-//                                } else {
-//                                    int index = Integer.parseInt(userInput.nextLine());
-//                                    player.sellItem(player.getInventory().get(index));
-//                                    mainMenu();
-//                                    choice = Integer.parseInt(userInput.nextLine());
-//                                }
-//                            }
+                            System.out.println(bold + "Would you like to buy or sell? " + cyan + "(B/S)" + reset);
+                            String action = userInput.nextLine();
+                            if (action.equals("B")){
+                                Shop.shopMenu(player);
+                                int index = Integer.parseInt(userInput.nextLine());
+                                player.purchaseItem(Item.potions[index-1]);
+                            }
+                            else if (action.equals("S")){
+                                System.out.println("Do you want to sell materials or potions? (M/P)");
+                                String sellChoice = userInput.nextLine();
+                                if (sellChoice.equals("M")){
+                                    player.sellMaterial();
+                                }
+                                else if (sellChoice.equals("P")){
+                                    player.sellPotion();
+                                }
+                            }
+                            mainMenu();
+                            choice = Integer.parseInt(userInput.nextLine());
                         }
                         case 5 ->{
                             // check inventory stuff
@@ -183,6 +180,14 @@ public class Main {
                                         //fight stuff
                                         player.battle(currentFloor);
                                         currentFloor.fightUpdate(player);
+                                    }
+                                    case 5 -> {
+                                        if (player.getInventory().size() != 0){
+                                            player.usePotion();
+                                        }
+                                        else{
+                                            System.out.println("Sorry, you have no potions");
+                                        }
                                     }
                                     default ->
                                             System.out.println("Sorry, that is not a recognized command. Please try again");

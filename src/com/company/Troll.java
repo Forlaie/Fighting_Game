@@ -12,10 +12,10 @@ public class Troll extends Enemy{
 
     public String steal(Player player){
         int index = (int) (Math.random()*player.getInventory().size());
-        List<String> keyList = new ArrayList<>(player.getInventory().keySet());
-        String itemName = keyList.get(index);
-        player.removeItem(itemName);
-        return itemName;
+        List<Potion> keyList = new ArrayList<>(player.getInventory().keySet());
+        Potion potion = keyList.get(index);
+        player.removeItem(potion);
+        return potion.getName();
     }
     public void died(Player player, Floor floor){
         if (player.getMaterials().size() != 0){

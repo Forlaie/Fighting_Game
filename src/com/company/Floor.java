@@ -35,7 +35,6 @@ public class Floor {
         for (int i = 0; i < floorLevel; i++){
             System.out.println(enemies.get(i));
         }
-        player.setIsFighting(true);
     }
 
     public void addDeadEnemy(Enemy enemy){
@@ -50,9 +49,8 @@ public class Floor {
         System.out.println();
         System.out.println(bold + "Floor " + floorLevel + " cleared!" + reset);
         player.profile();
-        player.setIsFighting(false);
         for (Potion potion : player.getPotionsInUse()){
-            potion.setInEffect(false);
+            potion.endOfEffect(player);
         }
         player.clearPotionsInUse();
     }

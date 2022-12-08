@@ -10,28 +10,23 @@ public class Enemy {
     public static final String reset = "\u001B[0m";
     private static Enemy[] possibleEnemies = {
             new Enemy("Enemy", 10+Floor.floorLevel, 1+Floor.floorLevel, """
-            Enemies are people who have been corrupted by the pollution
-            """),
+            Enemies are people who have been corrupted by the pollution"""),
             new Vampire("Vampire", 15+Floor.floorLevel, 3+Floor.floorLevel, """
                     Vampires are creatures that suck your blood
                     They steal your hp and heal themselves
-                    (scaled according to how much hp you have)
-                    """),
+                    (scaled according to how much hp you have)"""),
             new Golem("Golem", 20+Floor.floorLevel, 2+Floor.floorLevel, 5+Floor.floorLevel, """
                     Golems are creatures made of rock and stone that have become sentient due to the pollution
                     They have strong defence, so attacks will deal less damage than usual
-                    (scaled according to how much defence the golem has)
-                    """),
+                    (scaled according to how much defence the golem has)"""),
             new Troll("Troll", 5+Floor.floorLevel, 2+Floor.floorLevel, """
-                    Trolls are mischevious mythical creatures that love to play tricks
-                    Trolls will steal an item from your inventory when they die, so equip any items you want to keep safe
-                    """),
+                    Trolls are mischievous mythical creatures that love to play tricks
+                    Trolls will steal an item from your inventory when they die, so equip any items you want to keep safe"""),
             new Dragon("Dragon", 50+Floor.floorLevel, 10+Floor.floorLevel, 10+Floor.floorLevel, """
                     Dragons are extremely powerful creatures
                     Dragons have lots of health, attack, and defence, so they're difficult to defeat
                     However, once defeated, they drop special dragon armour that can't be found anywhere else
-                    These items have higher stats than all other items
-                    """)
+                    These items have higher stats than all other items""")
     };
 
     public static Enemy generateRandomEnemy(){
@@ -53,20 +48,13 @@ public class Enemy {
     }
 
     public static void enemyInfo(){
-        System.out.println();
         for (Enemy enemy : possibleEnemies){
+            System.out.println();
             System.out.println(bold + enemy.name + reset);
             System.out.println(italic + enemy.description + reset);
         }
     }
 
-    public int getHealth(){
-        return health;
-    }
-
-    public void setHealth(int health){
-        this.health = health;
-    }
     public String getName(){
         return name;
     }
