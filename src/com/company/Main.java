@@ -1,8 +1,7 @@
 package com.company;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 // do save file stuff (especially after you die + save and exit)
 // have final floor (10?) with only reaper? (give lore)
@@ -56,9 +55,9 @@ public class Main {
     public static void main(String[] args) {
         Scanner userInput = new Scanner(System.in);
         Player player = null;
+        boolean needsNewFloor = false;
         try {
             Scanner fileInput = new Scanner(new File("C:\\Users\\jessi\\Desktop\\CS Project Base\\src\\PlayerInfo"));
-            //BufferedReader bf=new BufferedReader(new FileReader("C:\\Users\\jessi\\Desktop\\CS Project Base\\src\\PlayerInfo"));
             if (fileInput.hasNextLine()){
                 while (fileInput.hasNextLine()){
                     String name = fileInput.nextLine();
@@ -68,11 +67,17 @@ public class Main {
                     int level = Integer.parseInt(fileInput.nextLine());
                     int xp = Integer.parseInt(fileInput.nextLine());
                     int coins = Integer.parseInt(fileInput.nextLine());
-                    // figure out how to get the items back...
-                    // ArrayList<Item> inventory = new ArrayList<Item>();
-                    // ArrayList<Item> equipped = new ArrayList<Item>();
-
-                    player = new Player(name, health, defence, attack, level, xp, coins);
+                    int[] materialQuantities = new int[6];
+                    for (int i = 0; i < 6; i++){
+                        int quantity = Integer.parseInt(fileInput.nextLine());
+                        materialQuantities[i] = quantity;
+                    }
+                    int[] potionQuantities = new int[3];
+                    for (int i = 0; i < 3; i++){
+                        int quantity = Integer.parseInt(fileInput.nextLine());
+                        potionQuantities[i] = quantity;
+                    }
+                    player = new Player(name, health, defence, attack, level, xp, coins, materialQuantities, potionQuantities);
                     System.out.println(bold + "Welcome back " + green + player.getName() + reset + bold + "!" + reset);
                 }
                 fileInput.close();
@@ -81,20 +86,28 @@ public class Main {
                 System.out.println(bold + "Welcome to Wen Ymar Elad! What is your name?" + reset);
                 String name = userInput.nextLine();
                 player = new Player(name);
+                needsNewFloor = true;
             }
 
             try {
+                Floor currentFloor = null;
                 fileInput = new Scanner(new File("C:\\Users\\jessi\\Desktop\\CS Project Base\\src\\FloorInfo"));
                 if (fileInput.hasNextLine()){
                     int floor = Integer.parseInt(fileInput.nextLine());
                     Floor.floorLevel = floor-1;
+                    ArrayList<String> enemyNames = new ArrayList<String>();
+                    while (fileInput.hasNextLine()){
+                        enemyNames.add(fileInput.nextLine());
+                    }
+                    currentFloor = new Floor(enemyNames);
+                    fileInput.close();
                 }
-                fileInput.close();
-
+                else{
+                    Floor.floorLevel = 0;
+                }
                 assert player != null;
                 mainMenu();
                 int choice = Integer.parseInt(userInput.nextLine());
-                Floor currentFloor = null;
 
                 while (choice != 9){
                     switch (choice) {
@@ -212,7 +225,7 @@ public class Main {
                                         dungeon.fightUpdate(player);
                                     }
                                     default ->
-                                            System.out.println("Sorry, that is not a recognized command. Please try again.");
+                                        System.out.println("Sorry, that is not a recognized command. Please try again.");
                                 }
                             }
                             dungeon.dungeonCleared(player);
@@ -221,7 +234,15 @@ public class Main {
                         }
                         case 8 -> {
                             // fight stuff
-                            currentFloor = new Floor();
+                            if (needsNewFloor){
+                                currentFloor = new Floor();
+                            }
+                            else{
+                                needsNewFloor = true;
+                            }
+                            assert currentFloor != null;
+                            putInfoIntoFiles(player, currentFloor);
+
                             while (!currentFloor.getAllEnemiesDead()) {
                                 fightMenu();
                                 choice = Integer.parseInt(userInput.nextLine());
@@ -230,24 +251,21 @@ public class Main {
                                         // info about enemies and items
                                         infoMenu();
                                         int action = Integer.parseInt(userInput.nextLine());
-                                        switch (action){
-                                            case 1 ->
-                                                    Enemy.enemyInfo();
-                                            case 2 ->
-                                                    Item.itemInfo();
+                                        switch (action) {
+                                            case 1 -> Enemy.enemyInfo();
+                                            case 2 -> Item.itemInfo();
                                         }
                                     }
                                     case 2 ->
                                         // check stats
-                                        player.stats();
+                                            player.stats();
                                     case 3 ->
                                         // check inventory
-                                        player.inventoryMenu();
+                                            player.inventoryMenu();
                                     case 4 -> {
-                                        if (player.getInventory().size() != 0){
+                                        if (player.getInventory().size() != 0) {
                                             player.usePotion();
-                                        }
-                                        else{
+                                        } else {
                                             System.out.println("Sorry, you have no potions");
                                         }
                                     }
@@ -257,7 +275,7 @@ public class Main {
                                         currentFloor.fightUpdate(player);
                                     }
                                     default ->
-                                        System.out.println("Sorry, that is not a recognized command. Please try again.");
+                                            System.out.println("Sorry, that is not a recognized command. Please try again.");
                                 }
                             }
                             currentFloor.floorCleared(player);
@@ -276,6 +294,84 @@ public class Main {
 
         } catch (FileNotFoundException e) {
             System.out.println("Can't open player file");
+        }
+    }
+
+    private static void putInfoIntoFiles(Player player, Floor currentFloor) {
+        PrintWriter floorOutput;
+        PrintWriter playerOutput;
+        try {
+            floorOutput = new PrintWriter("C:\\Users\\jessi\\Desktop\\CS Project Base\\src\\FloorInfo");
+            floorOutput.println(Floor.floorLevel);
+            assert currentFloor != null;
+            for (Enemy enemy : currentFloor.getEnemies()){
+                floorOutput.println(enemy.getName());
+            }
+            floorOutput.close();
+            playerOutput = new PrintWriter("C:\\Users\\jessi\\Desktop\\CS Project Base\\src\\PlayerInfo");
+            playerOutput.println(player.getName());
+            playerOutput.println(player.getHealth());
+            playerOutput.println(player.getDefence());
+            playerOutput.println(player.getAttack());
+            playerOutput.println(player.getLevel());
+            playerOutput.println(player.getXP());
+            playerOutput.println(player.getCoins());
+            if (player.getMaterials().containsKey(Item.materialDrops[0])){
+                playerOutput.println(player.getMaterials().get(Item.materialDrops[0]));
+            }
+            else{
+                playerOutput.println(0);
+            }
+            if (player.getMaterials().containsKey(Item.materialDrops[1])){
+                playerOutput.println(player.getMaterials().get(Item.materialDrops[1]));
+            }
+            else{
+                playerOutput.println(0);
+            }
+            if (player.getMaterials().containsKey(Item.materialDrops[2])){
+                playerOutput.println(player.getMaterials().get(Item.materialDrops[2]));
+            }
+            else{
+                playerOutput.println(0);
+            }
+            if (player.getMaterials().containsKey(Item.weaponDrops[0])){
+                playerOutput.println(player.getMaterials().get(Item.weaponDrops[0]));
+            }
+            else{
+                playerOutput.println(0);
+            }
+            if (player.getMaterials().containsKey(Item.weaponDrops[1])){
+                playerOutput.println(player.getMaterials().get(Item.weaponDrops[1]));
+            }
+            else{
+                playerOutput.println(0);
+            }
+            if (player.getMaterials().containsKey(Item.weaponDrops[2])){
+                playerOutput.println(player.getMaterials().get(Item.weaponDrops[2]));
+            }
+            else{
+                playerOutput.println(0);
+            }
+            if (player.getInventory().containsKey(Item.potions[0])){
+                playerOutput.println(player.getMaterials().get(Item.potions[0]));
+            }
+            else{
+                playerOutput.println(0);
+            }
+            if (player.getInventory().containsKey(Item.potions[1])){
+                playerOutput.println(player.getMaterials().get(Item.potions[1]));
+            }
+            else{
+                playerOutput.println(0);
+            }
+            if (player.getInventory().containsKey(Item.potions[2])){
+                playerOutput.println(player.getMaterials().get(Item.potions[2]));
+            }
+            else{
+                playerOutput.println(0);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Couldn't write to floor level");
         }
     }
 }

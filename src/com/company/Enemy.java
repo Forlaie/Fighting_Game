@@ -11,7 +11,7 @@ public class Enemy {
     protected int health;
     protected int attack;
     protected String description;
-    private static Enemy[] possibleEnemies = {
+    private static final Enemy[] possibleEnemies = {
             new Enemy("Enemy", 10+Floor.floorLevel, 1+Floor.floorLevel, """
             Enemies are people who have been corrupted by the pollution"""),
             new Vampire("Vampire", 15+Floor.floorLevel, 3+Floor.floorLevel, """

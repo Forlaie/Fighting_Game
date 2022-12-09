@@ -17,7 +17,7 @@ public class Item {
     protected int attack;
     protected int cost;
     protected String description;
-    public static Item[] weaponDrops = {
+    public static final Item[] weaponDrops = {
             new Item("Sword", 0, 0, 10, 10, """
                     The sword is a sturdy and reliable weapon for any warrior
                     +10 atk"""),
@@ -28,7 +28,7 @@ public class Item {
                     Proper armour keeps your vitals safe
                     +10 hp, +20 def, +5 atk""")
     };
-    public static Item[] materialDrops = {
+    public static final Item[] materialDrops = {
             new Item("Enemy material", 1, """
                     Enemies drop this"""),
             new Item("Vampire material", 1, """
@@ -36,7 +36,7 @@ public class Item {
             new Item("Golem material", 1, """
                     Golems drop this""")
     };
-    public static Potion[] potions = {
+    public static final Potion[] potions = {
             new Potion("Health potion", 50, 0, 0, 50, """
                     Health potion heals you by 50hp points
                     Costs 50 coins"""),
