@@ -3,7 +3,6 @@ package com.company;
 import java.io.*;
 import java.util.*;
 
-// do save file stuff (especially after you die + save and exit)
 // have final floor (10?) with only reaper? (give lore)
 
 public class Main {
@@ -90,16 +89,16 @@ public class Main {
             }
 
             try {
-                Floor currentFloor = null;
+                Floor floor = null;
                 fileInput = new Scanner(new File("C:\\Users\\jessi\\Desktop\\CS Project Base\\src\\FloorInfo"));
                 if (fileInput.hasNextLine()){
-                    int floor = Integer.parseInt(fileInput.nextLine());
-                    Floor.floorLevel = floor-1;
+                    int floorLevel = Integer.parseInt(fileInput.nextLine());
+                    Floor.floorLevel = floorLevel-1;
                     ArrayList<String> enemyNames = new ArrayList<String>();
                     while (fileInput.hasNextLine()){
                         enemyNames.add(fileInput.nextLine());
                     }
-                    currentFloor = new Floor(enemyNames);
+                    floor = new Floor(enemyNames);
                     fileInput.close();
                 }
                 else{
@@ -116,10 +115,8 @@ public class Main {
                             infoMenu();
                             int action = Integer.parseInt(userInput.nextLine());
                             switch (action){
-                                case 1 ->
-                                        Enemy.enemyInfo();
-                                case 2 ->
-                                        Item.itemInfo();
+                                case 1 -> Enemy.enemyInfo();
+                                case 2 -> Item.itemInfo();
                             }
                             mainMenu();
                             choice = Integer.parseInt(userInput.nextLine());
@@ -164,16 +161,12 @@ public class Main {
                                     System.out.println(bold + "Do you want to sell materials or potions? " + cyan + "(M/P)" + reset);
                                     String sellChoice = userInput.nextLine();
                                     switch(sellChoice) {
-                                        case "M" ->
-                                            player.sellMaterial();
-                                        case "P" ->
-                                            player.sellPotion();
-                                        default ->
-                                            System.out.println("Sorry, that is not a recognized command. Please try again.");
+                                        case "M" -> player.sellMaterial();
+                                        case "P" -> player.sellPotion();
+                                        default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                                     }
                                 }
-                                default ->
-                                    System.out.println("Sorry, that is not a recognized command. Please try again.");
+                                default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                             }
                             mainMenu();
                             choice = Integer.parseInt(userInput.nextLine());
@@ -205,12 +198,10 @@ public class Main {
                                                     Item.itemInfo();
                                         }
                                     }
-                                    case 2 ->
-                                        // check stats
-                                        player.stats();
-                                    case 3 ->
-                                        // item stuff
-                                        player.inventoryMenu();
+                                    // check stats
+                                    case 2 -> player.stats();
+                                    // item stuff
+                                    case 3 -> player.inventoryMenu();
                                     case 4 -> {
                                         if (player.getInventory().size() != 0){
                                             player.usePotion();
@@ -221,11 +212,20 @@ public class Main {
                                     }
                                     case 5 -> {
                                         //fight stuff
-                                        player.battle(dungeon, currentFloor);
+                                        player.battle(dungeon, floor);
                                         dungeon.fightUpdate(player);
                                     }
-                                    default ->
-                                        System.out.println("Sorry, that is not a recognized command. Please try again.");
+                                    case 6 -> {
+                                        // save stuff
+                                        System.out.println(bold + "The game will save your progress up to the last floor you completed. Do you wish to proceed? " + cyan + "(Y/N)" + reset);
+                                        String action = userInput.nextLine();
+                                        switch (action) {
+                                            case "Y" -> putInfoIntoFiles(player, floor);
+                                            case "N" -> System.out.println(italic + "Resuming game..." + reset);
+                                            default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
+                                        }
+                                    }
+                                    default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                                 }
                             }
                             dungeon.dungeonCleared(player);
@@ -235,15 +235,15 @@ public class Main {
                         case 8 -> {
                             // fight stuff
                             if (needsNewFloor){
-                                currentFloor = new Floor();
+                                floor = new Floor();
                             }
                             else{
                                 needsNewFloor = true;
                             }
-                            assert currentFloor != null;
-                            putInfoIntoFiles(player, currentFloor);
+                            assert floor != null;
+                            putInfoIntoFiles(player, floor);
 
-                            while (!currentFloor.getAllEnemiesDead()) {
+                            while (!floor.getAllEnemiesDead()) {
                                 fightMenu();
                                 choice = Integer.parseInt(userInput.nextLine());
                                 switch (choice) {
@@ -256,12 +256,10 @@ public class Main {
                                             case 2 -> Item.itemInfo();
                                         }
                                     }
-                                    case 2 ->
-                                        // check stats
-                                            player.stats();
-                                    case 3 ->
-                                        // check inventory
-                                            player.inventoryMenu();
+                                    // check stats
+                                    case 2 -> player.stats();
+                                    // check inventory
+                                    case 3 -> player.inventoryMenu();
                                     case 4 -> {
                                         if (player.getInventory().size() != 0) {
                                             player.usePotion();
@@ -271,22 +269,31 @@ public class Main {
                                     }
                                     case 5 -> {
                                         // fight stuff
-                                        player.battle(currentFloor);
-                                        currentFloor.fightUpdate(player);
+                                        player.battle(floor);
+                                        floor.fightUpdate(player);
                                     }
-                                    default ->
-                                            System.out.println("Sorry, that is not a recognized command. Please try again.");
+                                    case 6 -> {
+                                        // save stuff
+                                        System.out.println(bold + "The game will save your progress up to the last floor you completed. Do you wish to proceed? " + cyan + "(Y/N)" + reset);
+                                        String action = userInput.nextLine();
+                                        switch (action) {
+                                            case "Y" -> putInfoIntoFiles(player, floor);
+                                            case "N" -> System.out.println(italic + "Resuming game..." + reset);
+                                            default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
+                                        }
+                                    }
+                                    default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                                 }
                             }
-                            currentFloor.floorCleared(player);
+                            floor.floorCleared(player);
                             fightMenu();
                             choice = Integer.parseInt(userInput.nextLine());
                         }
-                        default ->
-                                System.out.println("Sorry, that is not a recognized command. Please try again.");
+                        default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                     }
                 }
                 // save info into files and stuff
+                putInfoIntoFiles(player, floor);
 
             } catch (FileNotFoundException e) {
                 System.out.println("can't open floor file");
@@ -303,9 +310,10 @@ public class Main {
         try {
             floorOutput = new PrintWriter("C:\\Users\\jessi\\Desktop\\CS Project Base\\src\\FloorInfo");
             floorOutput.println(Floor.floorLevel);
-            assert currentFloor != null;
-            for (Enemy enemy : currentFloor.getEnemies()){
-                floorOutput.println(enemy.getName());
+            if (currentFloor != null){
+                for (Enemy enemy : currentFloor.getEnemies()){
+                    floorOutput.println(enemy.getName());
+                }
             }
             floorOutput.close();
             playerOutput = new PrintWriter("C:\\Users\\jessi\\Desktop\\CS Project Base\\src\\PlayerInfo");
@@ -370,6 +378,7 @@ public class Main {
             else{
                 playerOutput.println(0);
             }
+            playerOutput.close();
         } catch (FileNotFoundException e) {
             System.out.println("Couldn't write to floor level");
         }

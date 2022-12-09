@@ -17,19 +17,18 @@ public class Enemy {
             new Vampire("Vampire", 15+Floor.floorLevel, 3+Floor.floorLevel, """
                     Vampires are creatures that suck your blood
                     They steal your hp and heal themselves
-                    (scaled according to how much hp you have)"""),
+                    (scaled from your hp)"""),
             new Golem("Golem", 20+Floor.floorLevel, 2+Floor.floorLevel, 5+Floor.floorLevel, """
                     Golems are creatures made of rock and stone that have become sentient due to the pollution
                     They have strong defence, so attacks will deal less damage than usual
-                    (scaled according to how much defence the golem has)"""),
+                    (scaled from golem defence)"""),
             new Troll("Troll", 5+Floor.floorLevel, 2+Floor.floorLevel, """
                     Trolls are mischievous mythical creatures that love to play tricks
                     Trolls will steal an item from your inventory when they die, so equip any items you want to keep safe"""),
             new Dragon("Dragon", 50+Floor.floorLevel, 10+Floor.floorLevel, 10+Floor.floorLevel, """
                     Dragons are extremely powerful creatures
                     Dragons have lots of health, attack, and defence, so they're difficult to defeat
-                    However, once defeated, they drop special dragon armour that can't be found anywhere else
-                    These items have higher stats than all other items""")
+                    However, once defeated, you can gain stat bonuses to your health, defence or attack""")
     };
 
     public static Enemy generateRandomEnemy(){

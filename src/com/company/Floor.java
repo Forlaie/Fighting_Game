@@ -18,25 +18,20 @@ public class Floor {
         floorLevel += 1;
         for (String name : enemyNames){
             switch(name) {
-                case "Enemy" ->
-                    enemies.add(new Enemy("Enemy", 10+Floor.floorLevel, 1+Floor.floorLevel, """
+                case "Enemy" -> enemies.add(new Enemy("Enemy", 10+Floor.floorLevel, 1+Floor.floorLevel, """
             Enemies are people who have been corrupted by the pollution"""));
-                case "Vampire" ->
-                    enemies.add(new Vampire("Vampire", 15+Floor.floorLevel, 3+Floor.floorLevel, """
+                case "Vampire" -> enemies.add(new Vampire("Vampire", 15+Floor.floorLevel, 3+Floor.floorLevel, """
                     Vampires are creatures that suck your blood
                     They steal your hp and heal themselves
                     (scaled according to how much hp you have)"""));
-                case "Golem" ->
-                    enemies.add(new Golem("Golem", 20+Floor.floorLevel, 2+Floor.floorLevel, 5+Floor.floorLevel, """
+                case "Golem" -> enemies.add(new Golem("Golem", 20+Floor.floorLevel, 2+Floor.floorLevel, 5+Floor.floorLevel, """
                     Golems are creatures made of rock and stone that have become sentient due to the pollution
                     They have strong defence, so attacks will deal less damage than usual
                     (scaled according to how much defence the golem has)"""));
-                case "Troll" ->
-                    enemies.add(new Troll("Troll", 5+Floor.floorLevel, 2+Floor.floorLevel, """
+                case "Troll" -> enemies.add(new Troll("Troll", 5+Floor.floorLevel, 2+Floor.floorLevel, """
                     Trolls are mischievous mythical creatures that love to play tricks
                     Trolls will steal an item from your inventory when they die, so equip any items you want to keep safe"""));
-                case "Dragon" ->
-                    enemies.add(new Dragon("Dragon", 50+Floor.floorLevel, 10+Floor.floorLevel, 10+Floor.floorLevel, """
+                case "Dragon" -> enemies.add(new Dragon("Dragon", 50+Floor.floorLevel, 10+Floor.floorLevel, 10+Floor.floorLevel, """
                     Dragons are extremely powerful creatures
                     Dragons have lots of health, attack, and defence, so they're difficult to defeat
                     However, once defeated, they drop special dragon armour that can't be found anywhere else

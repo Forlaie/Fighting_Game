@@ -79,6 +79,11 @@ public class Item {
             System.out.println(bold + item.name + reset);
             System.out.println(italic + item.description + reset);
         }
+        for (Potion potion : potions){
+            System.out.println();
+            System.out.println(bold + potion.name + reset);
+            System.out.println(italic + potion.description + reset);
+        }
     }
 
     public static Item generateRandomDrop(){
@@ -157,8 +162,7 @@ public class Item {
                             System.out.println("Successfully upgraded sword!");
                         }
                     }
-                    default ->
-                        System.out.println("Sorry, that is not a recognized command. Please try again.");
+                    default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                 }
             }
             case "Shield" -> {
@@ -203,8 +207,7 @@ public class Item {
                             System.out.println("Successfully upgraded shield");
                         }
                     }
-                    default ->
-                        System.out.println("Sorry, that is not a recognized command. Please try again.");
+                    default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                 }
             }
             case "Armour" -> {
@@ -249,8 +252,7 @@ public class Item {
                             System.out.println("Successfully upgraded armour!");
                         }
                     }
-                    default ->
-                        System.out.println("Sorry, that is not a recognized command. Please try again.");
+                    default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                 }
             }
         }

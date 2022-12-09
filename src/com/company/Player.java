@@ -407,7 +407,7 @@ public class Player {
     // fix this checkpoint thing
     public void died(Player player, Floor floor) throws FileNotFoundException {
         Scanner input = new Scanner(System.in);
-        System.out.println(bold + "You have died! Restart from previous floor or from the beginning? (P/B)" + reset);
+        System.out.println(bold + "You have died! Restart from previous floor or the beginning? (P/B)" + reset);
         String choice = input.nextLine();
         // fix this
         while (!(choice.equals("P") || choice.equals("B"))){
@@ -445,10 +445,13 @@ public class Player {
                     fileInput = new Scanner(new File("C:\\Users\\jessi\\Desktop\\CS Project Base\\src\\FloorInfo"));
                     if (fileInput.hasNextLine()) {
                         int floorLevel = Integer.parseInt(fileInput.nextLine());
-                        // figure out how to get enemies back...
-                        // Enemy[] enemies =
-                        Floor.floorLevel = floorLevel - 1;
-                        floor = new Floor();
+                        Floor.floorLevel = floorLevel-1;
+                        ArrayList<String> enemyNames = new ArrayList<String>();
+                        while (fileInput.hasNextLine()){
+                            enemyNames.add(fileInput.nextLine());
+                        }
+                        floor = new Floor(enemyNames);
+                        fileInput.close();
                     }
                 } catch (FileNotFoundException e) {
                     System.out.println("Couldn't open floor file");
