@@ -9,7 +9,7 @@ public class Dragon extends Enemy{
 
     public void battle(Player player, Floor floor){
         int playerDamage = (int) (player.getAttack() - player.getAttack()*(defence/100.0));
-        System.out.println("You have dealt " + playerDamage + " damage to " + name);
+        System.out.println("You have dealt " + purple + playerDamage + " damage" + reset + " to " + name);
         health -= playerDamage;
         if (health <= 0){
             died(player, floor);
@@ -22,15 +22,15 @@ public class Dragon extends Enemy{
         int value = (int) (Math.random()*10)+1;
         switch (stat){
             case 0 -> {
-                System.out.println("Health stat increased by " + value + "!");
+                System.out.println(red + "Health stat increased by " + value + "!" + reset);
                 player.setHealth(player.getHealth()+value);
             }
             case 1 -> {
-                System.out.println("Defence stat increased by " + value + "!");
+                System.out.println(blue + "Defence stat increased by " + value + "!" + reset);
                 player.setDefence(player.getDefence()+value);
             }
             case 2 -> {
-                System.out.println("Attack stat increased by " + value + "!");
+                System.out.println(purple + "Attack stat increased by " + value + "!" + reset);
                 player.setAttack(player.getAttack()+value);
             }
         }

@@ -1,13 +1,16 @@
 package com.company;
 
 public class Enemy {
+    public static final String purple = "\u001B[35m";
+    public static final String red = "\u001B[31m";
+    public static final String blue = "\u001B[34m";
+    public static final String bold = "\u001B[1m";
+    public static final String italic = "\033[3m";
+    public static final String reset = "\u001B[0m";
     protected String name;
     protected int health;
     protected int attack;
     protected String description;
-    public static final String bold = "\u001B[1m";
-    public static final String italic = "\033[3m";
-    public static final String reset = "\u001B[0m";
     private static Enemy[] possibleEnemies = {
             new Enemy("Enemy", 10+Floor.floorLevel, 1+Floor.floorLevel, """
             Enemies are people who have been corrupted by the pollution"""),
@@ -65,7 +68,7 @@ public class Enemy {
 
     public void battle(Player player, Floor floor){
         health -= player.getAttack();
-        System.out.println("You have dealt " + player.getAttack() + " damage to " + name);
+        System.out.println("You have dealt " + purple + player.getAttack() + " damage " + reset + "to " + name);
         if (health <= 0){
             died(player, floor);
         }
@@ -81,7 +84,7 @@ public class Enemy {
 
     public void battle(Player player, Dungeon dungeon){
         health -= player.getAttack();
-        System.out.println("You have dealt " + player.getAttack() + " damage to " + name);
+        System.out.println("You have dealt " + purple + player.getAttack() + " damage " + reset + "to " + name);
         if (health <= 0){
             died(player, dungeon);
         }

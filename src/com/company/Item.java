@@ -1,15 +1,16 @@
 package com.company;
-// have different types of armour (e.g. fireproof, rubber)
-// e.g. fireproof good for fighting dragons
-// can merge armours to make them stronger/better
-// MAKE POTIONS
 
 import java.util.Scanner;
 
 public class Item {
-    public static final String reset = "\u001B[0m";
-    public static final String italic = "\033[3m";
+    public static final String purple = "\u001B[35m";
+    public static final String red = "\u001B[31m";
+    public static final String blue = "\u001B[34m";
+    public static final String cyan = "\u001B[36m";
+    public static final String yellow = "\u001B[33m";
     public static final String bold = "\u001B[1m";
+    public static final String italic = "\033[3m";
+    public static final String reset = "\u001B[0m";
     protected String name;
     protected int health;
     protected int defence;
@@ -115,12 +116,12 @@ public class Item {
         Scanner input = new Scanner(System.in);
         switch (this.name){
             case "Sword" -> {
-                System.out.println("Do you want to use vampire materials or other swords? (V/S)");
+                System.out.println(bold + "Do you want to use vampire materials or other swords? " + cyan + "(V/S)" + reset);
                 String choice = input.nextLine();
                 switch (choice){
                     case "V" -> {
-                        System.out.println("How many vampire materials will you use? (Vampire materials: " + player.getVampireMaterials() + ") (Coins: " + player.getCoins() + ")");
-                        System.out.println("Note: Using one vampire material costs 5 coins");
+                        System.out.println(bold + "How many vampire materials will you use? " + reset + italic + "(Vampire materials: " + player.getVampireMaterials() + ") " + yellow + "(Coins: " + player.getCoins() + ")" + reset);
+                        System.out.println(italic + "Note: Using one vampire material costs 5 coins" + reset);
                         int use = Integer.parseInt(input.nextLine());
                         int cost = use * 5;
                         if (player.getCoins() < cost){
@@ -137,8 +138,8 @@ public class Item {
                         }
                     }
                     case "S" -> {
-                        System.out.println("How many swords will you use? (Swords: " + player.getSwords() + ") (Coins: " + player.getCoins() + ")");
-                        System.out.println("Note: Using one sword costs 20 coins");
+                        System.out.println(bold + "How many swords will you use? " + reset + italic + "(Swords: " + player.getSwords() + ") " + yellow + "(Coins: " + player.getCoins() + ")" + reset);
+                        System.out.println(italic + "Note: Using one sword costs 20 coins" + reset);
                         int use = Integer.parseInt(input.nextLine());
                         int cost = use * 5;
                         if (player.getCoins() < cost){
@@ -156,15 +157,17 @@ public class Item {
                             System.out.println("Successfully upgraded sword!");
                         }
                     }
+                    default ->
+                        System.out.println("Sorry, that is not a recognized command. Please try again.");
                 }
             }
             case "Shield" -> {
-                System.out.println("Do you want to use golem materials or other shields? (G/S)");
+                System.out.println(bold + "Do you want to use golem materials or other shields? " + cyan + "(G/S)" + reset);
                 String choice = input.nextLine();
                 switch (choice){
                     case "G" -> {
-                        System.out.println("How many golem materials will you use? (Golem materials: " + player.getGolemMaterials() + ") (Coins: " + player.getCoins() + ")");
-                        System.out.println("Note: Using one golem material costs 5 coins");
+                        System.out.println(bold + "How many golem materials will you use? " + reset + italic + "(Golem materials: " + player.getGolemMaterials() + ") " + yellow + "(Coins: " + player.getCoins() + ")" + reset);
+                        System.out.println(italic + "Note: Using one golem material costs 5 coins" + reset);
                         int use = Integer.parseInt(input.nextLine());
                         int cost = use * 5;
                         if (player.getCoins() < cost){
@@ -181,8 +184,8 @@ public class Item {
                         }
                     }
                     case "S" -> {
-                        System.out.println("How many shields will you use? (Shields: " + player.getShields() + ") (Coins: " + player.getCoins() + ")");
-                        System.out.println("Note: Using one shield costs 20 coins");
+                        System.out.println(bold + "How many shields will you use? " + reset + italic + "(Shields: " + player.getShields() + ") " + yellow + "(Coins: " + player.getCoins() + ")" + reset);
+                        System.out.println(italic + "Note: Using one shield costs 20 coins" + reset);
                         int use = Integer.parseInt(input.nextLine());
                         int cost = use * 5;
                         if (player.getCoins() < cost){
@@ -200,15 +203,17 @@ public class Item {
                             System.out.println("Successfully upgraded shield");
                         }
                     }
+                    default ->
+                        System.out.println("Sorry, that is not a recognized command. Please try again.");
                 }
             }
             case "Armour" -> {
-                System.out.println("Do you want to use enemy materials or other armours? (E/A)");
+                System.out.println(bold + "Do you want to use enemy materials or other armours? " + cyan + "(E/A)" + reset);
                 String choice = input.nextLine();
                 switch (choice) {
                     case "E" -> {
-                        System.out.println("How many enemy materials will you use? (Enemy materials: " + player.getEnemyMaterials() + ") (Coins: " + player.getCoins() + ")");
-                        System.out.println("Note: Using one enemy material costs 5 coins");
+                        System.out.println(bold + "How many enemy materials will you use? " + reset + italic + "(Enemy materials: " + player.getEnemyMaterials() + ") " + yellow + "(Coins: " + player.getCoins() + ")" + reset);
+                        System.out.println(italic + "Note: Using one enemy material costs 5 coins" + reset);
                         int use = Integer.parseInt(input.nextLine());
                         int cost = use * 5;
                         if (player.getCoins() < cost){
@@ -225,8 +230,8 @@ public class Item {
                         }
                     }
                     case "A" -> {
-                        System.out.println("How many armours will you use? (Armours: " + player.getArmours() + ") (Coins: " + player.getCoins() + ")");
-                        System.out.println("Note: Using one armour costs 50 coins");
+                        System.out.println(bold + "How many armours will you use? " + reset + italic + "(Armours: " + player.getArmours() + ") " + yellow + "(Coins: " + player.getCoins() + ")" + reset);
+                        System.out.println(italic + "Note: Using one armour costs 50 coins" + reset);
                         int use = Integer.parseInt(input.nextLine());
                         int cost = use * 5;
                         if (player.getCoins() < cost){
@@ -244,6 +249,8 @@ public class Item {
                             System.out.println("Successfully upgraded armour!");
                         }
                     }
+                    default ->
+                        System.out.println("Sorry, that is not a recognized command. Please try again.");
                 }
             }
         }
@@ -280,6 +287,6 @@ public class Item {
     }
 
     public String toString(){
-        return name + ":" + " +" + health + " hp, +" + defence + " def, +" + attack + " atk, " + cost + " coins";
+        return bold + name + ": " + reset + italic + red + "+" + health + " hp" + reset + italic + ", " + blue + "+" + defence + " def" + reset + italic + ", " + purple + "+" + attack + " atk " + reset + italic + ", " + yellow + cost + " coins" + reset;
     }
 }

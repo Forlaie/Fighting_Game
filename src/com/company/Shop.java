@@ -3,9 +3,9 @@ package com.company;
 public class Shop {
     public static final String cyan = "\u001B[36m";
     public static final String yellow = "\u001B[33m";
-    public static final String reset = "\u001B[0m";
     public static final String bold = "\u001B[1m";
     public static final String italic = "\033[3m";
+    public static final String reset = "\u001B[0m";
 
     public static void shopMenu(Player player){
         System.out.println();

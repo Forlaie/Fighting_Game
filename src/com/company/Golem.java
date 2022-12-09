@@ -10,7 +10,7 @@ public class Golem extends Enemy{
 
     public void battle(Player player, Floor floor){
         int playerDamage = (int) (player.getAttack() - player.getAttack()*(defence/100.0));
-        System.out.println("You have dealt " + playerDamage + " damage to " + name);
+        System.out.println("You have dealt " + purple + playerDamage + " damage " + reset + "to " + name);
         health -= playerDamage;
         if (health <= 0){
             died(player, floor);
@@ -19,7 +19,7 @@ public class Golem extends Enemy{
 
     public void battle(Player player, Dungeon dungeon){
         int playerDamage = (int) (player.getAttack() - player.getAttack()*(defence/100.0));
-        System.out.println("You have dealt " + playerDamage + " damage to " + name);
+        System.out.println("You have dealt " + purple + playerDamage + " damage " + reset + "to " + name);
         health -= playerDamage;
         if (health <= 0){
             died(player, dungeon);

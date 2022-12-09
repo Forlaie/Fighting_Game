@@ -3,6 +3,7 @@ package com.company;
 import java.util.ArrayList;
 
 public class Dungeon {
+    public static final String red = "\u001B[31m";
     public static final String bold = "\u001B[1m";
     public static final String reset = "\u001B[0m";
     private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
@@ -10,27 +11,27 @@ public class Dungeon {
 
     private int difficulty;
 
-    public Dungeon(Player player, int enemyType, int difficulty){
+    public Dungeon(int enemyType, int difficulty){
         this.difficulty = difficulty;
         switch (enemyType) {
-            case 1 -> enemyDungeon(player);
-            case 2 -> vampireDungeon(player);
-            case 3 -> golemDungeon(player);
+            case 1 -> enemyDungeon();
+            case 2 -> vampireDungeon();
+            case 3 -> golemDungeon();
         }
     }
 
-    public void enemyDungeon(Player player){
-        for (int i = 0; i < 5+difficulty; i++){
+    public void enemyDungeon(){
+        for (int i = 0; i < 4+difficulty; i++){
             Enemy enemy = new Enemy("Enemy", 10*difficulty, difficulty, """
                     Enemies are people who have been corrupted by the pollution
             """);
             enemies.add(enemy);
         }
-        enterDungeon(player, "Enemy");
+        enterDungeon("Enemy");
     }
 
-    public void vampireDungeon(Player player){
-        for (int i = 0; i < 5+difficulty; i++){
+    public void vampireDungeon(){
+        for (int i = 0; i < 4+difficulty; i++){
             Vampire vampire = new Vampire("Vampire", 15*difficulty, 3*difficulty, """
                     Vampires are creatures that suck your blood
                     They steal your hp and heal themselves
@@ -38,11 +39,11 @@ public class Dungeon {
                     """);
             enemies.add(vampire);
         }
-        enterDungeon(player, "Vampire");
+        enterDungeon("Vampire");
     }
 
-    public void golemDungeon(Player player){
-        for (int i = 0; i < 5+difficulty; i++){
+    public void golemDungeon(){
+        for (int i = 0; i < 4+difficulty; i++){
             Golem golem = new Golem("Golem", 20*difficulty, 2*difficulty, 5*difficulty, """
                     Golems are creatures made of rock and stone that have become sentient due to the pollution
                     They have strong defence, so attacks will deal less damage than usual
@@ -50,10 +51,10 @@ public class Dungeon {
                     """);
             enemies.add(golem);
         }
-        enterDungeon(player, "Golem");
+        enterDungeon("Golem");
     }
 
-    public void enterDungeon(Player player, String enemyType){
+    public void enterDungeon(String enemyType){
         System.out.println();
         System.out.println(bold + "Dungeon " + enemyType + ": Difficulty " + difficulty + reset);
         for (Enemy enemy : enemies) {
@@ -85,7 +86,7 @@ public class Dungeon {
 
     public void fightUpdate(Player player) {
         System.out.println(bold + "Result" + reset);
-        System.out.println("You have " + player.getHealth() + " hp");
+        System.out.println(red + "You have " + player.getHealth() + " hp" + reset);
         for (Enemy enemy : enemies){
             System.out.println(enemy);
         }
