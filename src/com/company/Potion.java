@@ -1,4 +1,5 @@
 package com.company;
+// FIX POTIONS CAUSE IDK WHY ITS NOT WORKING
 
 public class Potion extends Item{
     public Potion(String name, int health, int defence, int attack, int cost, String description) {

@@ -18,7 +18,7 @@ public class Troll extends Enemy{
         return potion.getName();
     }
     public void died(Player player, Floor floor){
-        if (player.getMaterials().size() != 0){
+        if (!player.getInventory().isEmpty()){
             String itemName = steal(player);
             System.out.println(name + " steals " + itemName + " before dying");
         }

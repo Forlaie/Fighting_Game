@@ -24,7 +24,7 @@ public class Main {
         System.out.println(cyan + "5:" + reset + italic + " level up items" + reset);
         System.out.println(cyan + "6:" + reset + italic + " access shop");
         System.out.println(cyan + "7:" + reset + italic + " enter a dungeon" + reset);
-        System.out.println(cyan + "8:" + reset + italic + " enter floor " + (Floor.floorLevel+1));
+        System.out.println(cyan + "8:" + reset + italic + " enter floor " + Floor.floorLevel);
         System.out.println(cyan + "9:" + reset + italic + " save and exit" + reset);
         System.out.println("========================= ©MM");
     }
@@ -89,11 +89,10 @@ public class Main {
             }
 
             try {
-                Floor floor = null;
+                Floor floor;
                 fileInput = new Scanner(new File("C:\\Users\\jessi\\Desktop\\CS Project Base\\src\\FloorInfo"));
                 if (fileInput.hasNextLine()){
-                    int floorLevel = Integer.parseInt(fileInput.nextLine());
-                    Floor.floorLevel = floorLevel-1;
+                    Floor.floorLevel = Integer.parseInt(fileInput.nextLine());
                     ArrayList<String> enemyNames = new ArrayList<String>();
                     while (fileInput.hasNextLine()){
                         enemyNames.add(fileInput.nextLine());
@@ -103,6 +102,7 @@ public class Main {
                 }
                 else{
                     Floor.floorLevel = 0;
+                    floor = new Floor();
                 }
                 assert player != null;
                 mainMenu();
@@ -153,16 +153,14 @@ public class Main {
                             String action = userInput.nextLine();
                             switch(action) {
                                 case "B" -> {
-                                    Shop.shopMenu(player);
-                                    int index = Integer.parseInt(userInput.nextLine());
-                                    player.purchaseItem(Item.potions[index-1]);
+                                    Shop.purchaseItem(player);
                                 }
                                 case "S" -> {
                                     System.out.println(bold + "Do you want to sell materials or potions? " + cyan + "(M/P)" + reset);
                                     String sellChoice = userInput.nextLine();
                                     switch(sellChoice) {
-                                        case "M" -> player.sellMaterial();
-                                        case "P" -> player.sellPotion();
+                                        case "M" -> Shop.sellMaterial(player);
+                                        case "P" -> Shop.sellPotion(player);
                                         default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                                     }
                                 }
@@ -173,14 +171,14 @@ public class Main {
                         }
                         case 7 -> {
                             System.out.println(bold + "What dungeon do you want to enter?" + reset);
-                            System.out.println(cyan + "1:" + reset + italic + " Enemy dungeon" + reset);
-                            System.out.println(cyan + "2:" + reset + italic + " Vampire dungeon" + reset);
-                            System.out.println(cyan + "3:" + reset + italic + " Golem dungeon" + reset);
+                            System.out.println(bold + cyan + "1:" + reset + " Enemy dungeon" + reset);
+                            System.out.println(bold + cyan + "2:" + reset + " Vampire dungeon" + reset);
+                            System.out.println(bold + cyan + "3:" + reset + " Golem dungeon" + reset);
                             int enemyType = Integer.parseInt(userInput.nextLine());
                             System.out.println(bold + "What difficulty do you want to enter?" + reset);
-                            System.out.println(cyan + "1: " + reset + "Easy: " + reset + italic + "5 monsters, normal stats" + reset);
-                            System.out.println(cyan + "2: " + reset + "Medium: " + reset + italic + "6 monsters, stats are doubled" + reset);
-                            System.out.println(cyan + "3: " + reset + "Hard: " + reset + italic + "7 monsters, stats are tripled" + reset);
+                            System.out.println(bold + cyan + "1: " + reset + bold + "Easy: " + reset + italic + "5 monsters, normal stats" + reset);
+                            System.out.println(bold + cyan + "2: " + reset + bold + "Medium: " + reset + italic + "6 monsters, stats are doubled" + reset);
+                            System.out.println(bold + cyan + "3: " + reset + bold + "Hard: " + reset + italic + "7 monsters, stats are tripled" + reset);
                             int difficulty = Integer.parseInt(userInput.nextLine());
                             Dungeon dungeon = new Dungeon(enemyType, difficulty);
                             while (!dungeon.getAllEnemiesDead()){
@@ -240,7 +238,6 @@ public class Main {
                             else{
                                 needsNewFloor = true;
                             }
-                            assert floor != null;
                             putInfoIntoFiles(player, floor);
 
                             while (!floor.getAllEnemiesDead()) {
@@ -286,7 +283,7 @@ public class Main {
                                 }
                             }
                             floor.floorCleared(player);
-                            fightMenu();
+                            mainMenu();
                             choice = Integer.parseInt(userInput.nextLine());
                         }
                         default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
@@ -304,14 +301,14 @@ public class Main {
         }
     }
 
-    private static void putInfoIntoFiles(Player player, Floor currentFloor) {
+    private static void putInfoIntoFiles(Player player, Floor floor) {
         PrintWriter floorOutput;
         PrintWriter playerOutput;
         try {
             floorOutput = new PrintWriter("C:\\Users\\jessi\\Desktop\\CS Project Base\\src\\FloorInfo");
-            floorOutput.println(Floor.floorLevel);
-            if (currentFloor != null){
-                for (Enemy enemy : currentFloor.getEnemies()){
+            floorOutput.println(Floor.floorLevel-1);
+            if (floor != null){
+                for (Enemy enemy : floor.getEnemies()){
                     floorOutput.println(enemy.getName());
                 }
             }
@@ -361,19 +358,19 @@ public class Main {
                 playerOutput.println(0);
             }
             if (player.getInventory().containsKey(Item.potions[0])){
-                playerOutput.println(player.getMaterials().get(Item.potions[0]));
+                playerOutput.println(player.getInventory().get(Item.potions[0]));
             }
             else{
                 playerOutput.println(0);
             }
             if (player.getInventory().containsKey(Item.potions[1])){
-                playerOutput.println(player.getMaterials().get(Item.potions[1]));
+                playerOutput.println(player.getInventory().get(Item.potions[1]));
             }
             else{
                 playerOutput.println(0);
             }
             if (player.getInventory().containsKey(Item.potions[2])){
-                playerOutput.println(player.getMaterials().get(Item.potions[2]));
+                playerOutput.println(player.getInventory().get(Item.potions[2]));
             }
             else{
                 playerOutput.println(0);

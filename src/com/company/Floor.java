@@ -49,7 +49,6 @@ public class Floor {
         for (int i = 0; i < floorLevel; i++){
             enemies.add(Enemy.generateRandomEnemy());
         }
-        enterLevel();
     }
 
     public ArrayList<Enemy> getEnemies(){

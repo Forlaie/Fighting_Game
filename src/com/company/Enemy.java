@@ -91,13 +91,12 @@ public class Enemy {
 
     public void died(Player player, Dungeon dungeon){
         System.out.println(name + " has died");
-        Item item = new Item("Enemy material", 1, "enemies drop this");
-        player.defeatedMonster(item);
-        System.out.println(name + " dropped " + item.getName());
+        player.defeatedMonster(Item.materialDrops[0]);
+        System.out.println(name + " dropped " + Item.materialDrops[0].getName());
         dungeon.addDeadEnemy(this);
     }
 
     public String toString(){
-        return this.name + " has " + this.health + " hp";
+        return this.name + " has " + red + this.health + " hp" + reset;
     }
 }
