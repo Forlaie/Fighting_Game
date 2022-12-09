@@ -82,8 +82,9 @@ public class Floor {
     }
 
     public void fightUpdate(Player player){
+        updateEnemies();
         System.out.println(bold + "Result" + reset);
-        System.out.println(red + "You have " + player.getHealth() + " hp" + reset);
+        System.out.println("You have " + red + player.getHealth() + " hp" + reset);
         for (Enemy enemy : enemies){
             System.out.println(enemy);
         }

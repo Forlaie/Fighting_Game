@@ -138,7 +138,7 @@ public class Item {
                         else{
                             player.useVampireMaterial(use);
                             player.useCoins(cost);
-                            upgradeAttack(use, player);
+                            player.setEquipped(0, 0, 0, use);
                             System.out.println("Successfully upgraded sword!");
                         }
                     }
@@ -156,9 +156,7 @@ public class Item {
                         else{
                             player.useSword(use);
                             player.useCoins(cost);
-                            upgradeAttack(10*use, player);
-                            upgradeDefence(use, player);
-                            upgradeHealth(use, player);
+                            player.setEquipped(0, use, use, 10*use);
                             System.out.println("Successfully upgraded sword!");
                         }
                     }
@@ -169,21 +167,21 @@ public class Item {
                 System.out.println(bold + "Do you want to use enemy materials or shields? " + cyan + "(E/S)" + reset);
                 String choice = input.nextLine();
                 switch (choice){
-                    case "G" -> {
-                        System.out.println(bold + "How many enemy materials will you use? " + reset + italic + "(Enemy materials: " + player.getGolemMaterials() + ") " + yellow + "(Coins: " + player.getCoins() + ")" + reset);
+                    case "E" -> {
+                        System.out.println(bold + "How many enemy materials will you use? " + reset + italic + "(Enemy materials: " + player.getEnemyMaterials() + ") " + yellow + "(Coins: " + player.getCoins() + ")" + reset);
                         System.out.println(italic + "Note: Using one enemy material costs 5 coins" + reset);
                         int use = Integer.parseInt(input.nextLine());
                         int cost = use * 5;
-                        if (player.getGolemMaterials() < use){
+                        if (player.getEnemyMaterials() < use){
                             System.out.println("Sorry, you don't have enough enemy materials");
                         }
                         else if (player.getCoins() < cost){
                             System.out.println("Sorry, you don't have enough coins.");
                         }
                         else{
-                            player.useGolemMaterial(use);
+                            player.useEnemyMaterial(use);
                             player.useCoins(cost);
-                            upgradeDefence(use, player);
+                            player.setEquipped(1, 0, use, 0);
                             System.out.println("Successfully upgraded shield!");
                         }
                     }
@@ -201,9 +199,7 @@ public class Item {
                         else{
                             player.useShield(use);
                             player.useCoins(cost);
-                            upgradeAttack(use, player);
-                            upgradeDefence(use, player);
-                            upgradeHealth(5*use, player);
+                            player.setEquipped(1, 5*use, use, use);
                             System.out.println("Successfully upgraded shield");
                         }
                     }
@@ -214,21 +210,21 @@ public class Item {
                 System.out.println(bold + "Do you want to use golem materials or armours? " + cyan + "(G/A)" + reset);
                 String choice = input.nextLine();
                 switch (choice) {
-                    case "E" -> {
+                    case "G" -> {
                         System.out.println(bold + "How many golem materials will you use? " + reset + italic + "(Golem materials: " + player.getGolemMaterials() + ") " + yellow + "(Coins: " + player.getCoins() + ")" + reset);
                         System.out.println(italic + "Note: Using one golem material costs 5 coins" + reset);
                         int use = Integer.parseInt(input.nextLine());
                         int cost = use * 5;
-                        if (player.getEnemyMaterials() < use){
+                        if (player.getGolemMaterials() < use){
                             System.out.println("Sorry, you don't have enough golem materials");
                         }
                         else if (player.getCoins() < cost){
                             System.out.println("Sorry, you don't have enough coins.");
                         }
                         else{
-                            player.useEnemyMaterial(use);
+                            player.useGolemMaterial(use);
                             player.useCoins(cost);
-                            upgradeDefence(use, player);
+                            player.setEquipped(2, 0, use, 0);
                             System.out.println("Successfully upgraded armour!");
                         }
                     }
@@ -246,9 +242,7 @@ public class Item {
                         else{
                             player.useArmour(use);
                             player.useCoins(cost);
-                            upgradeAttack(use, player);
-                            upgradeHealth(use, player);
-                            upgradeDefence(20*use, player);
+                            player.setEquipped(2, use, 20*use, use);
                             System.out.println("Successfully upgraded armour!");
                         }
                     }
@@ -273,22 +267,19 @@ public class Item {
         return cost;
     }
 
-    public void upgradeHealth(int increase, Player player){
-        health += increase;
-        player.setHealth(player.getHealth() + increase);
-    }
-
-    public void upgradeDefence(int increase, Player player){
-        defence += increase;
-        player.setDefence(player.getDefence() + increase);
-    }
-
-    public void upgradeAttack(int increase, Player player){
-        attack += increase;
-        player.setAttack(player.getAttack() + increase);
-    }
-
     public String toString(){
         return bold + name + ": " + reset + italic + red + "+" + health + " hp" + reset + italic + ", " + blue + "+" + defence + " def" + reset + italic + ", " + purple + "+" + attack + " atk " + reset + italic + ", " + yellow + cost + " coins" + reset;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public void setDefence(int defence){
+        this.defence = defence;
+    }
+
+    public void setAttack(int attack){
+        this.attack = attack;
     }
 }

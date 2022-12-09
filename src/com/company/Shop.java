@@ -2,7 +2,9 @@ package com.company;
 
 import java.util.Scanner;
 import java.util.Set;
-
+// button to exit shop
+// sell weapons
+//user choose amount of potion to purchase
 public class Shop {
     public static final String cyan = "\u001B[36m";
     public static final String yellow = "\u001B[33m";

@@ -54,7 +54,6 @@ public class Main {
     public static void main(String[] args) {
         Scanner userInput = new Scanner(System.in);
         Player player = null;
-        boolean needsNewFloor = false;
         try {
             Scanner fileInput = new Scanner(new File("C:\\Users\\jessi\\Desktop\\CS Project Base\\src\\PlayerInfo"));
             if (fileInput.hasNextLine()){
@@ -77,7 +76,7 @@ public class Main {
                         potionQuantities[i] = quantity;
                     }
                     player = new Player(name, health, defence, attack, level, xp, coins, materialQuantities, potionQuantities);
-                    System.out.println(bold + "Welcome back " + green + player.getName() + reset + bold + "!" + reset);
+                    System.out.println(bold + "Welcome back " + green + player.getName() + reset + bold + " to Wen Ymar Elad!" + reset);
                 }
                 fileInput.close();
             }
@@ -85,7 +84,6 @@ public class Main {
                 System.out.println(bold + "Welcome to Wen Ymar Elad! What is your name?" + reset);
                 String name = userInput.nextLine();
                 player = new Player(name);
-                needsNewFloor = true;
             }
 
             try {
@@ -106,9 +104,11 @@ public class Main {
                 }
                 assert player != null;
                 mainMenu();
+                putInfoIntoFiles(player, floor);
                 int choice = Integer.parseInt(userInput.nextLine());
+                boolean exitGame = false;
 
-                while (choice != 9){
+                while (!exitGame){
                     switch (choice) {
                         case 1 -> {
                             // info about enemies and items
@@ -181,7 +181,7 @@ public class Main {
                             System.out.println(bold + cyan + "3: " + reset + bold + "Hard: " + reset + italic + "7 monsters, stats are tripled" + reset);
                             int difficulty = Integer.parseInt(userInput.nextLine());
                             Dungeon dungeon = new Dungeon(enemyType, difficulty);
-                            while (!dungeon.getAllEnemiesDead()){
+                            while (!dungeon.getAllEnemiesDead() && !exitGame){
                                 fightMenu();
                                 choice = Integer.parseInt(userInput.nextLine());
                                 switch (choice) {
@@ -201,11 +201,11 @@ public class Main {
                                     // item stuff
                                     case 3 -> player.inventoryMenu();
                                     case 4 -> {
-                                        if (player.getInventory().size() != 0){
+                                        if (player.getInventory().size() != 0) {
                                             player.usePotion();
                                         }
-                                        else{
-                                            System.out.println("Sorry, you have no potions.");
+                                        else {
+                                            System.out.println("Sorry, you have no potions");
                                         }
                                     }
                                     case 5 -> {
@@ -218,7 +218,10 @@ public class Main {
                                         System.out.println(bold + "The game will save your progress up to the last floor you completed. Do you wish to proceed? " + cyan + "(Y/N)" + reset);
                                         String action = userInput.nextLine();
                                         switch (action) {
-                                            case "Y" -> putInfoIntoFiles(player, floor);
+                                            case "Y" -> {
+                                                putInfoIntoFiles(player, floor);
+                                                exitGame = true;
+                                            }
                                             case "N" -> System.out.println(italic + "Resuming game..." + reset);
                                             default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                                         }
@@ -226,21 +229,16 @@ public class Main {
                                     default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                                 }
                             }
-                            dungeon.dungeonCleared(player);
-                            mainMenu();
-                            choice = Integer.parseInt(userInput.nextLine());
+                            if (!exitGame){
+                                dungeon.dungeonCleared(player);
+                                mainMenu();
+                                choice = Integer.parseInt(userInput.nextLine());
+                            }
                         }
                         case 8 -> {
                             // fight stuff
-                            if (needsNewFloor){
-                                floor = new Floor();
-                            }
-                            else{
-                                needsNewFloor = true;
-                            }
-                            putInfoIntoFiles(player, floor);
-
-                            while (!floor.getAllEnemiesDead()) {
+                            floor.enterLevel();
+                            while (!floor.getAllEnemiesDead() && !exitGame) {
                                 fightMenu();
                                 choice = Integer.parseInt(userInput.nextLine());
                                 switch (choice) {
@@ -274,7 +272,10 @@ public class Main {
                                         System.out.println(bold + "The game will save your progress up to the last floor you completed. Do you wish to proceed? " + cyan + "(Y/N)" + reset);
                                         String action = userInput.nextLine();
                                         switch (action) {
-                                            case "Y" -> putInfoIntoFiles(player, floor);
+                                            case "Y" -> {
+                                                putInfoIntoFiles(player, floor);
+                                                exitGame = true;
+                                            }
                                             case "N" -> System.out.println(italic + "Resuming game..." + reset);
                                             default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                                         }
@@ -282,10 +283,15 @@ public class Main {
                                     default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                                 }
                             }
-                            floor.floorCleared(player);
-                            mainMenu();
-                            choice = Integer.parseInt(userInput.nextLine());
+                            if (!exitGame){
+                                floor.floorCleared(player);
+                                floor = new Floor();
+                                putInfoIntoFiles(player, floor);
+                                mainMenu();
+                                choice = Integer.parseInt(userInput.nextLine());
+                            }
                         }
+                        case 9 -> exitGame = true;
                         default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                     }
                 }
@@ -301,7 +307,7 @@ public class Main {
         }
     }
 
-    private static void putInfoIntoFiles(Player player, Floor floor) {
+    public static void putInfoIntoFiles(Player player, Floor floor) {
         PrintWriter floorOutput;
         PrintWriter playerOutput;
         try {

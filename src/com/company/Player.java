@@ -2,6 +2,8 @@ package com.company;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+// be able to use potion in main lobby (health potion)
+// WHY DO WEAPON STATS NOT CHANGE
 
 public class Player {
     public static final String red = "\u001B[31m";
@@ -55,6 +57,12 @@ public class Player {
         this.coins = coins;
         loadMaterialInfo(materialQuantities);
         loadPotionInfo(potionQuantities);
+    }
+
+    public void setEquipped(int index, int health, int defence, int attack){
+        equipped[index].setHealth(equipped[index].getHealth()+health);
+        equipped[index].setDefence(equipped[index].getDefence()+defence);
+        equipped[index].setAttack(equipped[index].getAttack()+attack);
     }
 
     private void loadPotionInfo(int[] potionQuantities) {
@@ -209,27 +217,28 @@ public class Player {
         switch (potion.getName()){
             case "Health potion" -> {
                 health += potion.getHealth();
-                inventory.replace(Item.potions[0], inventory.get(Item.potions[0])-1);
-                if (inventory.get(Item.potions[0]) == 0){
-                    inventory.remove(Item.potions[0]);
+                System.out.println(inventory.get(potion));
+                inventory.replace(potion, inventory.get(potion)-1);
+                if (inventory.get(potion) == 0){
+                    inventory.remove(potion);
                 }
                 System.out.println("Used health potion");
             }
             case "Attack potion" -> {
                 attack *= potion.getAttack();
                 potionsInUse.add(potion);
-                inventory.replace(Item.potions[1], inventory.get(Item.potions[1])-1);
-                if (inventory.get(Item.potions[1]) == 0){
-                    inventory.remove(Item.potions[1]);
+                inventory.replace(potion, inventory.get(potion)-1);
+                if (inventory.get(potion) == 0){
+                    inventory.remove(potion);
                 }
                 System.out.println("Used attack potion");
             }
             case "Defence potion" -> {
                 defence *= potion.getDefence();
                 potionsInUse.add(potion);
-                inventory.replace(Item.potions[2], inventory.get(Item.potions[2])-1);
-                if (inventory.get(Item.potions[2]) == 0){
-                    inventory.remove(Item.potions[2]);
+                inventory.replace(potion, inventory.get(potion)-1);
+                if (inventory.get(potion) == 0){
+                    inventory.remove(potion);
                 }
                 System.out.println("Used defence potion");
             }
@@ -274,7 +283,6 @@ public class Player {
     }
 
     public void battle(Floor floor) throws FileNotFoundException {
-        floor.enterLevel();
         System.out.println();
         System.out.println(bold + "Enemy turn" + reset);
         ArrayList<Enemy> enemies = floor.getEnemies();
@@ -286,11 +294,13 @@ public class Player {
             died(this, floor);
         }
         else{
+            System.out.println();
             System.out.println(bold + "Your turn" + reset);
             for (Enemy enemy : enemies){
                 enemy.battle(this, floor);
             }
-            floor.updateEnemies();
+            System.out.println();
+            //floor.updateEnemies();
         }
     }
 
@@ -370,6 +380,12 @@ public class Player {
             } catch (FileNotFoundException e) {
                 System.out.println("Couldn't open player file");
             }
+        }
+        else{
+            player = new Player(player.getName());
+            Floor.floorLevel = 0;
+            floor = new Floor();
+            Main.putInfoIntoFiles(player, floor);
         }
     }
 
