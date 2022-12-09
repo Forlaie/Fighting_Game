@@ -74,11 +74,11 @@ public class Floor {
     public void floorCleared(Player player){
         System.out.println();
         System.out.println(bold + "Floor " + floorLevel + " cleared!" + reset);
-        player.profile();
         for (Potion potion : player.getPotionsInUse()){
             potion.endOfEffect(player);
         }
         player.clearPotionsInUse();
+        player.profile();
     }
 
     public void fightUpdate(Player player){

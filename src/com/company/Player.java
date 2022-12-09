@@ -199,7 +199,7 @@ public class Player {
         System.out.println(bold + "What potion would you like to use?" + reset);
         int i = 1;
         for (Potion key : inventory.keySet()) {
-            System.out.println(bold + cyan + i + ": " + reset + key.getName() + ": " + reset + italic + inventory.get(key) + reset);
+            System.out.println(bold + cyan + i + ": " + reset + bold + key.getName() + ": " + reset + italic + inventory.get(key) + reset);
             i++;
         }
         Set<Potion> keySet = inventory.keySet();
@@ -213,22 +213,25 @@ public class Player {
                 if (inventory.get(Item.potions[0]) == 0){
                     inventory.remove(Item.potions[0]);
                 }
+                System.out.println("Used health potion");
             }
-            case "Defence potion" -> {
-                defence *= potion.getDefence();
+            case "Attack potion" -> {
+                attack *= potion.getAttack();
                 potionsInUse.add(potion);
                 inventory.replace(Item.potions[1], inventory.get(Item.potions[1])-1);
                 if (inventory.get(Item.potions[1]) == 0){
                     inventory.remove(Item.potions[1]);
                 }
+                System.out.println("Used attack potion");
             }
-            case "Attack potion" -> {
-                attack *= potion.getAttack();
+            case "Defence potion" -> {
+                defence *= potion.getDefence();
                 potionsInUse.add(potion);
                 inventory.replace(Item.potions[2], inventory.get(Item.potions[2])-1);
                 if (inventory.get(Item.potions[2]) == 0){
                     inventory.remove(Item.potions[2]);
                 }
+                System.out.println("Used defence potion");
             }
         }
     }
