@@ -1,4 +1,5 @@
 package com.company;
+// fix negative health for enemies
 
 public class Enemy {
     public static final String purple = "\u001B[35m";
@@ -12,20 +13,20 @@ public class Enemy {
     protected int attack;
     protected String description;
     private static final Enemy[] possibleEnemies = {
-            new Enemy("Enemy", 10+Floor.floorLevel, 1+Floor.floorLevel, """
+            new Enemy("Enemy", 10*Floor.floorLevel, 1*Floor.floorLevel, """
             Enemies are people who have been corrupted by the pollution"""),
-            new Vampire("Vampire", 15+Floor.floorLevel, 3+Floor.floorLevel, """
+            new Vampire("Vampire", 15*Floor.floorLevel, 3*Floor.floorLevel, """
                     Vampires are creatures that suck your blood
                     They steal your hp and heal themselves
                     (scaled from your hp)"""),
-            new Golem("Golem", 20+Floor.floorLevel, 2+Floor.floorLevel, 5+Floor.floorLevel, """
+            new Golem("Golem", 20*Floor.floorLevel, 2*Floor.floorLevel, 5*Floor.floorLevel, """
                     Golems are creatures made of rock and stone that have become sentient due to the pollution
                     They have strong defence, so attacks will deal less damage than usual
                     (scaled from golem defence)"""),
-            new Troll("Troll", 5+Floor.floorLevel, 2+Floor.floorLevel, """
+            new Troll("Troll", 5*Floor.floorLevel, 2*Floor.floorLevel, """
                     Trolls are mischievous mythical creatures that love to play tricks
                     Trolls will steal an item from your inventory when they die, so equip any items you want to keep safe"""),
-            new Dragon("Dragon", 50+Floor.floorLevel, 10+Floor.floorLevel, 10+Floor.floorLevel, """
+            new Dragon("Dragon", 50*Floor.floorLevel, 10*Floor.floorLevel, 10*Floor.floorLevel, """
                     Dragons are extremely powerful creatures
                     Dragons have lots of health, attack, and defence, so they're difficult to defeat
                     However, once defeated, you can gain stat bonuses to your health, defence or attack""")

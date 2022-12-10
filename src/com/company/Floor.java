@@ -16,6 +16,10 @@ public class Floor {
 
     public Floor(ArrayList<String> enemyNames){
         floorLevel += 1;
+        setFloorEnemies(enemyNames);
+    }
+
+    public void setFloorEnemies(ArrayList<String> enemyNames){
         for (String name : enemyNames){
             switch(name) {
                 case "Enemy" -> enemies.add(new Enemy("Enemy", 10+Floor.floorLevel, 1+Floor.floorLevel, """

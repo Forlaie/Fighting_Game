@@ -75,7 +75,22 @@ public class Main {
                         int quantity = Integer.parseInt(fileInput.nextLine());
                         potionQuantities[i] = quantity;
                     }
-                    player = new Player(name, health, defence, attack, level, xp, coins, materialQuantities, potionQuantities);
+                    int[] swordInfo = new int[3];
+                    for (int i = 0; i < 3; i++){
+                        int stat = Integer.parseInt(fileInput.nextLine());
+                        swordInfo[i] = stat;
+                    }
+                    int[] shieldInfo = new int[3];
+                    for (int i = 0; i < 3; i++){
+                        int stat = Integer.parseInt(fileInput.nextLine());
+                        shieldInfo[i] = stat;
+                    }
+                    int[] armourInfo = new int[3];
+                    for (int i = 0; i < 3; i++){
+                        int stat = Integer.parseInt(fileInput.nextLine());
+                        armourInfo[i] = stat;
+                    }
+                    player = new Player(name, health, defence, attack, level, xp, coins, materialQuantities, potionQuantities, swordInfo, shieldInfo, armourInfo);
                     System.out.println(bold + "Welcome back " + green + player.getName() + reset + bold + " to Wen Ymar Elad!" + reset);
                 }
                 fileInput.close();
@@ -107,6 +122,7 @@ public class Main {
                 putInfoIntoFiles(player, floor);
                 int choice = Integer.parseInt(userInput.nextLine());
                 boolean exitGame = false;
+                boolean exitCurrentPlace = false;
 
                 while (!exitGame){
                     switch (choice) {
@@ -126,6 +142,7 @@ public class Main {
                             System.out.println(bold + "What would you like your new username to be?" + reset);
                             String name = userInput.nextLine();
                             player.changeName(name);
+                            putInfoIntoFiles(player, floor);
                             mainMenu();
                             choice = Integer.parseInt(userInput.nextLine());
                         }
@@ -159,8 +176,22 @@ public class Main {
                                     System.out.println(bold + "Do you want to sell materials or potions? " + cyan + "(M/P)" + reset);
                                     String sellChoice = userInput.nextLine();
                                     switch(sellChoice) {
-                                        case "M" -> Shop.sellMaterial(player);
-                                        case "P" -> Shop.sellPotion(player);
+                                        case "M" -> {
+                                            if (player.getMaterials().isEmpty()){
+                                                System.out.println("Sorry, you don't have any materials to sell");
+                                            }
+                                            else{
+                                                Shop.sellMaterial(player);
+                                            }
+                                        }
+                                        case "P" -> {
+                                            if (player.getInventory().isEmpty()){
+                                                System.out.println("Sorry, you don't have any potions to sell");
+                                            }
+                                            else{
+                                                Shop.sellPotion(player);
+                                            }
+                                        }
                                         default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                                     }
                                 }
@@ -205,13 +236,18 @@ public class Main {
                                             player.usePotion();
                                         }
                                         else {
-                                            System.out.println("Sorry, you have no potions");
+                                            System.out.println("Sorry, you have no potions to use");
                                         }
                                     }
                                     case 5 -> {
                                         //fight stuff
                                         player.battle(dungeon, floor);
-                                        dungeon.fightUpdate(player);
+                                        if (!player.getIsDead()){
+                                            dungeon.fightUpdate(player);
+                                        }
+                                        else{
+                                            //resetFromBeginning =
+                                        }
                                     }
                                     case 6 -> {
                                         // save stuff
@@ -238,7 +274,7 @@ public class Main {
                         case 8 -> {
                             // fight stuff
                             floor.enterLevel();
-                            while (!floor.getAllEnemiesDead() && !exitGame) {
+                            while (!floor.getAllEnemiesDead() && !exitGame && !exitCurrentPlace) {
                                 fightMenu();
                                 choice = Integer.parseInt(userInput.nextLine());
                                 switch (choice) {
@@ -259,13 +295,18 @@ public class Main {
                                         if (player.getInventory().size() != 0) {
                                             player.usePotion();
                                         } else {
-                                            System.out.println("Sorry, you have no potions");
+                                            System.out.println("Sorry, you have no potions to use");
                                         }
                                     }
                                     case 5 -> {
                                         // fight stuff
                                         player.battle(floor);
-                                        floor.fightUpdate(player);
+                                        if (!player.getIsDead()){
+                                            floor.fightUpdate(player);
+                                        }
+                                        else{
+                                            exitCurrentPlace = true;
+                                        }
                                     }
                                     case 6 -> {
                                         // save stuff
@@ -284,9 +325,11 @@ public class Main {
                                 }
                             }
                             if (!exitGame){
-                                floor.floorCleared(player);
-                                floor = new Floor();
-                                putInfoIntoFiles(player, floor);
+                                if (!exitCurrentPlace){
+                                    floor.floorCleared(player);
+                                    floor = new Floor();
+                                    putInfoIntoFiles(player, floor);
+                                }
                                 mainMenu();
                                 choice = Integer.parseInt(userInput.nextLine());
                             }
@@ -312,7 +355,7 @@ public class Main {
         PrintWriter playerOutput;
         try {
             floorOutput = new PrintWriter("C:\\Users\\jessi\\Desktop\\CS Project Base\\src\\FloorInfo");
-            floorOutput.println(Floor.floorLevel-1);
+            floorOutput.println(Floor.floorLevel);
             if (floor != null){
                 for (Enemy enemy : floor.getEnemies()){
                     floorOutput.println(enemy.getName());
@@ -381,6 +424,15 @@ public class Main {
             else{
                 playerOutput.println(0);
             }
+            playerOutput.println(player.getEquipped()[0].getHealth());
+            playerOutput.println(player.getEquipped()[0].getDefence());
+            playerOutput.println(player.getEquipped()[0].getAttack());
+            playerOutput.println(player.getEquipped()[1].getHealth());
+            playerOutput.println(player.getEquipped()[1].getDefence());
+            playerOutput.println(player.getEquipped()[1].getAttack());
+            playerOutput.println(player.getEquipped()[2].getHealth());
+            playerOutput.println(player.getEquipped()[2].getDefence());
+            playerOutput.println(player.getEquipped()[2].getAttack());
             playerOutput.close();
         } catch (FileNotFoundException e) {
             System.out.println("Couldn't write to floor level");

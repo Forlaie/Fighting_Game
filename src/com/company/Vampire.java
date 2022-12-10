@@ -22,7 +22,7 @@ public class Vampire extends Enemy{
         System.out.println("You have dealt " + purple + player.getAttack() + " damage " + reset + "to " + name);
         int suckedBlood = (int) (player.getHealth()*0.05);
         health += suckedBlood;
-        System.out.println("Vampire sucked " + suckedBlood + " hp from you");
+        System.out.println("Vampire sucked " + red + suckedBlood + " hp " + reset + "from you");
         player.setHealth(player.getHealth() - suckedBlood);
         if (health <= 0){
             died(player, dungeon);

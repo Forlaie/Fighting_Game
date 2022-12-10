@@ -70,6 +70,10 @@ public class Dungeon {
     public void dungeonCleared(Player player){
         System.out.println();
         System.out.println(bold + "Dungeon cleared!" + reset);
+        for (Potion potion : player.getPotionsInUse()){
+            potion.endOfEffect(player);
+        }
+        player.clearPotionsInUse();
         player.profile();
     }
 

@@ -31,7 +31,7 @@ public class Shop {
             int i = 1;
             System.out.println(bold + "What would you like to sell?" + reset + italic + "(Enter the number of the item)" + reset);
             for (Item key : player.getMaterials().keySet()) {
-                System.out.println(i + ": " + key.getName() + ": " + player.getMaterials().get(key) + ", +" + key.getCost() + " coins");
+                System.out.println(i + ": " + key.getName() + ": " + player.getMaterials().get(key) + ", +" + (key.getCost()*0.8) + " coins");
                 i++;
             }
             Set<Item> keySet = player.getMaterials().keySet();
@@ -79,7 +79,7 @@ public class Shop {
         int i = 1;
         System.out.println(bold + "What would you like to sell?" + reset);
         for (Potion key : player.getInventory().keySet()) {
-            System.out.println(i + ": " + key.getName() + ": " + player.getInventory().get(key) + ", +" + key.getCost() + " coins");
+            System.out.println(i + ": " + key.getName() + ": " + player.getInventory().get(key) + ", +" + (key.getCost()*0.8) + " coins");
             i++;
         }
 

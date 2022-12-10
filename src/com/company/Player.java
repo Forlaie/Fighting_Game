@@ -22,6 +22,7 @@ public class Player {
     private int level;
     private int xp;
     private int coins;
+    private boolean isDead;
     public Item[] equipped = {
             new Item("Sword", 0, 0, 10, 10, """
                     The sword is a sturdy and reliable weapon for any warrior
@@ -40,14 +41,18 @@ public class Player {
     public Player(String name){
         this.name = name;
         health = 100;
+        health += equipped[1].getHealth();
         defence = 0;
+        defence += equipped[2].getDefence();
         attack = 10;
+        attack += equipped[0].getAttack();
         level = 1;
         xp = 0;
         coins = 0;
+        isDead = false;
     }
 
-    public Player(String name, int health, int defence, int attack, int level, int xp, int coins, int[] materialQuantities, int[] potionQuantities){
+    public Player(String name, int health, int defence, int attack, int level, int xp, int coins, int[] materialQuantities, int[] potionQuantities, int[] swordInfo, int[] shieldInfo, int[] armourInfo){
         this.name = name;
         this.health = health;
         this.defence = defence;
@@ -57,6 +62,20 @@ public class Player {
         this.coins = coins;
         loadMaterialInfo(materialQuantities);
         loadPotionInfo(potionQuantities);
+        loadWeaponInfo(swordInfo, shieldInfo, armourInfo);
+        isDead = false;
+    }
+
+    private void loadWeaponInfo(int[] swordInfo, int[] shieldInfo, int[] armourInfo) {
+        equipped[0].setHealth(swordInfo[0]);
+        equipped[0].setDefence(swordInfo[1]);
+        equipped[0].setAttack(swordInfo[2]);
+        equipped[1].setHealth(shieldInfo[0]);
+        equipped[1].setDefence(shieldInfo[1]);
+        equipped[1].setAttack(shieldInfo[2]);
+        equipped[2].setHealth(armourInfo[0]);
+        equipped[2].setDefence(armourInfo[1]);
+        equipped[2].setAttack(armourInfo[2]);
     }
 
     public void setEquipped(int index, int health, int defence, int attack){
@@ -166,6 +185,7 @@ public class Player {
 
     public void changeName(String name){
         this.name = name;
+        System.out.println("Successfully changed username to " + green + name + reset + "!");
     }
     public int getAttack(){
         return attack;
@@ -225,7 +245,7 @@ public class Player {
                 System.out.println("Used health potion");
             }
             case "Attack potion" -> {
-                attack *= potion.getAttack();
+                attack += potion.getAttack();
                 potionsInUse.add(potion);
                 inventory.replace(potion, inventory.get(potion)-1);
                 if (inventory.get(potion) == 0){
@@ -234,7 +254,7 @@ public class Player {
                 System.out.println("Used attack potion");
             }
             case "Defence potion" -> {
-                defence *= potion.getDefence();
+                defence += potion.getDefence();
                 potionsInUse.add(potion);
                 inventory.replace(potion, inventory.get(potion)-1);
                 if (inventory.get(potion) == 0){
@@ -287,8 +307,9 @@ public class Player {
         System.out.println(bold + "Enemy turn" + reset);
         ArrayList<Enemy> enemies = floor.getEnemies();
         for (Enemy enemy : enemies){
-            health -= enemy.getAttack();
-            System.out.println(enemy.getName() + " has dealt " + purple + enemy.getAttack() + " damage" + reset);
+            int damage = (int) (enemy.getAttack()*(100/defence));
+            health -= damage;
+            System.out.println(enemy.getName() + " has dealt " + purple + damage + " damage" + reset);
         }
         if (health <= 0){
             died(this, floor);
@@ -300,7 +321,7 @@ public class Player {
                 enemy.battle(this, floor);
             }
             System.out.println();
-            //floor.updateEnemies();
+            floor.updateEnemies();
         }
     }
 
@@ -309,23 +330,27 @@ public class Player {
         System.out.println(bold + "Enemy turn" + reset);
         ArrayList<Enemy> enemies = dungeon.getEnemies();
         for (Enemy enemy : enemies){
-            health -= enemy.getAttack();
-            System.out.println(enemy.getName() + " has dealt " + purple + enemy.getAttack() + " damage" + reset);
+            int damage = (int) (enemy.getAttack()*(100/defence));
+            health -= damage;
+            System.out.println(enemy.getName() + " has dealt " + purple + damage + " damage" + reset);
         }
         if (health <= 0){
             died(this, floor);
         }
         else{
+            System.out.println();
             System.out.println(bold + "Your turn" + reset);
             for (Enemy enemy : enemies){
                 enemy.battle(this, dungeon);
             }
+            System.out.println();
             dungeon.updateEnemies();
         }
     }
 
     // fix this checkpoint thing
     public void died(Player player, Floor floor) throws FileNotFoundException {
+        isDead = true;
         Scanner input = new Scanner(System.in);
         System.out.println(bold + "You have died! Restart from previous floor or the beginning? (P/B)" + reset);
         String choice = input.nextLine();
@@ -356,21 +381,44 @@ public class Player {
                             int quantity = Integer.parseInt(fileInput.nextLine());
                             potionQuantities[i] = quantity;
                         }
+                        int[] swordInfo = new int[3];
+                        for (int i = 0; i < 3; i++){
+                            int stat = Integer.parseInt(fileInput.nextLine());
+                            swordInfo[i] = stat;
+                        }
+                        int[] shieldInfo = new int[3];
+                        for (int i = 0; i < 3; i++){
+                            int stat = Integer.parseInt(fileInput.nextLine());
+                            shieldInfo[i] = stat;
+                        }
+                        int[] armourInfo = new int[3];
+                        for (int i = 0; i < 3; i++){
+                            int stat = Integer.parseInt(fileInput.nextLine());
+                            armourInfo[i] = stat;
+                        }
                         // is this a problem?
-                        player = new Player(name, health, defence, attack, level, xp, coins, materialQuantities, potionQuantities);
+                        player.setName(name);
+                        player.setHealth(health);
+                        player.setDefence(defence);
+                        player.setAttack(attack);
+                        player.setLevel(level);
+                        player.setXP(xp);
+                        player.setCoins(coins);
+                        player.loadMaterialInfo(materialQuantities);
+                        player.loadPotionInfo(potionQuantities);
+                        player.loadWeaponInfo(swordInfo, shieldInfo, armourInfo);
                     }
                 }
-
                 try {
                     fileInput = new Scanner(new File("C:\\Users\\jessi\\Desktop\\CS Project Base\\src\\FloorInfo"));
                     if (fileInput.hasNextLine()) {
                         int floorLevel = Integer.parseInt(fileInput.nextLine());
-                        Floor.floorLevel = floorLevel-1;
+                        Floor.floorLevel = floorLevel;
                         ArrayList<String> enemyNames = new ArrayList<String>();
                         while (fileInput.hasNextLine()){
                             enemyNames.add(fileInput.nextLine());
                         }
-                        floor = new Floor(enemyNames);
+                        floor.setFloorEnemies(enemyNames);
                         fileInput.close();
                     }
                 } catch (FileNotFoundException e) {
@@ -387,6 +435,22 @@ public class Player {
             floor = new Floor();
             Main.putInfoIntoFiles(player, floor);
         }
+    }
+
+    private void setCoins(int coins) {
+        this.coins = coins;
+    }
+
+    private void setXP(int xp) {
+        this.xp = xp;
+    }
+
+    private void setLevel(int level) {
+        this.level = level;
+    }
+
+    private void setName(String name) {
+        this.name = name;
     }
 
     public void profile(){
@@ -559,5 +623,13 @@ public class Player {
 
     public void soldItem(int profit) {
         coins += profit;
+    }
+
+    public Item[] getEquipped() {
+        return equipped;
+    }
+
+    public boolean getIsDead(){
+        return isDead;
     }
 }
