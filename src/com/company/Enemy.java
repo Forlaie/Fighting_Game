@@ -13,7 +13,7 @@ public class Enemy {
     protected int attack;
     protected String description;
     private static final Enemy[] possibleEnemies = {
-            new Enemy("Enemy", 10*Floor.floorLevel, 1*Floor.floorLevel, """
+            new Enemy("Enemy", 10*Floor.floorLevel, Floor.floorLevel, """
             Enemies are people who have been corrupted by the pollution"""),
             new Vampire("Vampire", 15*Floor.floorLevel, 3*Floor.floorLevel, """
                     Vampires are creatures that suck your blood

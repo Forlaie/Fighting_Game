@@ -40,12 +40,12 @@ public class Item {
             new Potion("Health potion", 50, 0, 0, 50, """
                     Health potion heals you by 50hp points
                     Costs 50 coins"""),
-            new Potion("Attack potion", 0, 0, 2, 50, """
-                    Attack potion doubles your attack
+            new Potion("Attack potion", 0, 0, 30, 50, """
+                    Attack potion buffs your attack by 30 points
                     Lasts for one floor/dungeon
                     Costs 50 coins"""),
-            new Potion("Defence potion", 0, 2, 0, 50, """
-                    Defence potion doubles your defence
+            new Potion("Defence potion", 0, 30, 0, 50, """
+                    Defence potion buffs your defence by 30 points
                     Lasts for one floor/dungeon
                     Costs 50 coins""")
     };
@@ -186,7 +186,7 @@ public class Item {
                             else{
                                 player.useEnemyMaterial(use);
                                 player.useCoins(cost);
-                                player.setEquipped(1, 0, use, 0);
+                                player.setEquipped(1, use, 0, 0);
                                 System.out.println("Successfully upgraded shield!");
                             }
                         }

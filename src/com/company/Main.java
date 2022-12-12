@@ -169,9 +169,7 @@ public class Main {
                             System.out.println(bold + "Would you like to buy or sell? " + cyan + "(B/S)" + reset);
                             String action = userInput.nextLine();
                             switch(action) {
-                                case "B" -> {
-                                    Shop.purchaseItem(player);
-                                }
+                                case "B" -> Shop.purchaseItem(player);
                                 case "S" -> {
                                     System.out.println(bold + "Do you want to sell materials or potions? " + cyan + "(M/P)" + reset);
                                     String sellChoice = userInput.nextLine();
@@ -212,7 +210,7 @@ public class Main {
                             System.out.println(bold + cyan + "3: " + reset + bold + "Hard: " + reset + italic + "7 monsters, stats are tripled" + reset);
                             int difficulty = Integer.parseInt(userInput.nextLine());
                             Dungeon dungeon = new Dungeon(enemyType, difficulty);
-                            while (!dungeon.getAllEnemiesDead() && !exitGame){
+                            while (!dungeon.getAllEnemiesDead() && !exitGame && !exitCurrentPlace){
                                 fightMenu();
                                 choice = Integer.parseInt(userInput.nextLine());
                                 switch (choice) {
@@ -246,18 +244,15 @@ public class Main {
                                             dungeon.fightUpdate(player);
                                         }
                                         else{
-                                            //resetFromBeginning =
+                                            exitCurrentPlace = true;
                                         }
                                     }
                                     case 6 -> {
                                         // save stuff
-                                        System.out.println(bold + "The game will save your progress up to the last floor you completed. Do you wish to proceed? " + cyan + "(Y/N)" + reset);
+                                        System.out.println(bold + "The game will save your progress up to the last floor or dungeon you completed. Do you wish to proceed? " + cyan + "(Y/N)" + reset);
                                         String action = userInput.nextLine();
                                         switch (action) {
-                                            case "Y" -> {
-                                                putInfoIntoFiles(player, floor);
-                                                exitGame = true;
-                                            }
+                                            case "Y" -> exitGame = true;
                                             case "N" -> System.out.println(italic + "Resuming game..." + reset);
                                             default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                                         }
@@ -266,7 +261,10 @@ public class Main {
                                 }
                             }
                             if (!exitGame){
-                                dungeon.dungeonCleared(player);
+                                if (!exitCurrentPlace){
+                                    dungeon.dungeonCleared(player);
+                                    putInfoIntoFiles(player, floor);
+                                }
                                 mainMenu();
                                 choice = Integer.parseInt(userInput.nextLine());
                             }
@@ -310,13 +308,10 @@ public class Main {
                                     }
                                     case 6 -> {
                                         // save stuff
-                                        System.out.println(bold + "The game will save your progress up to the last floor you completed. Do you wish to proceed? " + cyan + "(Y/N)" + reset);
+                                        System.out.println(bold + "The game will save your progress up to the last floor or dungeon you completed. Do you wish to proceed? " + cyan + "(Y/N)" + reset);
                                         String action = userInput.nextLine();
                                         switch (action) {
-                                            case "Y" -> {
-                                                putInfoIntoFiles(player, floor);
-                                                exitGame = true;
-                                            }
+                                            case "Y" -> exitGame = true;
                                             case "N" -> System.out.println(italic + "Resuming game..." + reset);
                                             default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                                         }
@@ -339,7 +334,7 @@ public class Main {
                     }
                 }
                 // save info into files and stuff
-                putInfoIntoFiles(player, floor);
+                //putInfoIntoFiles(player, floor);
 
             } catch (FileNotFoundException e) {
                 System.out.println("can't open floor file");

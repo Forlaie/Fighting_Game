@@ -15,7 +15,6 @@ public class Floor {
     }
 
     public Floor(ArrayList<String> enemyNames){
-        floorLevel += 1;
         setFloorEnemies(enemyNames);
     }
 

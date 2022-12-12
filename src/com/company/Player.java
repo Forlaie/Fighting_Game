@@ -40,7 +40,7 @@ public class Player {
 
     public Player(String name){
         this.name = name;
-        health = 100;
+        health = 30;
         health += equipped[1].getHealth();
         defence = 0;
         defence += equipped[2].getDefence();
@@ -307,7 +307,7 @@ public class Player {
         System.out.println(bold + "Enemy turn" + reset);
         ArrayList<Enemy> enemies = floor.getEnemies();
         for (Enemy enemy : enemies){
-            int damage = (int) (enemy.getAttack()*(100/defence));
+            int damage = enemy.getAttack()*(100/defence);
             health -= damage;
             System.out.println(enemy.getName() + " has dealt " + purple + damage + " damage" + reset);
         }
@@ -330,7 +330,7 @@ public class Player {
         System.out.println(bold + "Enemy turn" + reset);
         ArrayList<Enemy> enemies = dungeon.getEnemies();
         for (Enemy enemy : enemies){
-            int damage = (int) (enemy.getAttack()*(100/defence));
+            int damage = enemy.getAttack()*(100/defence);
             health -= damage;
             System.out.println(enemy.getName() + " has dealt " + purple + damage + " damage" + reset);
         }
@@ -349,17 +349,18 @@ public class Player {
     }
 
     // fix this checkpoint thing
-    public void died(Player player, Floor floor) throws FileNotFoundException {
+    public void died(Player player, Floor floor) {
         isDead = true;
         Scanner input = new Scanner(System.in);
-        System.out.println(bold + "You have died! Restart from previous floor or the beginning? (P/B)" + reset);
+        System.out.println();
+        System.out.println(bold + "You have died! Restart from previous save or the beginning? " + cyan + "(S/B)" + reset);
         String choice = input.nextLine();
         // fix this
-        while (!(choice.equals("P") || choice.equals("B"))){
+        while (!(choice.equals("S") || choice.equals("B"))){
             System.out.println("Sorry, that is not a recognized command. Please try again.");
             choice = input.nextLine();
         }
-        if (choice.equals("P")) {
+        if (choice.equals("S")) {
             try {
                 Scanner fileInput = new Scanner(new File("C:\\Users\\jessi\\Desktop\\CS Project Base\\src\\PlayerInfo"));
                 if (fileInput.hasNextLine()) {
@@ -412,8 +413,7 @@ public class Player {
                 try {
                     fileInput = new Scanner(new File("C:\\Users\\jessi\\Desktop\\CS Project Base\\src\\FloorInfo"));
                     if (fileInput.hasNextLine()) {
-                        int floorLevel = Integer.parseInt(fileInput.nextLine());
-                        Floor.floorLevel = floorLevel;
+                        Floor.floorLevel = Integer.parseInt(fileInput.nextLine());
                         ArrayList<String> enemyNames = new ArrayList<String>();
                         while (fileInput.hasNextLine()){
                             enemyNames.add(fileInput.nextLine());
