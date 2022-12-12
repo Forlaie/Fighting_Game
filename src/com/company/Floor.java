@@ -11,7 +11,12 @@ public class Floor {
 
     public Floor(){
         floorLevel += 1;
-        generateEnemies();
+        if (floorLevel != 10){
+            generateEnemies();
+        }
+        else{
+            enemies.add(new Reaper("**********", 100, 10, "*** **** ****"));
+        }
     }
 
     public Floor(ArrayList<String> enemyNames){
@@ -61,8 +66,8 @@ public class Floor {
     public void enterLevel(){
         System.out.println();
         System.out.println(bold + "Floor " + floorLevel + reset);
-        for (int i = 0; i < floorLevel; i++){
-            System.out.println(enemies.get(i));
+        for (Enemy enemy : enemies) {
+            System.out.println(enemy);
         }
     }
 

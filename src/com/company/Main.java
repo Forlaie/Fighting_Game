@@ -3,7 +3,8 @@ package com.company;
 import java.io.*;
 import java.util.*;
 
-// have final floor (10?) with only reaper? (give lore)
+// have final floor (10?) with only reaper (give lore)
+// can still keep fighting afterwards though
 
 public class Main {
 
