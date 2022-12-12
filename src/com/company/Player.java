@@ -40,7 +40,7 @@ public class Player {
 
     public Player(String name){
         this.name = name;
-        health = 30;
+        health = 100;
         health += equipped[1].getHealth();
         defence = 0;
         defence += equipped[2].getDefence();
@@ -353,10 +353,10 @@ public class Player {
         isDead = true;
         Scanner input = new Scanner(System.in);
         System.out.println();
-        System.out.println(bold + "You have died! Restart from previous save or the beginning? " + cyan + "(S/B)" + reset);
+        System.out.println(bold + "You have died! Restart from previous save or reset everything from the beginning? " + cyan + "(S/R)" + reset);
         String choice = input.nextLine();
         // fix this
-        while (!(choice.equals("S") || choice.equals("B"))){
+        while (!(choice.equals("S") || choice.equals("R"))){
             System.out.println("Sorry, that is not a recognized command. Please try again.");
             choice = input.nextLine();
         }
@@ -430,9 +430,12 @@ public class Player {
             }
         }
         else{
-            player = new Player(player.getName());
             Floor.floorLevel = 0;
             floor = new Floor();
+            Main.lore();
+            System.out.println(bold + "Welcome to Wen Ymar Elad! What is your name?" + reset);
+            String name = input.nextLine();
+            player = new Player(name);
             Main.putInfoIntoFiles(player, floor);
         }
     }

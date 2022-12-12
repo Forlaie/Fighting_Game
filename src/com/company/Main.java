@@ -13,6 +13,48 @@ public class Main {
     public static final String bold = "\u001B[1m";
     public static final String italic = "\033[3m";
 
+    public static void lore(){
+        System.out.println(italic + """
+                8,035,999 years ago...
+                Wake up warrior, you must help *** **** **** by saving Wen Ymar Elad.
+                
+                Your head is pounding as you slowly open your eyes.
+                
+                All around you is a wasteland. The fields are all dead, the grass long since wilted, the water's been polluted into a pure black colour, and there's not a single living thing in sight.
+                The only thing that catches your eye is a dark, menacing tower on top of a hill.
+                Your head pounds in pain. Who are you? Where are you? How did you get here? Why are you here?
+                There's so many questions running through your head, but only one of them has an answer.
+                You feel it deep in your soul, you were sent here with a purpose. What it was, you can't quite remember.
+                However, beside you is a sword, shield, and armour. You don't know why, but you feel a strong sense to protect this place, to save this place.
+                With nothing else to do, you pick up the items beside you and start walking to the tower.
+                
+                As you walk closer and closer, you start to hear the screeches and screams of monsters inside.
+                The sense of urgency inside you grows stronger, and you realize what you must have been sent here for: to defeat all the monsters and save this place.
+                Why? Why do you feel this way? Perhaps you will find the answers you seek as you climb the tower.
+                Good luck brave warrior, and please help us.
+                """ + reset);
+    }
+
+    public static void gameInfo(){
+        System.out.println("""
+                Your character is equipped with a sword, shield, and armour.
+                To increase your stats, you can fight monsters by either entering dungeons or floors.
+                You gain a certain amount of XP when you defeat a monster based on the monster's difficulty
+                You can also increase your stats by leveling up your equipped items!
+                
+                As you defeat monsters, not only do they drop XP, they also drop coins and random materials.
+                You use these coins and materials to increase the stats of your equipped items.
+                Each item needs a certain type of material to be upgraded, which is where the dungeons come in handy.
+                You can choose to enter specific dungeons (and choose the level of difficulty) to farm the materials you need!
+                
+                When upgrading items, you can choose to use materials or other items of the same kind.
+                The difference between the two is that using materials to upgrade will only upgrade the main stat of that item,
+                but using other items of the same kind will upgrade all stats!
+                
+                The shop sells potions that you can use to buff your character in order to defeat difficult floors.
+                """);
+    }
+
     public static void mainMenu(){
         System.out.println();
         System.out.println(bold + "What would you like to do?" + reset);
@@ -46,8 +88,9 @@ public class Main {
         System.out.println();
         System.out.println(bold + "Info Menu" + reset);
         System.out.println("=============== ©MM");
-        System.out.println(italic + cyan + "1:" + reset + italic + " enemy info");
-        System.out.println(cyan + "2:" + reset + italic + " item info" + reset);
+        System.out.println(italic + cyan + "1:" + reset + italic + " game info");
+        System.out.println(cyan + "2:" + reset + italic + " enemy info" + reset);
+        System.out.println(cyan + "3:" + reset + italic + " item info" + reset);
         System.out.println("=============== ©MM");
     }
 
@@ -91,11 +134,12 @@ public class Main {
                         armourInfo[i] = stat;
                     }
                     player = new Player(name, health, defence, attack, level, xp, coins, materialQuantities, potionQuantities, swordInfo, shieldInfo, armourInfo);
-                    System.out.println(bold + "Welcome back " + green + player.getName() + reset + bold + " to Wen Ymar Elad!" + reset);
+                    System.out.println(bold + "Wen Ymar Elad welcomes you back " + green + player.getName() + reset + bold + "!" + reset);
                 }
                 fileInput.close();
             }
             else{
+                lore();
                 System.out.println(bold + "Welcome to Wen Ymar Elad! What is your name?" + reset);
                 String name = userInput.nextLine();
                 player = new Player(name);
@@ -127,12 +171,13 @@ public class Main {
                 while (!exitGame){
                     switch (choice) {
                         case 1 -> {
-                            // info about enemies and items
+                            // info about game, enemies and items
                             infoMenu();
                             int action = Integer.parseInt(userInput.nextLine());
                             switch (action){
-                                case 1 -> Enemy.enemyInfo();
-                                case 2 -> Item.itemInfo();
+                                case 1 -> gameInfo();
+                                case 2 -> Enemy.enemyInfo();
+                                case 3 -> Item.itemInfo();
                             }
                             mainMenu();
                             choice = Integer.parseInt(userInput.nextLine());
@@ -210,6 +255,7 @@ public class Main {
                             System.out.println(bold + cyan + "3: " + reset + bold + "Hard: " + reset + italic + "7 monsters, stats are tripled" + reset);
                             int difficulty = Integer.parseInt(userInput.nextLine());
                             Dungeon dungeon = new Dungeon(enemyType, difficulty);
+                            exitCurrentPlace = false;
                             while (!dungeon.getAllEnemiesDead() && !exitGame && !exitCurrentPlace){
                                 fightMenu();
                                 choice = Integer.parseInt(userInput.nextLine());
@@ -219,10 +265,9 @@ public class Main {
                                         infoMenu();
                                         int action = Integer.parseInt(userInput.nextLine());
                                         switch (action){
-                                            case 1 ->
-                                                    Enemy.enemyInfo();
-                                            case 2 ->
-                                                    Item.itemInfo();
+                                            case 1 -> gameInfo();
+                                            case 2 -> Enemy.enemyInfo();
+                                            case 3 -> Item.itemInfo();
                                         }
                                     }
                                     // check stats
@@ -272,6 +317,7 @@ public class Main {
                         case 8 -> {
                             // fight stuff
                             floor.enterLevel();
+                            exitCurrentPlace = false;
                             while (!floor.getAllEnemiesDead() && !exitGame && !exitCurrentPlace) {
                                 fightMenu();
                                 choice = Integer.parseInt(userInput.nextLine());
@@ -281,8 +327,9 @@ public class Main {
                                         infoMenu();
                                         int action = Integer.parseInt(userInput.nextLine());
                                         switch (action) {
-                                            case 1 -> Enemy.enemyInfo();
-                                            case 2 -> Item.itemInfo();
+                                            case 1 -> gameInfo();
+                                            case 2 -> Enemy.enemyInfo();
+                                            case 3 -> Item.itemInfo();
                                         }
                                     }
                                     // check stats
