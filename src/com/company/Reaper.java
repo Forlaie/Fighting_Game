@@ -23,7 +23,7 @@ public class Reaper extends Enemy{
                 You raise your sword against the cloaked reaper, ready to give the final blow.
                 
                 "Who.. are you?", you ask.
-                For some reason, you feel a sense of deja vu, as if you've been here before, as if recognize cloaked reaper.
+                For some reason, you feel a strong sense of deja vu.
                 Your head begins pounding again.
                 
                 "I am... insignificant. It is of no use for you to know who I am."
