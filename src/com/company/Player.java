@@ -222,6 +222,17 @@ public class Player {
         coins += 10+Floor.floorLevel;
     }
 
+    public void drinkHealthPotion(){
+        if (inventory.get(Item.potions[0]) == null){
+            System.out.println("Sorry, you don't own any health potions.");
+        }
+        else{
+            System.out.println("Drank health potion!");
+            health += Item.potions[0].getHealth();
+            inventory.replace(Item.potions[0], inventory.get(Item.potions[0])-1);
+        }
+    }
+
     public void usePotion(){
         Scanner input = new Scanner(System.in);
         System.out.println(bold + "What potion would you like to use?" + reset);
@@ -563,9 +574,9 @@ public class Player {
         Scanner input = new Scanner(System.in);
         System.out.println();
         System.out.println(bold + "What do you want to level up?" + reset);
-        System.out.println(bold + cyan + "1: " + reset + bold + "Sword " + reset + italic + "(uses vampire materials)" + reset);
-        System.out.println(bold + cyan + "2: " + reset + bold + "Shield " + reset + italic + "(uses enemy materials)" + reset);
-        System.out.println(bold + cyan + "3: " + reset + bold + "Armour " + reset + italic + "(uses golem materials)" + reset);
+        System.out.println(bold + cyan + "1: " + reset + bold + "Sword " + reset + italic + "(uses vampire materials or swords)" + reset);
+        System.out.println(bold + cyan + "2: " + reset + bold + "Shield " + reset + italic + "(uses enemy materials or shields)" + reset);
+        System.out.println(bold + cyan + "3: " + reset + bold + "Armour " + reset + italic + "(uses golem materials or armours)" + reset);
         int itemChoice = Integer.parseInt(input.nextLine());
         switch (itemChoice){
             case 1 -> equipped[0].upgradeItem(this);

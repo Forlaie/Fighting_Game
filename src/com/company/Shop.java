@@ -9,12 +9,11 @@ public class Shop {
     public static final String cyan = "\u001B[36m";
     public static final String yellow = "\u001B[33m";
     public static final String bold = "\u001B[1m";
-    public static final String italic = "\033[3m";
     public static final String reset = "\u001B[0m";
 
     public static void shopMenu(Player player){
         System.out.println();
-        System.out.println(bold + "What would you like to purchase? " + reset + italic + "(Enter the number of the item)" + reset);
+        System.out.println(bold + "What would you like to purchase? " + reset);
         System.out.println(yellow + "Coins: " + player.getCoins() + reset);
         for (int i = 0; i < Item.potions.length; i++){
             System.out.println();
@@ -29,7 +28,7 @@ public class Shop {
         else{
             Scanner input = new Scanner(System.in);
             int i = 1;
-            System.out.println(bold + "What would you like to sell?" + reset + italic + "(Enter the number of the item)" + reset);
+            System.out.println(bold + "What would you like to sell?" + reset);
             for (Item key : player.getMaterials().keySet()) {
                 System.out.println(i + ": " + key.getName() + ": " + player.getMaterials().get(key) + ", +" + (key.getCost()*0.8) + " coins");
                 i++;

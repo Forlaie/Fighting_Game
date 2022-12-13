@@ -44,7 +44,8 @@ public class Main {
                 You can also increase your stats by leveling up your equipped items!
                 
                 As you defeat monsters, not only do they drop XP, they also drop coins and random materials.
-                You use these coins and materials to increase the stats of your equipped items.
+                Monsters usually only drop items, but they have a 10% chance of dropping an item (sword, shield, armour).
+                You use these coins and materials/items to increase the stats of your equipped items.
                 Each item needs a certain type of material to be upgraded, which is where the dungeons come in handy.
                 You can choose to enter specific dungeons (and choose the level of difficulty) to farm the materials you need!
                 
@@ -53,6 +54,9 @@ public class Main {
                 but using other items of the same kind will upgrade all stats!
                 
                 The shop sells potions that you can use to buff your character in order to defeat difficult floors.
+                
+                The goal of the game is to beat as many floors as you can.
+                Each floor, the difficulty and number of monsters is ramped higher, so make sure you prepare well beforehand!
                 """);
     }
 
@@ -64,11 +68,12 @@ public class Main {
         System.out.println(cyan + "2:" + reset + italic + " change username");
         System.out.println(cyan + "3:" + reset + italic + " check profile");
         System.out.println(cyan + "4:" + reset + italic + " check inventory");
-        System.out.println(cyan + "5:" + reset + italic + " level up items" + reset);
-        System.out.println(cyan + "6:" + reset + italic + " access shop");
-        System.out.println(cyan + "7:" + reset + italic + " enter a dungeon" + reset);
-        System.out.println(cyan + "8:" + reset + italic + " enter floor " + Floor.floorLevel);
-        System.out.println(cyan + "9:" + reset + italic + " save and exit" + reset);
+        System.out.println(cyan + "5:" + reset + italic + " drink health potion");
+        System.out.println(cyan + "6:" + reset + italic + " level up items" + reset);
+        System.out.println(cyan + "7:" + reset + italic + " access shop");
+        System.out.println(cyan + "8:" + reset + italic + " enter a dungeon" + reset);
+        System.out.println(cyan + "9:" + reset + italic + " enter floor " + Floor.floorLevel);
+        System.out.println(cyan + "10:" + reset + italic + " save and exit" + reset);
         System.out.println("========================= ©MM");
     }
 
@@ -198,19 +203,24 @@ public class Main {
                             mainMenu();
                             choice = Integer.parseInt(userInput.nextLine());
                         }
-                        case 4 ->{
+                        case 4 -> {
                             // check inventory stuff
                             player.inventoryMenu();
                             mainMenu();
                             choice = Integer.parseInt(userInput.nextLine());
                         }
                         case 5 -> {
+                            player.drinkHealthPotion();
+                            mainMenu();
+                            choice = Integer.parseInt(userInput.nextLine());
+                        }
+                        case 6 -> {
                             // do leveling up stuff
                             player.upgradeItem();
                             mainMenu();
                             choice = Integer.parseInt(userInput.nextLine());
                         }
-                        case 6 -> {
+                        case 7 -> {
                             // access shop
                             System.out.println(bold + "Would you like to buy or sell? " + cyan + "(B/S)" + reset);
                             String action = userInput.nextLine();
@@ -244,7 +254,7 @@ public class Main {
                             mainMenu();
                             choice = Integer.parseInt(userInput.nextLine());
                         }
-                        case 7 -> {
+                        case 8 -> {
                             System.out.println(bold + "What dungeon do you want to enter?" + reset);
                             System.out.println(bold + cyan + "1:" + reset + " Enemy dungeon" + reset);
                             System.out.println(bold + cyan + "2:" + reset + " Vampire dungeon" + reset);
@@ -315,7 +325,7 @@ public class Main {
                                 choice = Integer.parseInt(userInput.nextLine());
                             }
                         }
-                        case 8 -> {
+                        case 9 -> {
                             // fight stuff
                             floor.enterLevel();
                             exitCurrentPlace = false;
@@ -377,7 +387,7 @@ public class Main {
                                 choice = Integer.parseInt(userInput.nextLine());
                             }
                         }
-                        case 9 -> exitGame = true;
+                        case 10 -> exitGame = true;
                         default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                     }
                 }

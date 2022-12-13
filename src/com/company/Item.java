@@ -30,11 +30,17 @@ public class Item {
     };
     public static final Item[] materialDrops = {
             new Item("Enemy material", 1, """
-                    Enemies drop this"""),
+                    Enemies drop this
+                    Used to upgrade shield stats
+                    """),
             new Item("Vampire material", 1, """
-                    Vampires drop this"""),
+                    Vampires drop this
+                    Used to upgrade sword stats
+                    """),
             new Item("Golem material", 1, """
-                    Golems drop this""")
+                    Golems drop this
+                    Used to upgrade armour stats
+                    """)
     };
     public static final Potion[] potions = {
             new Potion("Health potion", 50, 0, 0, 50, """
