@@ -44,7 +44,7 @@ public class Main {
                 You can also increase your stats by leveling up your equipped items!
                 
                 As you defeat monsters, not only do they drop XP, they also drop coins and random materials.
-                Monsters usually only drop items, but they have a 10% chance of dropping an item (sword, shield, armour).
+                Monsters usually drop materials, but they have a 10% chance of dropping an item (sword, shield, armour).
                 You use these coins and materials/items to increase the stats of your equipped items.
                 Each item needs a certain type of material to be upgraded, which is where the dungeons come in handy.
                 You can choose to enter specific dungeons (and choose the level of difficulty) to farm the materials you need!
@@ -387,7 +387,16 @@ public class Main {
                                 choice = Integer.parseInt(userInput.nextLine());
                             }
                         }
-                        case 10 -> exitGame = true;
+                        case 10 -> {
+                            // save stuff
+                            System.out.println(bold + "The game will save your progress up to the last floor or dungeon you completed. Do you wish to proceed? " + cyan + "(Y/N)" + reset);
+                            String action = userInput.nextLine();
+                            switch (action) {
+                                case "Y" -> exitGame = true;
+                                case "N" -> System.out.println(italic + "Resuming game..." + reset);
+                                default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
+                            }
+                        }
                         default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                     }
                 }

@@ -30,7 +30,7 @@ public class Shop {
             int i = 1;
             System.out.println(bold + "What would you like to sell?" + reset);
             for (Item key : player.getMaterials().keySet()) {
-                System.out.println(i + ": " + key.getName() + ": " + player.getMaterials().get(key) + ", +" + (key.getCost()*0.8) + " coins");
+                System.out.println(bold + cyan + i + ": " + reset + bold + key.getName() + ": " + reset + player.getMaterials().get(key) + ", " + yellow + "+" + key.getCost() + " coins" + reset);
                 i++;
             }
             Set<Item> keySet = player.getMaterials().keySet();
@@ -44,7 +44,7 @@ public class Shop {
             }
             System.out.println(bold + "How many " + item.getName() + " would you like to sell?" + reset);
             int amount = Integer.parseInt(input.nextLine());
-            int profit = (int) (item.getCost()*0.8);
+            int profit = (int) Math.ceil((item.getCost()*0.8));
             if (amount > player.getMaterials().get(item)){
                 System.out.println("Sorry, you don't have that many " + item.getName());
             }

@@ -40,7 +40,7 @@ public class Player {
 
     public Player(String name){
         this.name = name;
-        health = 100;
+        health = 95;
         health += equipped[1].getHealth();
         defence = 0;
         defence += equipped[2].getDefence();
@@ -78,10 +78,13 @@ public class Player {
         equipped[2].setAttack(armourInfo[2]);
     }
 
-    public void setEquipped(int index, int health, int defence, int attack){
+    public void setEquipped(Player player, int index, int health, int defence, int attack){
         equipped[index].setHealth(equipped[index].getHealth()+health);
         equipped[index].setDefence(equipped[index].getDefence()+defence);
         equipped[index].setAttack(equipped[index].getAttack()+attack);
+        player.setHealth(player.getHealth()+health);
+        player.setDefence(player.getDefence()+defence);
+        player.setAttack(player.getAttack()+attack);
     }
 
     private void loadPotionInfo(int[] potionQuantities) {
@@ -222,6 +225,15 @@ public class Player {
         coins += 10+Floor.floorLevel;
     }
 
+    public void defeatedMonster(){
+        System.out.println(yellow + "Gained " + (10+Floor.floorLevel) + " xp!" + reset);
+        xp += 10+Floor.floorLevel;
+        if (xp >= level*10){
+            levelUp();
+        }
+        coins += 10+Floor.floorLevel;
+    }
+
     public void drinkHealthPotion(){
         if (inventory.get(Item.potions[0]) == null){
             System.out.println("Sorry, you don't own any health potions.");
@@ -230,6 +242,10 @@ public class Player {
             System.out.println("Drank health potion!");
             health += Item.potions[0].getHealth();
             inventory.replace(Item.potions[0], inventory.get(Item.potions[0])-1);
+            if (inventory.get(Item.potions[0]) == 0){
+                inventory.remove(Item.potions[0]);
+            }
+            profile();
         }
     }
 
@@ -446,7 +462,21 @@ public class Player {
             Main.lore();
             System.out.println(bold + "Welcome to Wen Ymar Elad! What is your name?" + reset);
             String name = input.nextLine();
-            player = new Player(name);
+            player.setName(name);
+            player.setHealth(100);
+            player.setDefence(20);
+            player.setAttack(20);
+            player.setLevel(1);
+            player.setXP(0);
+            player.setCoins(0);
+            int[] materialQuantities = {0, 0, 0, 0, 0, 0};
+            player.loadMaterialInfo(materialQuantities);
+            int[] potionQuantities = {0, 0, 0};
+            player.loadPotionInfo(potionQuantities);
+            int[] swordInfo = {0, 0, 10};
+            int[] shieldInfo = {5, 0, 0};
+            int[] armourInfo = {0, 20, 0};
+            player.loadWeaponInfo(swordInfo, shieldInfo, armourInfo);
             Main.putInfoIntoFiles(player, floor);
         }
     }

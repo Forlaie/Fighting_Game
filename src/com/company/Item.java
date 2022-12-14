@@ -21,10 +21,10 @@ public class Item {
             new Item("Sword", 0, 0, 10, 10, """
                     The sword is a sturdy and reliable weapon for any warrior
                     +10 atk"""),
-            new Item("Shield", 5, 10, 0, 10, """
+            new Item("Shield", 5, 0, 0, 10, """
                     The shield is an essential for any warrior to protect themselves and others
                     +5 hp, +10 def"""),
-            new Item("Armour", 20, 5, 0, 30, """
+            new Item("Armour", 0, 20, 0, 30, """
                     Proper armour keeps your vitals safe
                     +10 hp, +20 def, +5 atk""")
     };
@@ -145,8 +145,9 @@ public class Item {
                             else{
                                 player.useVampireMaterial(use);
                                 player.useCoins(cost);
-                                player.setEquipped(0, 0, 0, use);
+                                player.setEquipped(player,0, 0, 0, use);
                                 System.out.println("Successfully upgraded sword!");
+                                player.inventoryMenu();
                             }
                         }
                     }
@@ -165,8 +166,9 @@ public class Item {
                             else{
                                 player.useSword(use);
                                 player.useCoins(cost);
-                                player.setEquipped(0, use, use, 10*use);
+                                player.setEquipped(player,0, use, use, 10*use);
                                 System.out.println("Successfully upgraded sword!");
+                                player.inventoryMenu();
                             }
                         }
                     }
@@ -192,8 +194,9 @@ public class Item {
                             else{
                                 player.useEnemyMaterial(use);
                                 player.useCoins(cost);
-                                player.setEquipped(1, use, 0, 0);
+                                player.setEquipped(player,1, use, 0, 0);
                                 System.out.println("Successfully upgraded shield!");
+                                player.inventoryMenu();
                             }
                         }
                     }
@@ -212,8 +215,9 @@ public class Item {
                             else{
                                 player.useShield(use);
                                 player.useCoins(cost);
-                                player.setEquipped(1, 5*use, use, use);
+                                player.setEquipped(player,1, 5*use, use, use);
                                 System.out.println("Successfully upgraded shield");
+                                player.inventoryMenu();
                             }
                         }
                     }
@@ -239,8 +243,9 @@ public class Item {
                             else{
                                 player.useGolemMaterial(use);
                                 player.useCoins(cost);
-                                player.setEquipped(2, 0, use, 0);
+                                player.setEquipped(player,2, 0, use, 0);
                                 System.out.println("Successfully upgraded armour!");
+                                player.inventoryMenu();
                             }
                         }
                     }
@@ -259,8 +264,9 @@ public class Item {
                             else{
                                 player.useArmour(use);
                                 player.useCoins(cost);
-                                player.setEquipped(2, use, 20*use, use);
+                                player.setEquipped(player,2, use, 20*use, use);
                                 System.out.println("Successfully upgraded armour!");
+                                player.inventoryMenu();
                             }
                         }
                     }
