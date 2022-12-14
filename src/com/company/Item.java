@@ -23,10 +23,10 @@ public class Item {
                     +10 atk"""),
             new Item("Shield", 5, 0, 0, 10, """
                     The shield is an essential for any warrior to protect themselves and others
-                    +5 hp, +10 def"""),
+                    +5 hp"""),
             new Item("Armour", 0, 20, 0, 30, """
                     Proper armour keeps your vitals safe
-                    +10 hp, +20 def, +5 atk""")
+                    +20 def""")
     };
     public static final Item[] materialDrops = {
             new Item("Enemy material", 1, """
