@@ -56,8 +56,7 @@ public class Main {
                 The shop sells potions that you can use to buff your character in order to defeat difficult floors.
                 
                 The goal of the game is to beat as many floors as you can.
-                Each floor, the difficulty and number of monsters is ramped higher, so make sure you prepare well beforehand!
-                """);
+                Each floor, the difficulty and number of monsters is ramped higher, so make sure you prepare well beforehand!""");
     }
 
     public static void mainMenu(){

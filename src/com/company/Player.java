@@ -477,8 +477,18 @@ public class Player {
             int[] shieldInfo = {5, 0, 0};
             int[] armourInfo = {0, 20, 0};
             player.loadWeaponInfo(swordInfo, shieldInfo, armourInfo);
+            player.clearMaterials();
+            player.clearInventory();
             Main.putInfoIntoFiles(player, floor);
         }
+    }
+
+    private void clearInventory() {
+        inventory.clear();
+    }
+
+    private void clearMaterials() {
+        materials.clear();
     }
 
     private void setCoins(int coins) {
