@@ -1,5 +1,4 @@
 package com.company;
-
 import java.util.Scanner;
 
 public class Item {
@@ -17,6 +16,7 @@ public class Item {
     protected int attack;
     protected int cost;
     protected String description;
+    // stores all the possible weapon drops and their info (used to generate random drops after defeating enemy)
     public static final Item[] weaponDrops = {
             new Item("Sword", 0, 0, 10, 10, """
                     The sword is a sturdy and reliable weapon for any warrior
@@ -28,6 +28,7 @@ public class Item {
                     Proper armour keeps your vitals safe
                     +20 def""")
     };
+    // stores all the material drops and their info (used to generate random drops after defeating enemy)
     public static final Item[] materialDrops = {
             new Item("Enemy material", 1, """
                     Enemies drop this
@@ -39,6 +40,7 @@ public class Item {
                     Golems drop this
                     Used to upgrade armour stats""")
     };
+    // stores all the potions and their info (useful for hashmaps later)
     public static final Potion[] potions = {
             new Potion("Health potion", 50, 0, 0, 50, """
                     Health potion heals you by 50hp points
@@ -71,6 +73,37 @@ public class Item {
 //                    """)
 //    };
 
+    // method to generate random item drops after defeating an enemy
+    public static Item generateRandomDrop(){
+        int index;
+        int getRandomDrop = (int) (Math.random()*101)+1;
+        index = (int) (Math.random() * 3);
+        if (getRandomDrop >= 90){
+            return weaponDrops[index];
+        }
+        else{
+            return materialDrops[index];
+        }
+    }
+
+    // constructor for creating weapons and potions
+    public Item(String name, int health, int defence, int attack, int cost, String description){
+        this.name = name;
+        this.health = health;
+        this.defence = defence;
+        this.attack = attack;
+        this.cost = cost;
+        this.description = description;
+    }
+
+    // constructor for creating materials
+    public Item(String name, int cost, String description){
+        this.name = name;
+        this.cost = cost;
+        this.description = description;
+    }
+
+    // prints out items and their descriptions
     public static void itemInfo(){
         for (Item item : materialDrops){
             System.out.println();
@@ -89,39 +122,47 @@ public class Item {
         }
     }
 
-    public static Item generateRandomDrop(){
-        int index;
-        int getRandomDrop = (int) (Math.random()*101)+1;
-        index = (int) (Math.random() * 3);
-        if (getRandomDrop >= 90){
-            return weaponDrops[index];
-        }
-        else{
-            return materialDrops[index];
-        }
-    }
-
-    public Item(String name, int health, int defence, int attack, int cost, String description){
-        this.name = name;
-        this.health = health;
-        this.defence = defence;
-        this.attack = attack;
-        this.cost = cost;
-        this.description = description;
-    }
-
-    public Item(String name, int cost, String description){
-        this.name = name;
-        this.cost = cost;
-        this.description = description;
-    }
-
+    // get item name
     public String getName(){
         return name;
     }
 
+    // get item health points
+    public int getHealth(){
+        return health;
+    }
+
+    // get item defence points
+    public int getDefence(){
+        return defence;
+    }
+
+    // get item attack points
+    public int getAttack(){
+        return attack;
+    }
+
+    // get item cost
+    public int getCost(){
+        return cost;
+    }
+
+    // set item stat points (from save file)
+    public void setHealth(int health) {
+        this.health = health;
+    }
+    public void setDefence(int defence){
+        this.defence = defence;
+    }
+    public void setAttack(int attack){
+        this.attack = attack;
+    }
+
+    // upgrade item
     public void upgradeItem(Player player){
         Scanner input = new Scanner(System.in);
+        // find what item player wants to upgrade and what they want to use for it
+        // update inventory, coins, or display error messages accordingly
         switch (this.name){
             case "Sword" -> {
                 System.out.println(bold + "Do you want to use vampire materials or swords? " + cyan + "(V/S)" + reset);
@@ -273,34 +314,8 @@ public class Item {
         }
     }
 
-    public int getHealth(){
-        return health;
-    }
-
-    public int getDefence(){
-        return defence;
-    }
-
-    public int getAttack(){
-        return attack;
-    }
-    public int getCost(){
-        return cost;
-    }
-
+    // overload toString() method to return the necessary info about items
     public String toString(){
         return bold + name + ": " + reset + italic + red + "+" + health + " hp" + reset + italic + ", " + blue + "+" + defence + " def" + reset + italic + ", " + purple + "+" + attack + " atk " + reset + italic + ", " + yellow + cost + " coins" + reset;
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
-    }
-
-    public void setDefence(int defence){
-        this.defence = defence;
-    }
-
-    public void setAttack(int attack){
-        this.attack = attack;
     }
 }

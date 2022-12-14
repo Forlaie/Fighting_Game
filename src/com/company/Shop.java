@@ -1,16 +1,13 @@
 package com.company;
-
 import java.util.Scanner;
 import java.util.Set;
-// button to exit shop
-// sell weapons
-//user choose amount of potion to purchase
 public class Shop {
     public static final String cyan = "\u001B[36m";
     public static final String yellow = "\u001B[33m";
     public static final String bold = "\u001B[1m";
     public static final String reset = "\u001B[0m";
 
+    // show items available for sale in shop
     public static void shopMenu(Player player){
         System.out.println();
         System.out.println(bold + "What would you like to purchase? " + reset);
@@ -21,13 +18,35 @@ public class Shop {
         }
     }
 
+    // player wants to purchase item
+    public static void purchaseItem(Player player){
+        Scanner input = new Scanner(System.in);
+        shopMenu(player);
+        int index = Integer.parseInt(input.nextLine());
+        Potion potion = Item.potions[index-1];
+        // check if player has enough coins
+        if (player.getCoins() < potion.getCost()){
+            System.out.println("Unfortunately, you don't have enough coins");
+        }
+        // update player coins and inventory to reflect purchase
+        else{
+            System.out.println("Successfully purchased " + potion.getName() + "!");
+            player.useCoins(potion.getCost());
+            player.getInventory().merge(potion, 1, Integer::sum);
+        }
+    }
+
+    // player wants to sell material
     public static void sellMaterial(Player player){
+        // check if player has anything to sell
         if (player.getMaterials().isEmpty()){
             System.out.println("Sorry, you don't have any materials to sell");
         }
         else{
             Scanner input = new Scanner(System.in);
             int i = 1;
+            // ask what player wants to sell and how many they want to sell
+            // update coins and materials, or give warning messages accordingly
             System.out.println(bold + "What would you like to sell?" + reset);
             for (Item key : player.getMaterials().keySet()) {
                 System.out.println(bold + cyan + i + ": " + reset + bold + key.getName() + ": " + reset + player.getMaterials().get(key) + ", " + yellow + "+" + key.getCost() + " coins" + reset);
@@ -58,30 +77,18 @@ public class Shop {
             }
         }
     }
-    public static void purchaseItem(Player player){
-        Scanner input = new Scanner(System.in);
-        shopMenu(player);
-        int index = Integer.parseInt(input.nextLine());
-        Potion potion = Item.potions[index-1];
-        if (player.getCoins() < potion.getCost()){
-            System.out.println("Unfortunately, you don't have enough coins");
-        }
-        else{
-            System.out.println("Successfully purchased " + potion.getName() + "!");
-            player.useCoins(potion.getCost());
-            player.getInventory().merge(potion, 1, Integer::sum);
-        }
-    }
 
+    // player wants to sell potion
     public static void sellPotion(Player player){
         Scanner input = new Scanner(System.in);
         int i = 1;
+        // ask what player wants to sell and how many they want to sell
+        // update coins and inventory, or give warning messages accordingly
         System.out.println(bold + "What would you like to sell?" + reset);
         for (Potion key : player.getInventory().keySet()) {
             System.out.println(i + ": " + key.getName() + ": " + player.getInventory().get(key) + ", +" + (key.getCost()*0.8) + " coins");
             i++;
         }
-
         Set<Potion> keySet = player.getInventory().keySet();
         Potion[] keyArray = keySet.toArray(new Potion[keySet.size()]);
         int index = Integer.parseInt(input.nextLine());

@@ -9,6 +9,9 @@ public class Floor {
     private ArrayList<Enemy> deadEnemies = new ArrayList<Enemy>();
     public static int floorLevel;
 
+    // constructor to create a new floor
+    // also updates static variable floorLevel that keeps track of what floor player is on
+    // generates random enemies, except for floor 10 which is the LORE ENEMY
     public Floor(){
         floorLevel += 1;
         if (floorLevel != 10){
@@ -19,10 +22,12 @@ public class Floor {
         }
     }
 
+    // overload constructor to set the floor using the save file
     public Floor(ArrayList<String> enemyNames){
         setFloorEnemies(enemyNames);
     }
 
+    // sets the floor enemies from the save file
     public void setFloorEnemies(ArrayList<String> enemyNames){
         for (String name : enemyNames){
             switch(name) {
@@ -44,25 +49,29 @@ public class Floor {
                     Dragons have lots of health, attack, and defence, so they're difficult to defeat
                     However, once defeated, they drop special dragon armour that can't be found anywhere else
                     These items have higher stats than all other items"""));
-                // add reaper later?
+                case "**********" -> enemies.add(new Reaper("**********", 100, 10, "*** **** ****"));
             }
         }
     }
 
-    public boolean getAllEnemiesDead(){
-        return (enemies.size() == 0);
-    }
-
+    // generate random enemies using the static method created in Enemy class
     public void generateEnemies(){
         for (int i = 0; i < floorLevel; i++){
             enemies.add(Enemy.generateRandomEnemy());
         }
     }
 
+    // get if all enemies in the floor are dead
+    public boolean getAllEnemiesDead(){
+        return (enemies.size() == 0);
+    }
+
+    // get the list of enemies in the floor
     public ArrayList<Enemy> getEnemies(){
         return enemies;
     }
 
+    // prints out what floor player entered as well as all the enemies' info
     public void enterLevel(){
         System.out.println();
         System.out.println(bold + "Floor " + floorLevel + reset);
@@ -71,14 +80,28 @@ public class Floor {
         }
     }
 
+    // add a dead enemy to the deadEnemies list
     public void addDeadEnemy(Enemy enemy){
         deadEnemies.add(enemy);
     }
 
+    // removes all dead enemies from the dungeon
     public void updateEnemies(){
         enemies.removeAll(deadEnemies);
     }
 
+    // updates the results after one turn
+    public void fightUpdate(Player player){
+        updateEnemies();
+        System.out.println(bold + "Result" + reset);
+        System.out.println("You have " + red + player.getHealth() + " hp" + reset);
+        for (Enemy enemy : enemies){
+            System.out.println(enemy);
+        }
+    }
+
+    // runs when floor is successfully cleared
+    // gets rid of the potions in effect (ends buff)
     public void floorCleared(Player player){
         System.out.println();
         System.out.println(bold + "Floor " + floorLevel + " cleared!" + reset);
@@ -87,14 +110,5 @@ public class Floor {
         }
         player.clearPotionsInUse();
         player.profile();
-    }
-
-    public void fightUpdate(Player player){
-        updateEnemies();
-        System.out.println(bold + "Result" + reset);
-        System.out.println("You have " + red + player.getHealth() + " hp" + reset);
-        for (Enemy enemy : enemies){
-            System.out.println(enemy);
-        }
     }
 }

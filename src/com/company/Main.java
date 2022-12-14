@@ -1,19 +1,15 @@
 package com.company;
-
 import java.io.*;
 import java.util.*;
 
-// have final floor (10?) with only reaper (give lore)
-// can still keep fighting afterwards though
-
 public class Main {
-
     public static final String reset = "\u001B[0m";
     public static final String green = "\u001B[32m";
     public static final String cyan = "\u001B[36m";
     public static final String bold = "\u001B[1m";
     public static final String italic = "\033[3m";
 
+    // THE LOREEE OF THE GAME
     public static void lore(){
         System.out.println(italic + """
                 8,035,999 years ago...
@@ -36,6 +32,7 @@ public class Main {
                 """ + reset);
     }
 
+    // how to play the game + how the game works
     public static void gameInfo(){
         System.out.println("""
                 Your character is equipped with a sword, shield, and armour.
@@ -59,6 +56,7 @@ public class Main {
                 Each floor, the difficulty and number of monsters is ramped higher, so make sure you prepare well beforehand!""");
     }
 
+    // main menu options
     public static void mainMenu(){
         System.out.println();
         System.out.println(bold + "What would you like to do?" + reset);
@@ -76,6 +74,7 @@ public class Main {
         System.out.println("========================= ©MM");
     }
 
+    // menu options when in a dungeon or floor
     public static void fightMenu(){
         System.out.println();
         System.out.println(bold + "What would you like to do?" + reset);
@@ -89,6 +88,7 @@ public class Main {
         System.out.println("========================= ©MM");
     }
 
+    // info menu
     public static void infoMenu(){
         System.out.println();
         System.out.println(bold + "Info Menu" + reset);
@@ -103,6 +103,7 @@ public class Main {
         Scanner userInput = new Scanner(System.in);
         Player player = null;
         try {
+            // if this isn't a new player (has info in files), get all that info back and put it into their player
             Scanner fileInput = new Scanner(new File("C:\\Users\\jessi\\Desktop\\CS Project Base\\src\\PlayerInfo"));
             if (fileInput.hasNextLine()){
                 while (fileInput.hasNextLine()){
@@ -143,6 +144,7 @@ public class Main {
                 }
                 fileInput.close();
             }
+            // if it's a new player, show them the LOREEE and prompt them to create a username
             else{
                 lore();
                 System.out.println(bold + "Welcome to Wen Ymar Elad! What is your name?" + reset);
@@ -150,6 +152,8 @@ public class Main {
                 player = new Player(name);
             }
 
+            // if this isn't a new user, they'll have a floor saved from the last time they played
+            // recreate that floor with the enemies it had previously
             try {
                 Floor floor;
                 fileInput = new Scanner(new File("C:\\Users\\jessi\\Desktop\\CS Project Base\\src\\FloorInfo"));
@@ -162,10 +166,14 @@ public class Main {
                     floor = new Floor(enemyNames);
                     fileInput.close();
                 }
+                // if this is the first time they're entering a floor, create a new floor
                 else{
                     Floor.floorLevel = 0;
                     floor = new Floor();
                 }
+
+                // setup for the game
+                // show main menu and prompt a choice, write their info into files, then set variables that will of use later
                 assert player != null;
                 mainMenu();
                 putInfoIntoFiles(player, floor);
@@ -173,10 +181,11 @@ public class Main {
                 boolean exitGame = false;
                 boolean exitCurrentPlace = false;
 
+                // while the user doesn't want to exit, keep running the game
                 while (!exitGame){
                     switch (choice) {
+                        // show info menu for game, enemies, items
                         case 1 -> {
-                            // info about game, enemies and items
                             infoMenu();
                             int action = Integer.parseInt(userInput.nextLine());
                             switch (action){
@@ -187,8 +196,8 @@ public class Main {
                             mainMenu();
                             choice = Integer.parseInt(userInput.nextLine());
                         }
+                        // change username and update it into the files
                         case 2 -> {
-                            // username stuff
                             System.out.println(bold + "What would you like your new username to be?" + reset);
                             String name = userInput.nextLine();
                             player.changeName(name);
@@ -196,35 +205,40 @@ public class Main {
                             mainMenu();
                             choice = Integer.parseInt(userInput.nextLine());
                         }
+                        // show player profile
                         case 3 -> {
-                            // profile stuff
                             player.profile();
                             mainMenu();
                             choice = Integer.parseInt(userInput.nextLine());
                         }
+                        // show inventory
                         case 4 -> {
-                            // check inventory stuff
                             player.inventoryMenu();
                             mainMenu();
                             choice = Integer.parseInt(userInput.nextLine());
                         }
+                        // drink health potion
                         case 5 -> {
                             player.drinkHealthPotion();
                             mainMenu();
                             choice = Integer.parseInt(userInput.nextLine());
                         }
+                        // level up items
                         case 6 -> {
-                            // do leveling up stuff
                             player.upgradeItem();
                             mainMenu();
                             choice = Integer.parseInt(userInput.nextLine());
                         }
+                        // access shop
                         case 7 -> {
-                            // access shop
+                            // prompt player to buy or sell
                             System.out.println(bold + "Would you like to buy or sell? " + cyan + "(B/S)" + reset);
                             String action = userInput.nextLine();
                             switch(action) {
+                                // if player wants to buy something, call the method for it
                                 case "B" -> Shop.purchaseItem(player);
+                                // find out what user wants to sell
+                                // update coins and inventory, or give warning messages accordingly
                                 case "S" -> {
                                     System.out.println(bold + "Do you want to sell materials or potions? " + cyan + "(M/P)" + reset);
                                     String sellChoice = userInput.nextLine();
@@ -253,7 +267,9 @@ public class Main {
                             mainMenu();
                             choice = Integer.parseInt(userInput.nextLine());
                         }
+                        // enter a dungeon
                         case 8 -> {
+                            // ask player to specify what dungeon they want to enter
                             System.out.println(bold + "What dungeon do you want to enter?" + reset);
                             System.out.println(bold + cyan + "1:" + reset + " Enemy dungeon" + reset);
                             System.out.println(bold + cyan + "2:" + reset + " Vampire dungeon" + reset);
@@ -264,14 +280,17 @@ public class Main {
                             System.out.println(bold + cyan + "2: " + reset + bold + "Medium: " + reset + italic + "6 monsters, stats are doubled" + reset);
                             System.out.println(bold + cyan + "3: " + reset + bold + "Hard: " + reset + italic + "7 monsters, stats are tripled" + reset);
                             int difficulty = Integer.parseInt(userInput.nextLine());
+                            // create the dungeon
                             Dungeon dungeon = new Dungeon(enemyType, difficulty);
+                            // keep prompting the player to fight as long as all enemies aren't dead, they aren't dead, and they didn't save and exit
                             exitCurrentPlace = false;
                             while (!dungeon.getAllEnemiesDead() && !exitGame && !exitCurrentPlace){
+                                // show the fight menu instead of the main menu
                                 fightMenu();
                                 choice = Integer.parseInt(userInput.nextLine());
                                 switch (choice) {
+                                    // info about enemies and items
                                     case 1 -> {
-                                        // info about enemies and items
                                         infoMenu();
                                         int action = Integer.parseInt(userInput.nextLine());
                                         switch (action){
@@ -282,8 +301,9 @@ public class Main {
                                     }
                                     // check stats
                                     case 2 -> player.stats();
-                                    // item stuff
+                                    // check inventory
                                     case 3 -> player.inventoryMenu();
+                                    // use potions
                                     case 4 -> {
                                         if (player.getInventory().size() != 0) {
                                             player.usePotion();
@@ -292,9 +312,11 @@ public class Main {
                                             System.out.println("Sorry, you have no potions to use");
                                         }
                                     }
+                                    // fight
                                     case 5 -> {
-                                        //fight stuff
                                         player.battle(dungeon, floor);
+                                        // while the player isn't dead, show updates in the battle result
+                                        // otherwise, exit the dungeon
                                         if (!player.getIsDead()){
                                             dungeon.fightUpdate(player);
                                         }
@@ -302,8 +324,8 @@ public class Main {
                                             exitCurrentPlace = true;
                                         }
                                     }
+                                    // save and exit
                                     case 6 -> {
-                                        // save stuff
                                         System.out.println(bold + "The game will save your progress up to the last floor or dungeon you completed. Do you wish to proceed? " + cyan + "(Y/N)" + reset);
                                         String action = userInput.nextLine();
                                         switch (action) {
@@ -312,9 +334,13 @@ public class Main {
                                             default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                                         }
                                     }
+                                    // warning message for unknown command
                                     default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                                 }
                             }
+                            // if game has exited the dungeon and the player doesn't want to exit the game and the player isn't dead,
+                            // that means the dungeon was successfully cleared
+                            // put the player's info into files (save after every floor/dungeon clear)
                             if (!exitGame){
                                 if (!exitCurrentPlace){
                                     dungeon.dungeonCleared(player);
@@ -324,16 +350,17 @@ public class Main {
                                 choice = Integer.parseInt(userInput.nextLine());
                             }
                         }
+                        // enter floors
                         case 9 -> {
-                            // fight stuff
                             floor.enterLevel();
+                            // keep fighting while there's still enemies, the player hasn't exited the game, and the player hasn't died
                             exitCurrentPlace = false;
                             while (!floor.getAllEnemiesDead() && !exitGame && !exitCurrentPlace) {
                                 fightMenu();
                                 choice = Integer.parseInt(userInput.nextLine());
                                 switch (choice) {
+                                    // info about enemies and items
                                     case 1 -> {
-                                        // info about enemies and items
                                         infoMenu();
                                         int action = Integer.parseInt(userInput.nextLine());
                                         switch (action) {
@@ -346,6 +373,7 @@ public class Main {
                                     case 2 -> player.stats();
                                     // check inventory
                                     case 3 -> player.inventoryMenu();
+                                    // use potions
                                     case 4 -> {
                                         if (player.getInventory().size() != 0) {
                                             player.usePotion();
@@ -353,8 +381,8 @@ public class Main {
                                             System.out.println("Sorry, you have no potions to use");
                                         }
                                     }
+                                    // fight
                                     case 5 -> {
-                                        // fight stuff
                                         player.battle(floor);
                                         if (!player.getIsDead()){
                                             floor.fightUpdate(player);
@@ -363,8 +391,8 @@ public class Main {
                                             exitCurrentPlace = true;
                                         }
                                     }
+                                    // save and exit
                                     case 6 -> {
-                                        // save stuff
                                         System.out.println(bold + "The game will save your progress up to the last floor or dungeon you completed. Do you wish to proceed? " + cyan + "(Y/N)" + reset);
                                         String action = userInput.nextLine();
                                         switch (action) {
@@ -373,9 +401,13 @@ public class Main {
                                             default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                                         }
                                     }
+                                    // warning message for unknown command
                                     default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                                 }
                             }
+                            // if game has exited the floor and the player doesn't want to exit the game and the player isn't dead,
+                            // that means the floor was successfully cleared
+                            // put the player's info into files (save after every floor/dungeon clear)
                             if (!exitGame){
                                 if (!exitCurrentPlace){
                                     floor.floorCleared(player);
@@ -386,8 +418,8 @@ public class Main {
                                 choice = Integer.parseInt(userInput.nextLine());
                             }
                         }
+                        // save and exit
                         case 10 -> {
-                            // save stuff
                             System.out.println(bold + "The game will save your progress up to the last floor or dungeon you completed. Do you wish to proceed? " + cyan + "(Y/N)" + reset);
                             String action = userInput.nextLine();
                             switch (action) {
@@ -396,12 +428,10 @@ public class Main {
                                 default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                             }
                         }
+                        // warning message for unknown command
                         default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                     }
                 }
-                // save info into files and stuff
-                //putInfoIntoFiles(player, floor);
-
             } catch (FileNotFoundException e) {
                 System.out.println("can't open floor file");
             }
@@ -411,10 +441,12 @@ public class Main {
         }
     }
 
+    // method to write player and floor information into files
     public static void putInfoIntoFiles(Player player, Floor floor) {
         PrintWriter floorOutput;
         PrintWriter playerOutput;
         try {
+            // if a floor exists, put it into the floor info file
             floorOutput = new PrintWriter("C:\\Users\\jessi\\Desktop\\CS Project Base\\src\\FloorInfo");
             floorOutput.println(Floor.floorLevel);
             if (floor != null){
@@ -423,6 +455,7 @@ public class Main {
                 }
             }
             floorOutput.close();
+            // put player's information into the player info file
             playerOutput = new PrintWriter("C:\\Users\\jessi\\Desktop\\CS Project Base\\src\\PlayerInfo");
             playerOutput.println(player.getName());
             playerOutput.println(player.getHealth());

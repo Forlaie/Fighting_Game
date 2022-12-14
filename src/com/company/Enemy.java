@@ -1,5 +1,4 @@
 package com.company;
-// fix negative health for enemies
 
 public class Enemy {
     public static final String purple = "\u001B[35m";
@@ -12,6 +11,7 @@ public class Enemy {
     protected int health;
     protected int attack;
     protected String description;
+    // stores all the possible enemies and their info (useful for hashmaps later)
     private static Enemy[] possibleEnemies = {
             new Enemy("Enemy", 10*Floor.floorLevel, Floor.floorLevel, """
             Enemies are people who have been corrupted by the pollution"""),
@@ -32,6 +32,7 @@ public class Enemy {
                     However, once defeated, you can gain stat bonuses to your health, defence or attack""")
     };
 
+    // method to generate random enemies when creating a floor
     public static Enemy generateRandomEnemy(){
         possibleEnemies = new Enemy[]{
                 new Enemy("Enemy", 10 * Floor.floorLevel, Floor.floorLevel, """
@@ -62,6 +63,7 @@ public class Enemy {
         return possibleEnemies[index];
     }
 
+    // constructor for creating an enemy
     public Enemy(String name, int health, int attack, String description){
         this.name = name;
         this.health = health;
@@ -69,11 +71,7 @@ public class Enemy {
         this.description = description;
     }
 
-    public Enemy(String name, String description){
-        this.name = name;
-        this.description = description;
-    }
-
+    // prints out enemies and their descriptions
     public static void enemyInfo(){
         for (Enemy enemy : possibleEnemies){
             System.out.println();
@@ -82,14 +80,17 @@ public class Enemy {
         }
     }
 
+    // get enemy name
     public String getName(){
         return name;
     }
 
+    // get enemy attack
     public int getAttack(){
         return attack;
     }
 
+    // battling in a floor
     public void battle(Player player, Floor floor){
         health -= player.getAttack();
         System.out.println("You have dealt " + purple + player.getAttack() + " damage " + reset + "to " + name);
@@ -98,6 +99,7 @@ public class Enemy {
         }
     }
 
+    // dying in a floor (drop random item)
     public void died(Player player, Floor floor){
         System.out.println(name + " has died");
         Item item = Item.generateRandomDrop();
@@ -106,6 +108,7 @@ public class Enemy {
         floor.addDeadEnemy(this);
     }
 
+    // battling in a dungeon
     public void battle(Player player, Dungeon dungeon){
         health -= player.getAttack();
         System.out.println("You have dealt " + purple + player.getAttack() + " damage " + reset + "to " + name);
@@ -114,6 +117,7 @@ public class Enemy {
         }
     }
 
+    // when enemy dies in a dungeon, only drop enemy materials
     public void died(Player player, Dungeon dungeon){
         System.out.println(name + " has died");
         player.defeatedMonster(Item.materialDrops[0]);
@@ -121,6 +125,7 @@ public class Enemy {
         dungeon.addDeadEnemy(this);
     }
 
+    // overload toString() method to return the necessary info about enemy
     public String toString(){
         return this.name + " has " + red + this.health + " hp" + reset;
     }

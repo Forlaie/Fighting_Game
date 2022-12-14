@@ -1,14 +1,13 @@
 package com.company;
-// lives again
-// mystery drop (lore?)
-// MYSTERY DROP IS ANCIENT SEED
-// EAT SEED GO TO MARYS
+// child of Enemy class (inheritance)
 
 public class Reaper extends Enemy{
+    // inherits constructor and instance variables of Enemy class
     public Reaper(String name, int health, int attack, String description) {
         super(name, health, attack, description);
     }
 
+    // when reaper dies in a dungeon, give LOREEE
     public void died(Player player, Floor floor){
         lore();
         Item item = new Item("Ancient seed", 0, "An ancient seed left behind from the future. Perhaps you should plant it?");
@@ -17,6 +16,7 @@ public class Reaper extends Enemy{
         floor.addDeadEnemy(this);
     }
 
+    // THE LOREEE
     public void lore(){
         System.out.println(italic + """
                 
