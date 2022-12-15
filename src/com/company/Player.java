@@ -374,6 +374,10 @@ public class Player {
         System.out.println(bold + cyan + "2: " + reset + bold + "Shield " + reset + italic + "(uses enemy materials or shields)" + reset);
         System.out.println(bold + cyan + "3: " + reset + bold + "Armour " + reset + italic + "(uses golem materials or armours)" + reset);
         int itemChoice = Integer.parseInt(input.nextLine());
+        while (itemChoice != 1 && itemChoice != 2 && itemChoice != 3){
+            System.out.println("Sorry, that is not a recognized item. Please try again.");
+            itemChoice = Integer.parseInt(input.nextLine());
+        }
         switch (itemChoice){
             case 1 -> equipped[0].upgradeItem(this);
             case 2 -> equipped[1].upgradeItem(this);
@@ -537,8 +541,8 @@ public class Player {
     // increases stats
     public void levelUp(){
         System.out.println(yellow + "Level up!" + reset);
+        xp = xp - level*10;
         level += 1;
-        xp = 0;
         health += 10;
         attack += 5;
         defence += 5;

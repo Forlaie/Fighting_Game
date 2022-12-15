@@ -192,6 +192,7 @@ public class Main {
                                 case 1 -> gameInfo();
                                 case 2 -> Enemy.enemyInfo();
                                 case 3 -> Item.itemInfo();
+                                default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                             }
                             mainMenu();
                             choice = Integer.parseInt(userInput.nextLine());
@@ -275,11 +276,19 @@ public class Main {
                             System.out.println(bold + cyan + "2:" + reset + " Vampire dungeon" + reset);
                             System.out.println(bold + cyan + "3:" + reset + " Golem dungeon" + reset);
                             int enemyType = Integer.parseInt(userInput.nextLine());
+                            while (enemyType != 1 && enemyType != 2 && enemyType != 3){
+                                System.out.println("Sorry, that is not a valid dungeon. Please try again.");
+                                enemyType = Integer.parseInt(userInput.nextLine());
+                            }
                             System.out.println(bold + "What difficulty do you want to enter?" + reset);
                             System.out.println(bold + cyan + "1: " + reset + bold + "Easy: " + reset + italic + "5 monsters, normal stats" + reset);
                             System.out.println(bold + cyan + "2: " + reset + bold + "Medium: " + reset + italic + "6 monsters, stats are doubled" + reset);
                             System.out.println(bold + cyan + "3: " + reset + bold + "Hard: " + reset + italic + "7 monsters, stats are tripled" + reset);
                             int difficulty = Integer.parseInt(userInput.nextLine());
+                            while (difficulty != 1 && difficulty != 2 && difficulty != 3){
+                                System.out.println("Sorry, that is not a valid difficulty. Please try again.");
+                                difficulty = Integer.parseInt(userInput.nextLine());
+                            }
                             // create the dungeon
                             Dungeon dungeon = new Dungeon(enemyType, difficulty);
                             // keep prompting the player to fight as long as all enemies aren't dead, they aren't dead, and they didn't save and exit
@@ -297,6 +306,7 @@ public class Main {
                                             case 1 -> gameInfo();
                                             case 2 -> Enemy.enemyInfo();
                                             case 3 -> Item.itemInfo();
+                                            default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                                         }
                                     }
                                     // check stats
@@ -367,6 +377,7 @@ public class Main {
                                             case 1 -> gameInfo();
                                             case 2 -> Enemy.enemyInfo();
                                             case 3 -> Item.itemInfo();
+                                            default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
                                         }
                                     }
                                     // check stats
@@ -402,7 +413,11 @@ public class Main {
                                         }
                                     }
                                     // warning message for unknown command
-                                    default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
+                                    default -> {
+                                        System.out.println("Sorry, that is not a recognized command. Please try again.");
+                                        mainMenu();
+                                        choice = Integer.parseInt(userInput.nextLine());
+                                    }
                                 }
                             }
                             // if game has exited the floor and the player doesn't want to exit the game and the player isn't dead,
@@ -429,7 +444,11 @@ public class Main {
                             }
                         }
                         // warning message for unknown command
-                        default -> System.out.println("Sorry, that is not a recognized command. Please try again.");
+                        default -> {
+                            System.out.println("Sorry, that is not a recognized command. Please try again.");
+                            mainMenu();
+                            choice = Integer.parseInt(userInput.nextLine());
+                        }
                     }
                 }
             } catch (FileNotFoundException e) {
