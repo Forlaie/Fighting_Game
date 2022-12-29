@@ -82,21 +82,13 @@ public class Player {
     // updates inventory with potions that player had according to save file information
     private void loadPotionInfo(int[] potionQuantities) {
         if (potionQuantities[0] != 0){
-            inventory.put(new Potion("Health potion", 50, 0, 0, 50, """
-                    Health potion heals you by 50 hp points
-                    Costs 50 coins"""), potionQuantities[0]);
+            inventory.put(Item.potions[0], potionQuantities[0]);
         }
         if (potionQuantities[1] != 0){
-            inventory.put(new Potion("Attack potion", 0, 0, 2, 50, """
-                    Attack potion doubles your attack
-                    Lasts for one floor/dungeon
-                    Costs 50 coins"""), potionQuantities[1]);
+            inventory.put(Item.potions[1], potionQuantities[1]);
         }
         if (potionQuantities[2] != 0){
-            inventory.put(new Potion("Defence potion", 0, 2, 0, 50, """
-                    Defence potion doubles your defence
-                    Lasts for one floor/dungeon
-                    Costs 50 coins"""), potionQuantities[2]);
+            inventory.put(Item.potions[2], potionQuantities[2]);
         }
     }
 
